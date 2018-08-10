@@ -1,0 +1,21 @@
+Install python 3.6
+
+	https://www.python.org/downloads/release/python-366/
+
+Install pip (a package manager for python):
+
+	> curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+	> python get-pip.py
+
+Install pipenv (equivalent of npm for python, manages Pipfile and Pipfile.lock):
+
+	> pip install pipenv
+
+Go to the project
+
+	> cd \project_base_folder
+
+Install dependancies specified in the Pipfile
+
+	> pipenv install
+
