@@ -47,3 +47,7 @@ Push the change to master
 
 I prefer github desktop to the console, as you don't have to put in your password every
 time you push.
+
+Get familiar with tornado
+
+	http://www.tornadoweb.org/en/stable/
