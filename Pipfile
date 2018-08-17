@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 tornado = "*"
+pylint = "*"
+pytest = "*"
 
 [dev-packages]
 
