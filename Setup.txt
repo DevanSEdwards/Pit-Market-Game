@@ -1,3 +1,5 @@
+=== Setup =========================================================================================
+
 Install git
 
 	https://git-scm.com/downloads
@@ -46,34 +48,41 @@ Push the change to master
 	> git push
 
 I prefer github desktop to the console, as you don't have to put in your password every
-time you push.
+	time you push.
 
-For testing, I've added pytest to the pipfile so run this command to
-install all dependancies:
+=== Debugging =====================================================================================
+
+If you want to see live changes, in the tornado.web.Application constructor,
+	set debug=True. That way you can run
+
+	> python main.py
+
+	and go to localhost:5000 in your browser. All your code changes will apply instantly - just
+	reload the page. Always set debug=False before pushing/merging to master.
+
+=== Testing =======================================================================================
+
+I've added pytest to the pipfile so make sure you have all dependancies:
 
 	> pipenv shell
 	> pipenv install
 
-and whenever you want to run a test (only works inside the pipenv shell):
+	and whenever you want to run a test (only works inside the pipenv shell):
 
 	> python -m pytest
 
-You can add python tests to the testing folder, look at the current one as an example.
+	You can add python tests to the testing folder, look at the one  already there as an example.
 
-
+=== Links =========================================================================================
 
 Get familiar with tornado (if you're on backend)
-
 	http://www.tornadoweb.org/en/stable/
 
 Link to heroku:
-
 	https://pit-market-game.herokuapp.com/
 	
 Game description pdf:
-
 	http://www.people.virginia.edu/~cah2k/pitmkttr.pdf
 
 Example tornado multi-room chat server:
-
 	https://www.jpablo128.com/multi-room-websockets-server-with-tornado-i-basic-chat-server/

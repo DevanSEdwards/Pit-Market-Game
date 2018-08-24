@@ -9,9 +9,10 @@ class MainHandler(RequestHandler):
         self.render("views/index.html")
 
 def main():
-    application = tornado.web.Application([
-        (r"/", MainHandler),
-    ])
+    application = tornado.web.Application(
+        [(r"/", MainHandler),],
+        debug=False
+    )
     http_server = tornado.httpserver.HTTPServer(application)
     port = int(os.environ.get("PORT", 5000))
     http_server.listen(port)
