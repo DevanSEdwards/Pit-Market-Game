@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 tornado = "*"
+pylint = "*"
+pytest = "*"
 
 [dev-packages]
+rope = "*"
 
 [requires]
 python_version = "3.6"

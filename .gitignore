@@ -1,0 +1,6 @@
+
+.vscode/settings.json
+.vscode/launch.json
+.pytest_cache/README.md
+.pytest_cache/v/cache/lastfailed
+.pytest_cache/v/cache/nodeids

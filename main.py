@@ -6,7 +6,7 @@ from tornado.web import RequestHandler
 
 class MainHandler(RequestHandler):
     def get(self):
-        self.write("Hello world")
+        self.render("views/index.html")
 
 def main():
     application = tornado.web.Application([
