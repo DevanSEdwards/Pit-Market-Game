@@ -48,6 +48,20 @@ Push the change to master
 I prefer github desktop to the console, as you don't have to put in your password every
 time you push.
 
+For testing, I've added pytest to the pipfile so run this command to
+install all dependancies:
+
+	> pipenv shell
+	> pipenv install
+
+and whenever you want to run a test (only works inside the pipenv shell):
+
+	> python -m pytest
+
+You can add python tests to the testing folder, look at the current one as an example.
+
+
+
 Get familiar with tornado (if you're on backend)
 
 	http://www.tornadoweb.org/en/stable/
