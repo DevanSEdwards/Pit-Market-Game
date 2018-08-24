@@ -52,13 +52,12 @@ I prefer github desktop to the console, as you don't have to put in your passwor
 
 === Debugging =====================================================================================
 
-If you want to see live changes, in the tornado.web.Application constructor,
-	set debug=True. That way you can run
+To enable live changes to code and logging of GET/POST requests call
 
-	> python main.py
+	> python main.py debug
 
-	and go to localhost:5000 in your browser. All your code changes will apply instantly - just
-	reload the page. Always set debug=False before pushing/merging to master.
+	go to localhost:5000 in your browser. All your code changes will apply instantly - just
+	reload the page.
 
 === Testing =======================================================================================
 
