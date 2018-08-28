@@ -1,0 +1,19 @@
+var transactions = 
+{
+	"id_from"	:	"UID",
+	"id_to"		:	"UID",
+	"time"		:	"time",
+	"card"		:	"value",
+	"cost"		:	"of sale",
+}
+
+var offers =
+{
+	"player"	:	"UID",
+	"time"		:	"time",
+	"buy-sell"	:	"boolean",
+	"card"		:	"value",
+	"offer"		:	"value",
+}
+
+var time = { "time" : "time", }
