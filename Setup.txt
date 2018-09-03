@@ -40,7 +40,7 @@ Check tornado is installed
 
 Add your name here:
 
-	Tim, Wes
+	Tim, Wes, Jayden
 
 Push the change to master
 
