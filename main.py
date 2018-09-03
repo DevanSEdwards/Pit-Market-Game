@@ -3,6 +3,7 @@ import sys
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
+from tornado import websocket
 from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
 
@@ -11,14 +12,16 @@ class MainHandler(RequestHandler):
         self.render("views/index.html")
 
 def main():
-    # Test if this module was called in debug mode, ie:
+    # Check if this module was called in debug mode, ie:
     #   > python main.py debug
     debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
-    
-    if debug: enable_pretty_logging() # Log all GET, POST... requests
-    application = tornado.web.Application(
-        [(r"/", MainHandler),],
-        debug=debug # Enable live changes to code
+    # Log all GET, POST... requests
+    if debug: enable_pretty_logging()
+
+    application = tornado.web.Application([
+        (r"/", MainHandler)],
+        # Enable live changes to code
+        debug=debug
     )
     http_server = tornado.httpserver.HTTPServer(application)
     port = int(os.environ.get("PORT", 5000))
