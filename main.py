@@ -19,7 +19,7 @@ class MainHandler(RequestHandler):
         arg = self.get_argument("game", default="")
         if arg == "host":
             host_id, game_id = self.game_handler.new_game()
-            self.render("views/game.html", host_id=host_id, game_id=game_id)
+            self.render("views/game.html", hostId=host_id, gameId=game_id)
         else:
             self.render("views/index.html")
 

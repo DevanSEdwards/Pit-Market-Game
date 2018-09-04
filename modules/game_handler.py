@@ -2,7 +2,7 @@ import json
 import random
 import string
 from uuid import uuid4
-from game import Game
+from modules.game import Game
 
 class GameHandler():
     """Store and manage a set of all games"""
@@ -12,7 +12,7 @@ class GameHandler():
     def new_game(self):
         """Create a new game instance and return (host_id, game_id)"""
         new_game = Game(uuid4().hex, self._generate_game_id())
-        self.games += new_game
+        self.games.add(new_game)
         return new_game.host_id, new_game.game_id
 
     def _generate_game_id(self):
