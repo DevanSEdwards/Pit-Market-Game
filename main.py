@@ -17,9 +17,28 @@ class MainHandler(RequestHandler):
 
     def get(self):
         arg = self.get_argument("game", default="")
+        # Hosting a new game
         if arg == "host":
             host_id, game_id = self.game_handler.new_game()
-            self.render("views/game.html", hostId=host_id, gameId=game_id)
+            self.render(
+                "views/game.html",
+                hostId = host_id,
+                gameId = game_id,
+                playerId = ""
+            )
+        # Attempting to join a game
+        elif len(arg) == 6 and arg.isalnum():
+            player_id = self.game_handler.add_player(arg)
+            if player_id == None:
+                self.render("views/index.html")
+            else:
+                self.render(
+                    "views/game.html",
+                    hostId = "",
+                    gameId = "",
+                    playerId = player_id
+                )
+        # Render main page
         else:
             self.render("views/index.html")
 

@@ -21,3 +21,14 @@ class GameHandler():
         if game_id in [g.game_id for g in self.games]:
             game_id = self._generate_game_id()
         return game_id
+    
+    def add_player(self, game_id):
+        """Check if the game_id matches a current game and create a new player
+    
+        Return the player_id"""
+        for g in self.games:
+            if game_id == g.game_id:
+                player_id = g.add_player()
+                return player_id
+        # No game_id match
+        return None
