@@ -6,10 +6,23 @@ import tornado.web
 from tornado import websocket
 from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
+from modules.game_handler import GameHandler
 
 class MainHandler(RequestHandler):
+    """Handle GET requests"""
+
+    def initialize(self, game_handler):
+        """Store a reference to the game handler instance"""
+        self.game_handler = game_handler
+
     def get(self):
-        self.render("views/index.html")
+        arg = self.get_argument("game", default="")
+        if arg == "host":
+            host_id, game_id = self.game_handler.new_game()
+            self.render("views/game.html", host_id=host_id, game_id=game_id)
+        else:
+            self.render("views/index.html")
+
 
 def main():
     # Check if this module was called in debug mode, ie:
@@ -17,9 +30,12 @@ def main():
     debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
     # Log all GET, POST... requests
     if debug: enable_pretty_logging()
+    
+    game_handler = GameHandler()
 
     application = tornado.web.Application([
-        (r"/", MainHandler)],
+        (r"/", MainHandler, {"game_handler": game_handler}),
+        (r"/host", MainHandler, {"game_handler": game_handler})],
         # Enable live changes to code
         debug=debug
     )
