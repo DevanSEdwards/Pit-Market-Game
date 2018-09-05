@@ -4,7 +4,7 @@ import string
 from uuid import uuid4
 from modules.game import Game
 
-class GameHandler():
+class GameHandler:
     """Store and manage a set of all games"""
     def __init__(self):
         self.games = set()
@@ -26,7 +26,8 @@ class GameHandler():
     def add_player(self, game_id):
         """Check if the game_id matches a current game and create a new player
     
-        Return the player_id"""
+        Return the player_id
+        """
         for game in self.games:
             if game_id == game.game_id:
                 player_id = game.add_player()
