@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+import inspect
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -41,29 +43,55 @@ class MainHandler(RequestHandler):
         else:
             self.render("views/index.html")
 
-class PlayerHandler(websocket.WebSocketHandler):
-    """Handle incoming player messages during a game"""
-    def initialize(self, game_handler):
+class WebsocketHandler(websocket.WebSocketHandler):
+    """Handle incoming messages during a game"""
+
+    # Dictionaries of Game methods to call.
+    # Indexed by the corresponding message type, like:
+    # "msg_type" : "method_name"
+    host_commands = {
+        "start round": "start_round"
+    }
+
+    player_commands = {}
+
+    def initialize(self, game_handler, host):
         """Store a reference to the game_handler instance"""
         self.game_handler = game_handler
+        self.host = host
+        self.commands = (
+            WebsocketHandler.host_commands if host else 
+            WebsocketHandler.player_commands
+        )
 
-    def open(self, player_id):
-        """Store the player_id and a reference to the game"""
-        self.player_id = player_id
-        self.game_handler.add_player_ws(player_id, self)
-
-class HostHandler(websocket.WebSocketHandler):
-    """Handle incoming host messages during a game"""
-    def initialize(self, game_handler):
-        """Store a reference to the game_handler instance"""
-        self.game_handler = game_handler
-
-    def open(self, host_id):
-        """Store the host_id and a reference to the game"""
-        self.host_id = host_id
-        self.game = self.game_handler.add_host_ws(host_id, self)
+    def open(self, client_id):
+        """Store the client_id and a reference to their game"""
+        self.client_id = client_id
+        self.game = (
+            self.game_handler.add_host_ws(client_id, self) if self.host else
+            self.game_handler.add_player_ws(client_id, self)
+        )
         if self.game == None:
             self.close()
+
+    def on_message(self, message):
+        """Call the appropriate Game method, based on the message type"""
+        msg = json.loads(message)
+
+        # If type is unknown send an error message
+        if msg.type not in self.commands:
+            self.write_message({"type": "error", "message": "bad type"})
+            return
+        
+        # If client is a player, add the player_id to the message
+        if not self.host:
+            msg["player_id"] = self.client_id
+        
+        method = getattr(self.game, self.commands[msg.type])
+        arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # Add try-catch later
+        
+        # Call the method with corresponding arguments
+        method(**arguments)
 
 def main():
     # Check if this module was called in debug mode, ie:
@@ -77,8 +105,8 @@ def main():
     application = tornado.web.Application(
         [
             (r"/", MainHandler, {"game_handler": game_handler}),
-            (r"/pws/(.*)", PlayerHandler, {"game_handler": game_handler}),
-            (r"/hws/(.*)", HostHandler, {"game_handler": game_handler})
+            (r"/hws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": True}),
+            (r"/pws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": False})
         ],
         debug=debug # Enable live changes to code
     )
