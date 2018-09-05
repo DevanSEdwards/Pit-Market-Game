@@ -18,6 +18,7 @@ class GameHandler():
     def _generate_game_id(self):
         """Return a unique 6 letter/digit code"""
         game_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        # Ensure unique codes
         if game_id in [g.game_id for g in self.games]:
             game_id = self._generate_game_id()
         return game_id
@@ -26,9 +27,27 @@ class GameHandler():
         """Check if the game_id matches a current game and create a new player
     
         Return the player_id"""
-        for g in self.games:
-            if game_id == g.game_id:
-                player_id = g.add_player()
+        for game in self.games:
+            if game_id == game.game_id:
+                player_id = game.add_player()
                 return player_id
         # No game_id match
+        return None
+
+    def add_player_ws(self, player_id, ws):
+        """Check for matching id and return the player's game instance"""
+        for game in self.games:
+            if player_id in game.players:
+                game.players[player_id].ws = ws
+                return game
+        # No player_id match
+        return None
+
+    def add_host_ws(self, host_id, ws):
+        """Check for matching id and return the host's game instance"""
+        for game in self.games:
+            if host_id == game.host_id:
+                game.ws = ws
+                return game
+        # No host_id match
         return None
