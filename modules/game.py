@@ -32,7 +32,7 @@ class Game():
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
-    #   Should start with 'pc'
+    #   Should start with 'pc' and have player_id as an argument
 
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""

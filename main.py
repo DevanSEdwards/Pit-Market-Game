@@ -67,7 +67,9 @@ class WebsocketHandler(websocket.WebSocketHandler):
     }
 
     def initialize(self, game_handler, host):
-        """Store a reference to the game_handler instance"""
+        """Store a reference to the game_handler instance and whether
+        the client is a host.
+        """
         self.game_handler = game_handler
         self.host = host
         self.commands = (
@@ -87,7 +89,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
-        msg = json.loads(message)
+        msg = json.loads(message) # TODO: Check if msg contains "type"
 
         # If type is unknown send an error message
         if msg.type not in self.commands:
@@ -99,7 +101,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
             msg["player_id"] = self.client_id
         
         method = getattr(self.game, self.commands[msg.type])
-        arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # Add try-catch later
+        arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # TODO: Add try-catch incase msg has the wrong args
         
         # Call the method with corresponding arguments
         method(**arguments)
