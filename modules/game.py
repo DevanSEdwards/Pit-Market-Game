@@ -13,3 +13,31 @@ class Game():
         player_id = uuid4().hex
         self.players[player_id] = Player(player_id)
         return player_id
+
+    # - Host Commands -------------------------------------------------
+    #   These methods should only be called inside WebsocketHandler
+    #   Should start with 'hc'
+
+    def hc_start_round(self):
+        """Start a single round"""
+        pass
+
+    def hc_end_round(self):
+        """Bring the current round to a premature end"""
+        pass
+
+    def hc_end_game(self):
+        """Delete the game and disconnect all clients"""
+        pass
+
+    # - Player Commands -----------------------------------------------
+    #   These methods should only be called inside WebsocketHandler
+    #   Should start with 'pc'
+
+    def pc_offer(self, player_id, price):
+        """Verify and post a new offer to the game"""
+        pass
+
+    def pc_accept(self, player_id, offer_id):
+        """Verify and complete a trade"""
+        pass

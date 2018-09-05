@@ -44,16 +44,27 @@ class MainHandler(RequestHandler):
             self.render("views/index.html")
 
 class WebsocketHandler(websocket.WebSocketHandler):
-    """Handle incoming messages during a game"""
+    """Handle incoming messages during a game
+    
+    It is expected that each type of message will be handled by a 
+    corresponding method in a Game instance, and that the host_commands
+    and player_commands static attributes will be updated to reflect
+    that. No other changes to this class should need to be made.
+    """
 
     # Dictionaries of Game methods to call.
     # Indexed by the corresponding message type, like:
     # "msg_type" : "method_name"
     host_commands = {
-        "start round": "start_round"
+        "start round": "hc_start_round",
+        "end round": "hc_end_round",
+        "end game": "hc_end_game"
     }
 
-    player_commands = {}
+    player_commands = {
+        "offer": "pc_offer",
+        "accept": "pc_accept"
+    }
 
     def initialize(self, game_handler, host):
         """Store a reference to the game_handler instance"""
