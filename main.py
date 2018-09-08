@@ -18,7 +18,7 @@ class MainHandler(RequestHandler):
 
     def get(self):
         arg = self.get_argument("game", default="")
-        # Hosting a new game
+        # Hosting a new game (/?game=host)
         if arg == "host":
             host_id, game_id = self.game_handler.new_game()
             self.render(
@@ -27,7 +27,7 @@ class MainHandler(RequestHandler):
                 gameId = game_id,
                 playerId = ""
             )
-        # Attempting to join a game
+        # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
             player_id = self.game_handler.add_player(arg)
             if player_id == None:
@@ -39,19 +39,18 @@ class MainHandler(RequestHandler):
                     gameId = "",
                     playerId = player_id
                 )
-        # Render main page
+        # Render main page (/)
         else:
             self.render("views/index.html")
 
 class WebsocketHandler(websocket.WebSocketHandler):
     """Handle incoming messages during a game
     
-    It is expected that each type of message will be handled by a 
+    It is expected that each type of message will be passed to a 
     corresponding method in a Game instance, and that the host_commands
     and player_commands static attributes will be updated to reflect
     that. No other changes to this class should need to be made.
     """
-
     # Dictionaries of Game methods to call.
     # Indexed by the corresponding message type, like:
     # "msg_type" : "method_name"
@@ -60,7 +59,6 @@ class WebsocketHandler(websocket.WebSocketHandler):
         "end round": "hc_end_round",
         "end game": "hc_end_game"
     }
-
     player_commands = {
         "offer": "pc_offer",
         "accept": "pc_accept"
