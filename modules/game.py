@@ -12,6 +12,10 @@ class Game():
         self.is_next_seller = True # First player should be a seller
         self.offers = {} # Dictionary of offers {offer_id: String, type: String
                         #    isSeller: bool, Price: int, player_id: player }
+        self.offers = {} # Dictionary of offers { offerId: offer }
+        
+        # Offer objects should contain these values: 
+        # offer_id, player_id, price, time
 
     def add_player(self):
         player_id = uuid4().hex
@@ -59,26 +63,12 @@ class Game():
         self.price = price
         #check offer
         #if Seller
-        if player[player_id].is_seller:
             #valid offer
-            if player[player_id].card >= price:
                 #add to offer dictionary
-                self.offers[offer_id] = Offer(offer_id, "offer", True, price, player_id)
-                self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: True, price: price, time: time})
             #invalid trade
             else:
-        #must be a buyer
-        else:
-            #valid offer
-            if player[player_id].card <= price:
-                #add to offer dictionary
-                self.offers[offer_id] = Offer(offer_id, "offer", False, price, player_id)
-                self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: False, price: price, time: time})
-            #invalid trade 
-            else 
 
         #Add check that offer hasn't been posted for 10 seconds
-        pass
 
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
