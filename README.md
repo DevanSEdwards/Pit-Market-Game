@@ -95,3 +95,6 @@ Game description pdf:
 
 Example tornado multi-room chat server:
 	https://www.jpablo128.com/multi-room-websockets-server-with-tornado-i-basic-chat-server/
+	
+Google Drive:
+	https://drive.google.com/drive/folders/1QuscT1pQLv0z7QZeiM_7syboxs7yO7DS?usp=sharing
