@@ -51,11 +51,34 @@ class Game():
 
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
+        # self.write_message(json.dumps({"type": "error", "message": "bad type"})
+        #check offer
+        #check haven't posted offer in 10 seconds 
         pass
 
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
         pass
+        # create an object with those values 
+        # convert to json  
+
+
+        # offer_id -> 
+
+        #like line 11 offer dictionary 
+
+        #offer id
+        #player id
+        #price
+        #expiry time
+
+        #check player for buyer or seller - check oposite dictionary for the offer
+        #check legit trade
+        # successful trade message to 2 players (17 in API)
+        # send message to all (18 in API)
+        #check   send to player (know player id)  self.players[player_id].ws.write_message()
+        # 
+
 
     # - Utilities -----------------------------------------------------
 
@@ -63,3 +86,4 @@ class Game():
         self.ws.write_message(message)
         for player in self.players:
             player.ws.write_message(message)
+       
