@@ -9,11 +9,11 @@ class Game():
         self.game_id = game_id
         self.ws = None
         self.players = {} # Dictionary of players { player_id: player }
-        self.is_next_seller = True # First player should be a seller 
+        self.is_next_seller = True # First player should be a seller
 
     def add_player(self):
         player_id = uuid4().hex
-        self.players[player_id] = Player(player_id, is_next_seller)
+        self.players[player_id] = Player(player_id, self.is_next_seller)
         # Alternate between buyer and seller for each new player
         self.is_next_seller = not self.is_next_seller
         return player_id
@@ -56,3 +56,10 @@ class Game():
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
         pass
+
+    # - Utilities -----------------------------------------------------
+
+    def message_all(self, message):
+        self.ws.write_message(message)
+        for player in self.players:
+            player.ws.write_message(message)

@@ -91,7 +91,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
         # If type is unknown send an error message
         if msg.type not in self.commands:
-            self.write_message({"type": "error", "message": "bad type"})
+            self.write_message(json.dumps({"type": "error", "message": "bad type"}))
             return
         
         # If client is a player, add the player_id to the message
