@@ -82,27 +82,13 @@ class Game():
 
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
-        pass
-        # create an object with those values 
-        # convert to json  
-
-
-        # offer_id -> 
-
-        #like line 11 offer dictionary 
-
-        #offer id
-        #player id
-        #price
-        #expiry time
-
-        #check player for buyer or seller - check oposite dictionary for the offer
-        #check legit trade
+        #Buyer Vs Seller
+        #Check valid trade 
+        #Check time constaints 
+        #remove offer from offers using offer_id as key
         # successful trade message to 2 players (17 in API)
         # send message to all (18 in API)
-        #check   send to player (know player id)  self.players[player_id].ws.write_message()
-        # 
-
+        pass
 
     # - Utilities -----------------------------------------------------
 
