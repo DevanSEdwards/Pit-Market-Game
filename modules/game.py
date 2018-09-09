@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 from modules.player import Player
 from modules.create_deck import create_deck
@@ -79,10 +80,10 @@ class Game():
         #check   send to player (know player id)  self.players[player_id].ws.write_message()
         # 
 
-
     # - Utilities -----------------------------------------------------
 
     def message_all(self, message):
+        """Send a message to all ws connections associated with this game"""
         self.ws.write_message(message)
         for player in self.players:
             player.ws.write_message(message)

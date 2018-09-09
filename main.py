@@ -84,6 +84,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         )
         if self.game == None:
             self.close()
+        self.set_nodelay(True)
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
