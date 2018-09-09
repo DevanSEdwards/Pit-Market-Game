@@ -1,19 +1,50 @@
-var c = document.getElementById("display");
-var ctx = c.getContext("2d");
+var canvas = document.getElementById("display");
+var ctx = canvas.getContext("2d");
+
+/* Appearance variables */
+var topPanelLabelFont = "Bold 30px Cabin";
+var topPanelBGColor = "#333333";
+var topPanelTextColor = "#FFFFFF";
+var topPanelLabelsXOffset = 30;
+var topPanelFieldsXOffset = 300;
+var topPanelLabelsYOffset = 30;
+var topPanelLabelsYSpacing = 40;
+var cardBGColor = "#FFFFFF";
+var cardWidth = 128;
+var cardHeight = 160;
+var cardTextColor = "#000000";
+var cardFont = "Bold 24px Cabin";
+var tradePanelLabelsYOffset = 30;
+var tradePanelLabelsFont = "Bold 36px Cabin";
+var buysellPanelBGColor = "#EEEEEE";
+var tradePanelBGColor = "#666666";
+
+/* Game variables */
+roundNo = 1;
+
+/* User variables */
+var buyer = true; // Buyer = true, Seller = false
+var cardValue = 5;
+var profit = 0;
 
 init()
 
 function init()
 {
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.scale(1, 1);
     window.requestAnimationFrame(draw);
 }
 
 function draw()
-{
+{   
     clearCanvas();
-    drawTopPanel();
-    drawHotswapPanel();
     drawBottomPanel();
+    ctx.textAlign = "left";
+    drawHotswapPanel();
+    drawTopPanel();
+     
     //drawGraph(c.width/2 - 800/2, 50);
 
     window.requestAnimationFrame(draw);
@@ -21,68 +52,38 @@ function draw()
 
 function drawBottomPanel()
 {
-    var bgColor = "#666666";
-    var sidePanelColor = "#eeeeee";
-    var labelFont = "24px Comic Sans Ms";
-
     var x = 0;
-    var y = c.height / 4 + c.height / 6;
+    var y = canvas.height / 4 + canvas.height / 6;
 
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(x, y, c.width, c.height - y);
-
-    ctx.fillStyle = sidePanelColor;
-    ctx.fillRect(x, y, c.width / 3, c.height - y);
-    ctx.fillRect(c.width - c.width / 3, y, c.width / 3, c.height - y);
-
+    ctx.fillStyle = tradePanelBGColor;
+    ctx.fillRect(x, y, canvas.width, canvas.height - y);
+    ctx.fillStyle = buysellPanelBGColor;
+    ctx.fillRect(x, y, canvas.width / 3, canvas.height - y);
+    ctx.fillRect(canvas.width - canvas.width / 3, y, canvas.width / 3, canvas.height - y);
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(x, y, c.width, c.height / 18);
-
-    ctx.font = labelFont;
+    ctx.fillRect(x, y, canvas.width, canvas.height / 18);
+    ctx.textAlign = "center";
+    ctx.font = tradePanelLabelsFont;
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("Buying", x + c.width / 3 / 2 - 30, y + 30);
-    ctx.fillText("Selling", c.width - c.width / 3 / 2 - 30, y + 30);
-    ctx.fillText("Completed Trades", x + c.width / 2 - 90, y + 30);
+    ctx.fillText("Buying", x + canvas.width / 3 / 2, y + tradePanelLabelsYOffset);
+    ctx.fillText("Selling", canvas.width - canvas.width / 3 / 2, y + tradePanelLabelsYOffset);
+    ctx.fillText("Completed Trades", x + canvas.width / 2, y + tradePanelLabelsYOffset);
 }
 
 function drawHotswapPanel()
 {
     var bgColor = "#cccccc";
+    var textColor = "#000000";
+    var promptFont = "Bold 60px Cabin";
+
+    var x = 0;
+    var y = canvas.height/4; 
+    var height = canvas.height/6;
+    var width = canvas.width;
+
+    ctx.beginPath();
     ctx.fillStyle = bgColor;
-    ctx.fillRect(0, c.height / 4, c.width, c.height / 6 );
-}
-
-function drawTopPanel()
-{
-    var labelFont = "30px Comic Sans MS";
-    var bgColor = "#333333";
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, c.width, c.height/4);
-    ctx.fill();
-
-    ctx.font = labelFont;
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText("Round: ", 30, 30);
-    ctx.fillText("1", 300, 30);
-    ctx.fillText("Round time left: ", 30, 70);
-    ctx.fillText("1:59", 300, 70);
-    ctx.fillText("Profit made: ", 30, 110);
-    ctx.fillText("$0", 300, 110);
-
-    ctx.fillText("Your card:", c.width - 150, 40);
-
-    drawCard(c.width - 150, 50, true);
-}
-
-function drawCard(x, y, buying)
-{
-    var bgCardColor = "#FFFFFF";
-    var cardTextColor = "#000000";
-    var cardFont = "72px Cabin";
-    var cardFont2 = "24px Cabin";
-
-    ctx.fillStyle = bgCardColor;
-    ctx.rect(x, y, 128, 160);
+    ctx.rect(0, canvas.height/4, width, height);
     ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
     ctx.shadowBlur = 2;
     ctx.shadowOffsetX = 0;
@@ -90,17 +91,53 @@ function drawCard(x, y, buying)
     ctx.fill();
     ctx.shadowColor = "transparent";
 
-    ctx.fillStyle = cardTextColor;
+    ctx.fillStyle = textColor;
+    ctx.font = promptFont;
+    ctx.fillText("Post offer to buy", x + width/4, y + height/2);
+}
 
-    
-    ctx.font = cardFont2;
+function drawTopPanel()
+{
+    ctx.fillStyle = topPanelBGColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height/4);
+
+    ctx.font = topPanelLabelFont;
+    ctx.fillStyle = topPanelTextColor;
+    ctx.fillText("Round: ", topPanelLabelsXOffset, topPanelLabelsYOffset);
+    ctx.fillText(roundNo, topPanelFieldsXOffset, topPanelLabelsYOffset);
+    ctx.fillText("Round time left: ", topPanelLabelsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing);
+    ctx.fillText("1:59", topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing);
+    ctx.fillText("Profit made: ", topPanelLabelsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing*2);
+    ctx.fillText("$" + profit, topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing*2);
+    ctx.fillText("Your card:", canvas.width - 150, 30);
+
+    drawCard(canvas.width - 150, 50, true);
+}
+
+function drawCard(x, y, buying)
+{
+    ctx.textAlign = "center";
+
+    ctx.beginPath();
+    ctx.fillStyle = cardBGColor;
+    ctx.rect(x, y, cardWidth, cardHeight);
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 8;
+    ctx.fill();
+    ctx.shadowColor = "transparent";
+
+    ctx.fillStyle = cardTextColor;    
+    ctx.font = cardFont;
 
     if (buying)
-        ctx.fillText("Buying", x  + 128 / 2 - 20, y + 160 / 4);
+        ctx.fillText("Buying", x  + cardWidth / 2, y + cardHeight / 4);
     else
-        ctx.fillText("Selling", x  + 128 / 2 - 20, y + 160 / 4);
+        ctx.fillText("Selling", x  + cardWidth / 2, y + cardHeight / 4);
+    
     ctx.font = cardFont;
-    ctx.fillText("7", x  + 128 / 2 - 20, y + 160 / 2 + 30);
+    ctx.fillText(cardValue, x  + cardWidth / 2, y + cardHeight / 2 + 30);
 }
 
 function drawGraph(x, y)
@@ -117,7 +154,7 @@ function drawGraph(x, y)
     var axisColor = "#AAAAAA";
     var labelColor = "#666666";
     var gridColor = "#CCCCCC";
-    var labelFont = "12px Sans-serif"
+    var labelFont = "Bold 12px Cabin"
 
     // Labels
     var yAxisLabel = "Price";
@@ -216,5 +253,5 @@ function drawGraph(x, y)
 
 function clearCanvas()
 {
-    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
