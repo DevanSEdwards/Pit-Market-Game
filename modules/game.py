@@ -1,6 +1,8 @@
 import datetime
 from uuid import uuid4
 from modules.player import Player
+from modules.offer import Offer
+from modules.trade import Trade
 from modules.create_deck import create_deck
 import json
 
@@ -74,86 +76,135 @@ class Game():
         offer_id = uuid4().hex
         time = datetime.datetime.now()
         #check player has not traded
-        if (not self.player[player_id].has_traded):
+        if (not self.players[player_id].has_traded):
             #if Seller
-            if self.player[player_id].is_seller:
+            if self.players[player_id].is_seller:
                 #valid offer
-                if (self.player[player_id].card <= price): 
+                if (self.players[player_id].card <= price): 
                     #add to offer dictionary
                     self.offers[offer_id] = Offer(offer_id, True, price, time, player_id)
-                    self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: True, price: price, time: time})
+                    self.message_all(json.dumps(
+                        {
+                            "type": "offer",
+                            "offer_id": offer_id,
+                            "isSeller": True,
+                            "price": price,
+                            "time": time
+                        }))
                 #invalid trade
 
             #must be a buyer
             else:
                 #valid offer
-                if (self.player[player_id].card <= price):
+                if (self.players[player_id].card >= price):
                     #add to offer dictionary
                     self.offers[offer_id] = Offer(offer_id, False, price, time, player_id)
-                    self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: False, price: price, time: time})
+                    self.message_all(json.dumps(
+                        {
+                            "type": "offer",
+                            "offer_id": offer_id,
+                            "isSeller": False,
+                            "price": price,
+                            "time": time
+                        }))
                 #invalid trade 
 
 
-        #Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS% (☞°O°)☞
+        #Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
         pass
 
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
-   
+        time = datetime.datetime.now()
         #check if offer has been accepted yet
-        if not self.offers[offer_id].accepted
+        if not self.offers[offer_id].accepted:
             #check if still within 10 seconds
-            if (datetime.datetime.now() > (self.offers[offer_id].time + timedelta(seconds=10)):
+            if datetime.datetime.now() > (self.offers[offer_id].time + datetime.timedelta(seconds=10)):
                 #check accepted has not traded yet
-                if not self.player[player_id].has_traded
+                if not self.players[player_id].has_traded:
                     #accepter is buyer and offerer is seller
-                    if (self.player[player_id].is_seller and not self.offers[offer_id].is_seller):
+                    if (self.players[player_id].is_seller and not self.offers[offer_id].is_seller):
                         #valid trade
-                        if (self.player[player_id].card <= self.offers[offer_id].price):
+                        if (self.players[player_id].card <= self.offers[offer_id].price):
                             #acknowlege offer has been accepted
-                            self.offers[offer_id].accepted = true
+                            self.offers[offer_id].accepted = True
                             #add to trade dictionary
-                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, player_id, self.offer[offer_id].player_id)
+                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, player_id, self.offers[offer_id].player_id)
                             # Send message to players
-                            self.player[player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
-                            self.player[self.offers[offer_id].player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
+                            self.players[player_id].ws.write_message(json.dumps(
+                                {
+                                    "type" : "trade",
+                                    "success": True,
+                                    "offerID": offer_id,
+                                    "price": self.offers[offer_id].price
+                                }))
+                            self.players[self.offers[offer_id].player_id].ws.write_message(json.dumps(
+                                {
+                                    "type" : "trade",
+                                    "success": True,
+                                    "offerID": offer_id,
+                                    "price": self.offers[offer_id].price
+                                }))
                             # Seng message to all
-                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": self.round_number})  
-                            # set player.has_traded to true
+                            self.message_all(json.dumps(
+                                {
+                                    "type": "announce trade",
+                                    "price": self.offers[offer_id].price,
+                                    "time": datetime.datetime.now(),
+                                    "round number": self.round_number
+                                }))
+                            # set player.has_traded to True
                             self.players[player_id].has_traded = True
-                            self.players[offers[offer_id].player_id] = True
+                            self.players[self.offers[offer_id].player_id] = True
                     #accepter is seller and offerer is buyer
-                    if (self.player[player_id].is_seller and not self.offers[offer_id].is_seller):
+                    if (self.players[player_id].is_seller and not self.offers[offer_id].is_seller):
                         #valid trade
-                        if (self.player[player_id].card >= self.offers[offer_id].price):
+                        if (self.players[player_id].card >= self.offers[offer_id].price):
                             #acknowlege offer has been accepted
-                            self.offers[offer_id].accepted = true
+                            self.offers[offer_id].accepted = True
                             #add trade to dicitonary
-                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, self.offer[offer_id].player_id, player_id)
+                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, self.offers[offer_id].player_id, player_id)
                             # Send message to players
-                            self.player[player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
-                            self.player[self.offers[offer_id].player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
+                            self.players[player_id].ws.write_message(json.dumps(
+                                {
+                                    "type" : "trade",
+                                    "success": True,
+                                    "offerID": offer_id,
+                                    "price": self.offers[offer_id].price
+                                }))
+                            self.players[self.offers[offer_id].player_id].ws.write_message(json.dumps(
+                                {
+                                    "type" : "trade",
+                                    "success": True,
+                                    "offerID": offer_id,
+                                    "price": self.offers[offer_id].price
+                                }))
                             # Seng message to all
-                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": self.round_number})
+                            self.message_all(json.dumps(
+                                {
+                                    "type": "announce trade",
+                                    "price": self.offers[offer_id].price,
+                                    "time": datetime.datetime.now(),
+                                    "round number": self.round_number
+                                }))
                             self.players[player_id].has_traded = True
-                            self.players[offers[offer_id].player_id] = True
-       pass 
+                            self.players[self.offers[offer_id].player_id] = True
        
        #API 17 ws message 
-        "{
-        ""type"": ""trade"",
-        ""success"": true,
-        ""offerId"": offer_id,
-        ""price"": self.offers[offer_id].price
-            }"
+        # "{
+        # ""type"": ""trade"",
+        # ""success"": true,
+        # ""offerId"": offer_id,
+        # ""price"": self.offers[offer_id].price
+        #     }"
 
 
-        "{
-            ""type"": ""announce trade"",
-            ""price"": self.offer[offer_id].price,
-            ""time"": datetime.datetime.now(),
-            ""round number"": 1
-        }"
+        # "{
+        #     ""type"": ""announce trade"",
+        #     ""price"": self.offer[offer_id].price,
+        #     ""time"": datetime.datetime.now(),
+        #     ""round number"": 1
+        # }"
 
         
 
