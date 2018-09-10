@@ -4,6 +4,7 @@ from modules.player import Player
 from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
+from modules.trade_exception import TradeException
 import json
 
 class Game():
