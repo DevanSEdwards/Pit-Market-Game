@@ -1,0 +1,13 @@
+html {
+    font-family: cabin
+}
+
+body
+{
+    text-align: center;
+}
+
+#display
+{
+    border: 1px solid black;
+}
