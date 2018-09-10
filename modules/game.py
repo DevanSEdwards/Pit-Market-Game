@@ -66,7 +66,7 @@ class Game():
             #valid offer
                 #add to offer dictionary
             #invalid trade
-            else:
+            # else:
 
         #Add check that offer hasn't been posted for 10 seconds
 
@@ -83,6 +83,7 @@ class Game():
     # - Utilities -----------------------------------------------------
 
     def message_all(self, message):
+        """Send a message to all associated ws clients"""
         self.ws.write_message(message)
         for player in self.players:
             player.ws.write_message(message)
