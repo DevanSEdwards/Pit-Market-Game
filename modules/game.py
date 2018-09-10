@@ -14,6 +14,7 @@ class Game():
         self.is_next_seller = True # First player should be a seller
         self.offers = {} # Dictionary of offers {offer_id: Offer}
         self.trades = {} # Dictionary of trades {offer_id: trade }
+        self.round_number = 0 #Initialise round number
 
     def add_player(self):
         player_id = uuid4().hex
@@ -27,6 +28,7 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
+        self.round_number += 1 #increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
         for player in self.players:
             if player.is_seller:
@@ -116,7 +118,7 @@ class Game():
                             self.player[player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
                             self.player[self.offers[offer_id].player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
                             # Seng message to all
-                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": 1})  
+                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": self.round_number})  
                             # set player.has_traded to true
                             self.players[player_id].has_traded = True
                             self.players[offers[offer_id].player_id] = True
@@ -132,7 +134,7 @@ class Game():
                             self.player[player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
                             self.player[self.offers[offer_id].player_id].ws.write_message(json.dumps({"type" : "trade", "success": true, "offerID": offer_id, "price": self.offers[offer_id].price})
                             # Seng message to all
-                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": 1})
+                            self.message_all(json.dumps("type": "announce trade", "price": self.offers[offer_id].price, "time": datetime.datetime.now(), "round number": self.round_number})
                             self.players[player_id].has_traded = True
                             self.players[offers[offer_id].player_id] = True
        pass 
