@@ -75,9 +75,9 @@ class Game():
         time = datetime.datetime.now()
         #check offer
         #if Seller
-        if player[player_id].is_seller:
+        if self.player[player_id].is_seller:
             #valid offer
-            if player[player_id].card >= price:
+            if self.player[player_id].card >= price:
                 #add to offer dictionary
                 self.offers[offer_id] = Offer(offer_id, "offer", True, price, player_id)
                 self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: True, price: price, time: time})
@@ -86,7 +86,7 @@ class Game():
         #must be a buyer
         else:
             #valid offer
-            if player[player_id].card <= price:
+            if self.player[player_id].card <= price:
                 #add to offer dictionary
                 self.offers[offer_id] = Offer(offer_id, "offer", False, price, player_id)
                 self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: False, price: price, time: time})
@@ -105,9 +105,9 @@ class Game():
         # successful trade message to 2 players (17 in API)
         # send message to all (18 in API)
 
-
+        self.offers[offer_id].accepted = True
         #if Seller
-        if player[player_id].is_seller:
+        if self.player[player_id].is_seller:
             #valid trade
             if 
         #must be a buyer

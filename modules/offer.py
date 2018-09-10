@@ -6,3 +6,4 @@ class Offer():
         self.price = price
         self.time = time
         self.player_id = player_id
+        self.accepted = False
