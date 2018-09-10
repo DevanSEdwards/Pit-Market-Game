@@ -78,6 +78,7 @@ class Game():
                 self.offers[offer_id] = Offer(offer_id, player_id, price, time)
                 self.message_all(json.dumps(self.offers[offer_id]))
             #invalid trade
+<<<<<<< HEAD
             else:
                 pass
         # #must be a buyer
@@ -90,6 +91,9 @@ class Game():
         #     #invalid trade 
         #     else:
         #         pass
+=======
+            # else:
+>>>>>>> 0a34ea3190a28ba7f6f7b62e1e0a1a2e4b0f908f
 
         #Add check that offer hasn't been posted for 10 seconds
 
@@ -111,7 +115,11 @@ class Game():
     # - Utilities -----------------------------------------------------
 
     def message_all(self, message):
+<<<<<<< HEAD
         """Send a message to all ws connections associated with this game"""
+=======
+        """Send a message to all associated ws clients"""
+>>>>>>> 0a34ea3190a28ba7f6f7b62e1e0a1a2e4b0f908f
         self.ws.write_message(message)
         for player in self.players:
             player.ws.write_message(message)
