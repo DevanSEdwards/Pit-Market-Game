@@ -2,6 +2,7 @@ import datetime
 from uuid import uuid4
 from modules.player import Player
 from modules.create_deck import create_deck
+import json
 
 class Game():
     """Store and manage data about a single game"""
@@ -44,10 +45,23 @@ class Game():
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
+        response = {
+                "type" : "end round"
+            }
+        self.send_message(response)
         pass
 
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
+        response = {
+                "type" : "end game"
+            }
+        self.send_message(response)
+        for player in self.players:
+            player.ws.close()
+        self.ws.close()
+        self.game_finished = True
+        del self
         pass
 
     # - Player Commands -----------------------------------------------
@@ -104,6 +118,12 @@ class Game():
     # - Utilities -----------------------------------------------------
 
     def message_all(self, message):
+        self.ws.write_message(message)
+        for player in self.players:
+            player.ws.write_message(message)
+
+    def send_message(self, response):
+        message = json.dumps(response)
         self.ws.write_message(message)
         for player in self.players:
             player.ws.write_message(message)
