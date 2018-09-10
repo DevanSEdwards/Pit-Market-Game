@@ -1,3 +1,4 @@
+import datetime
 from uuid import uuid4
 from modules.player import Player
 from modules.create_deck import create_deck
@@ -10,8 +11,10 @@ class Game():
         self.ws = None
         self.players = {} # Dictionary of players { player_id: player }
         self.is_next_seller = True # First player should be a seller
-        self.offers = {} # Dictionary of offers {offer_id: String, type: String
+        self.offers = {} # Dictionary of offers {offer_id: Offer}
+                        #String, type: String
                         #    isSeller: bool, Price: int, player_id: player }
+        self.trades = {} # Dictionary of trades {offer_id: trade }
 
     def add_player(self):
         player_id = uuid4().hex
@@ -55,8 +58,7 @@ class Game():
         """Verify and post a new offer to the game"""
         #Generate offer_id
         offer_id = uuid4().hex
-        self.player_id = player_id
-        self.price = price
+        time = datetime.datetime.now()
         #check offer
         #if Seller
         if player[player_id].is_seller:
@@ -66,7 +68,7 @@ class Game():
                 self.offers[offer_id] = Offer(offer_id, "offer", True, price, player_id)
                 self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: True, price: price, time: time})
             #invalid trade
-            else:
+
         #must be a buyer
         else:
             #valid offer
@@ -75,7 +77,7 @@ class Game():
                 self.offers[offer_id] = Offer(offer_id, "offer", False, price, player_id)
                 self.message_all(json.dumps({"type": "offer", offer_id: offer_id, isSeller: False, price: price, time: time})
             #invalid trade 
-            else 
+
 
         #Add check that offer hasn't been posted for 10 seconds
         pass
