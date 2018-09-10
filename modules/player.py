@@ -4,6 +4,7 @@ class Player():
         self.player_id = player_id
         self.ws = None
         self.is_seller = is_seller
+        self.has_traded = False
 
     def give_card(self, card):
         self.card = card
