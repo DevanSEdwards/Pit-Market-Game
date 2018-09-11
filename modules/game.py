@@ -30,21 +30,44 @@ class Game():
     #   These methods should only be called inside WebsocketHandler
     #   Should start with 'hc'
 
-    def hc_start_round(self):
+    def hc_start_round(self, game_time = 120, offer_time_limit = 10):
         self.round_number += 1 #increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
+        # - Distribute cards to player according to their buyer/seller identity.
+        # - Change that identity if buyer/seller deck is empty
         for player in self.players:
             if player.is_seller:
                 try:
                     player.give_card(sell_deck.pop())
                 except KeyError:
+                    player.is_seller = False
                     player.give_card(buy_deck.pop())
             else:
                 try:
                     player.give_card(buy_deck.pop())
                 except KeyError:
+                    player.is_seller = True
                     player.give_card(sell_deck.pop())
-        pass
+                    
+        # - Inform host and all players that round is starting
+        response = {
+            "type" : "start round"
+            "length" : game_time
+            "offer time limit" : offer_time_time
+        }
+        self.message_all(response)
+
+        # - Inform players of their card number and buyer/seller identity
+        for player in self.players:
+            response = {
+                "type" : "card"
+                "value" : player.card
+                "isSeller" : player.is_seller
+            }
+            message = json.dumps(response)
+            player.ws.write_message(message)
+            pass
+        
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
