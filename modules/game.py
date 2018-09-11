@@ -51,8 +51,8 @@ class Game():
                     
         # - Inform host and all players that round is starting
         response = {
-            "type" : "start round"
-            "length" : game_time
+            "type" : "start round",
+            "length" : game_time,
             "offer time limit" : offer_time_time
         }
         self.message_all(response)
@@ -60,13 +60,13 @@ class Game():
         # - Inform players of their card number and buyer/seller identity
         for player in self.players:
             response = {
-                "type" : "card"
-                "value" : player.card
+                "type" : "card",
+                "value" : player.card,
                 "isSeller" : player.is_seller
             }
             message = json.dumps(response)
             player.ws.write_message(message)
-            pass
+        pass
         
 
     def hc_end_round(self):
