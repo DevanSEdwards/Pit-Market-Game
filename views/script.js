@@ -9,7 +9,7 @@ var graphPointSize = 4;
 var graphAxesColor = "#AAAAAA";
 var graphTextColor = "#666666";
 var graphGridColor = "#CCCCCC";
-var graphFont = "Bold 12px Cabin"
+var graphFont = "16px Cabin"
 var graphAxesWidth = 2;
 var graphBorderWidth = 1;
 var graphYAxisLabel = "Price";
@@ -19,7 +19,7 @@ var graphDrawGrid = true;
 var graphPanelWidth = 800;
 var graphPanelHeight = 600;
 var graphYAxisMarkerLen = 10;
-var graphOffsetX = 50;
+var graphOffsetX = 100;
 var graphOffsetY = 75;
 var graphYAxisBounds = 16;
 var graphXAxisBounds = 12;
@@ -37,7 +37,7 @@ var topPanelFieldsXOffset = 300;
 var topPanelLabelsYOffset = 30;
 var topPanelLabelsYSpacing = 40;
 var cardBGColor = "#FFFFFF";
-var cardWidth = 0.1422 * canvas.height//128;
+var cardWidth = 0.1422 * canvas.height;
 var cardHeight = 1.1429 * cardWidth;
 var cardTextColor = "#000000";
 var cardFont = "Bold 24px Cabin";
@@ -69,8 +69,9 @@ function draw()
     ctx.textAlign = "left";
     drawHotswapPanel();
     drawTopPanel();
-     
-    //drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
+    
+    ctx.textAlign = "center";
+    drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
 
     window.requestAnimationFrame(draw);
 }
@@ -226,12 +227,12 @@ function drawGraph(x, y)
     // draw labels
     ctx.fillStyle = graphTextColor;
     ctx.font = graphFont;
-    ctx.fillText(graphTitle, x + graphPanelWidth/3, y + 20);
-    ctx.fillText(graphYAxisLabel, x + 10, y + 30);
-    ctx.fillText(graphXAxisLabel, x + graphPanelWidth/3, y + graphPanelHeight - 45); // fix these labels so they are centred properly
+    ctx.fillText(graphTitle, x + graphPanelWidth/2, y + 20);
+    ctx.fillText(graphYAxisLabel, x + graphOffsetX - 50, y + graphPanelHeight/2);
+    ctx.fillText(graphXAxisLabel, x + graphPanelWidth/2, graphBtmLeftY + 20);
     for (i = 0; i < graphYAxisBounds; i++)
     {
-        ctx.fillText((graphYAxisBounds-i).toString(), x + 30, y + graphOffsetY + (i*graphYAxisIncrementLen));
+        ctx.fillText((graphYAxisBounds-i).toString(), x + graphOffsetX - 20, y + graphOffsetY + (i*graphYAxisIncrementLen));
         ctx.beginPath();
         ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i*((graphHeight) / graphYAxisBounds)));
         ctx.lineTo(x + graphOffsetX + graphYAxisMarkerLen, y + graphOffsetY + (i*((graphHeight) / graphYAxisBounds)));
