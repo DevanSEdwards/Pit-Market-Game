@@ -140,6 +140,7 @@ class Game():
     def pc_accept(self, player_id, offer_id):
         """Verify and complete a trade"""
         time = datetime.now()
+        price = self.offers[offer_id]
         #check if offer has been accepted yet
         if not self.offers[offer_id].accepted:
             #check if still within 10 seconds
@@ -149,11 +150,11 @@ class Game():
                     #accepter is buyer and offerer is seller
                     if (not self.players[player_id].is_seller and self.offers[offer_id].is_seller):
                         #valid trade
-                        if (self.players[player_id].card <= self.offers[offer_id].price):
+                        if (self.players[player_id].card <= price):
                             #acknowlege offer has been accepted
                             self.offers[offer_id].accepted = True
                             #add to trade dictionary
-                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, player_id, self.offers[offer_id].player_id)
+                            self.trades[offer_id] = Trade(offer_id, price, time, player_id, self.offers[offer_id].player_id)
                             # Send message to players
                             self.players[player_id].ws.write_message(json.dumps(
                                 {
@@ -167,13 +168,13 @@ class Game():
                                     "type" : "trade",
                                     "success": True,
                                     "offerID": offer_id,
-                                    "price": self.offers[offer_id].price
+                                    "price": price
                                 }))
                             # Seng message to all
                             self.message_all(
                                 {
                                     "type": "announce trade",
-                                    "price": self.offers[offer_id].price,
+                                    "price": price,
                                     "time": datetime.datetime.now(),
                                     "round number": self.round_number
                                 })
@@ -183,31 +184,31 @@ class Game():
                     #accepter is seller and offerer is buyer
                     if (self.players[player_id].is_seller and not self.offers[offer_id].is_seller):
                         #valid trade
-                        if (self.players[player_id].card >= self.offers[offer_id].price):
+                        if (self.players[player_id].card >= price):
                             #acknowlege offer has been accepted
                             self.offers[offer_id].accepted = True
                             #add trade to dicitonary
-                            self.trades[offer_id] = Trade(offer_id, self.offers[offer_id].price, time, self.offers[offer_id].player_id, player_id)
+                            self.trades[offer_id] = Trade(offer_id, price, time, self.offers[offer_id].player_id, player_id)
                             # Send message to players
                             self.players[player_id].ws.write_message(json.dumps(
                                 {
                                     "type" : "trade",
                                     "success": True,
                                     "offerID": offer_id,
-                                    "price": self.offers[offer_id].price
+                                    "price": price
                                 }))
                             self.players[self.offers[offer_id].player_id].ws.write_message(json.dumps(
                                 {
                                     "type" : "trade",
                                     "success": True,
                                     "offerID": offer_id,
-                                    "price": self.offers[offer_id].price
+                                    "price": price
                                 }))
                             # Seng message to all
                             self.message_all(
                                 {
                                     "type": "announce trade",
-                                    "price": self.offers[offer_id].price,
+                                    "price": price,
                                     "time": datetime.datetime.now(),
                                     "round number": self.round_number
                                 })
