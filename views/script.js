@@ -1,7 +1,34 @@
 var canvas = document.getElementById("display");
 var ctx = canvas.getContext("2d");
 
-/* Appearance variables */
+/* GRAPH VARIABLES */
+var graphBGColor = "white";
+var graphBorderColor = "#AAAAAA";
+var graphPointColor = "#333333";
+var graphPointSize = 4;
+var graphAxesColor = "#AAAAAA";
+var graphTextColor = "#666666";
+var graphGridColor = "#CCCCCC";
+var graphFont = "Bold 12px Cabin"
+var graphAxesWidth = 2;
+var graphBorderWidth = 1;
+var graphYAxisLabel = "Price";
+var graphXAxisLabel = "Trading Periods";
+var graphTitle = "Pitmarket Game Results";
+var graphDrawGrid = true;
+var graphPanelWidth = 800;
+var graphPanelHeight = 600;
+var graphYAxisMarkerLen = 10;
+var graphOffsetX = 50;
+var graphOffsetY = 75;
+var graphYAxisBounds = 16;
+var graphXAxisBounds = 12;
+var graphWidth = graphPanelWidth - graphOffsetX*2;
+var graphHeight = graphPanelHeight - graphOffsetY*2;
+var graphYAxisIncrementLen = graphHeight / graphYAxisBounds;
+var graphXAxisIncrementLen = graphWidth / graphXAxisBounds;
+
+/* UI APPEARANCE VARIABLES */
 var topPanelLabelFont = "Bold 30px Cabin";
 var topPanelBGColor = "#333333";
 var topPanelTextColor = "#FFFFFF";
@@ -10,19 +37,17 @@ var topPanelFieldsXOffset = 300;
 var topPanelLabelsYOffset = 30;
 var topPanelLabelsYSpacing = 40;
 var cardBGColor = "#FFFFFF";
-var cardWidth = 128;
-var cardHeight = 160;
+var cardWidth = 0.1422 * canvas.height//128;
+var cardHeight = 1.1429 * cardWidth;
 var cardTextColor = "#000000";
 var cardFont = "Bold 24px Cabin";
 var tradePanelLabelsYOffset = 30;
 var tradePanelLabelsFont = "Bold 36px Cabin";
-var buysellPanelBGColor = "#EEEEEE";
+var offersPanelBGColor = "#EEEEEE";
 var tradePanelBGColor = "#666666";
 
-/* Game variables */
-roundNo = 1;
-
-/* User variables */
+/* GAME & USER VARIABLES */
+var roundNo = 1;
 var buyer = true; // Buyer = true, Seller = false
 var cardValue = 5;
 var profit = 0;
@@ -45,7 +70,7 @@ function draw()
     drawHotswapPanel();
     drawTopPanel();
      
-    //drawGraph(c.width/2 - 800/2, 50);
+    //drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
 
     window.requestAnimationFrame(draw);
 }
@@ -55,9 +80,10 @@ function drawBottomPanel()
     var x = 0;
     var y = canvas.height / 4 + canvas.height / 6;
 	
-	ctx.fillStyle = tradePanelBGColor;
-    ctx.fillRect(x + (canvas.width / 7), y, (canvas.width / 3), canvas.height - y);
-	ctx.fillRect(x + (canvas.width / 7 * 4), y, (canvas.width / 3), canvas.height - y); 
+	ctx.fillStyle = offersPanelBGColor;
+    ctx.fillRect(x, y, (canvas.width / 2), canvas.height - y);
+    ctx.fillStyle = tradePanelBGColor;
+	ctx.fillRect(x + (canvas.width / 2), y, (canvas.width / 2), canvas.height - y); 
 
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctx.fillRect(x, y, canvas.width, canvas.height / 18);
@@ -66,8 +92,8 @@ function drawBottomPanel()
     ctx.textAlign = "center";
     ctx.font = tradePanelLabelsFont;
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("Current Offers", x + (canvas.width / 7) * 2, y + tradePanelLabelsYOffset);
-    ctx.fillText("Completed Trades", x + (canvas.width / 7 * 5), y + tradePanelLabelsYOffset);
+    ctx.fillText("Current Offers", x + (canvas.width / 4), y + tradePanelLabelsYOffset);
+    ctx.fillText("Completed Trades", x + (canvas.width / 4) * 3, y + tradePanelLabelsYOffset);
 }
 
 function drawHotswapPanel()
@@ -142,106 +168,73 @@ function drawCard(x, y, buying)
 
 function drawGraph(x, y)
 {
-    var width = 800;
-    var height = 600;
-
-    var drawGrid = true;
-
-    // Colors and fonts
-    var backgroundColor = "white";
-    var borderColor = "#AAAAAA";
-    var pointColor = "#333333";
-    var axisColor = "#AAAAAA";
-    var labelColor = "#666666";
-    var gridColor = "#CCCCCC";
-    var labelFont = "Bold 12px Cabin"
-
-    // Labels
-    var yAxisLabel = "Price";
-    var xAxisLabel = "Trading Periods";
-    var title = "Pitmarket Game Results";
-
-    var axisLineWidth = 2;
-    var borderLineWidth = 1;
-
-    var yAxisMarkersLen = 10;
-    var graphPointSize = 4;
-    var graphOffsetX = 50;
-    var graphOffsetY = 75;
-    var yAxisSegments = 16;
-    var xAxisSegments = 12;
-    var graphWidth = width - graphOffsetX*2;
-    var graphHeight = height - graphOffsetY*2;
-    var yAxisSegmentLen = graphHeight / yAxisSegments;
-    var xAxisSegmentLen = graphWidth / xAxisSegments;
-
     var graphBtmLeftX = x + graphOffsetX;
     var graphBtmLeftY = y + graphOffsetY + graphHeight;
 
     function drawGraphPoint(x, y)
     {
         // only draw points if they are within the visible bounds of the graph
-        if (x <= xAxisSegments && x >= 0 && y <= yAxisSegments && y >= 0)
+        if (x <= graphXAxisBounds && x >= 0 && y <= graphYAxisBounds && y >= 0)
         {
-            var _x = graphBtmLeftX + x*xAxisSegmentLen;
-            var _y = graphBtmLeftY - y*yAxisSegmentLen;
+            var _x = graphBtmLeftX + x*graphXAxisIncrementLen;
+            var _y = graphBtmLeftY - y*graphYAxisIncrementLen;
             ctx.beginPath();
             ctx.arc(_x, _y, graphPointSize, 0, 2 * Math.PI, false);
-            ctx.fillStyle = pointColor;
+            ctx.fillStyle = graphPointColor;
             ctx.fill();
         }
     }
 
     // draw background and border
-    ctx.lineWidth = borderLineWidth;
-    ctx.strokeStyle = borderColor;
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(x, y, width, height);
-    ctx.strokeRect(x, y, width, height);
+    ctx.lineWidth = graphBorderWidth;
+    ctx.strokeStyle = graphBorderColor;
+    ctx.fillStyle = graphBGColor;
+    ctx.fillRect(x, y, graphPanelWidth, graphPanelHeight);
+    ctx.strokeRect(x, y, graphPanelWidth, graphPanelHeight);
     
     // draw grid
-    if (drawGrid)
+    if (graphDrawGrid)
     {
-        ctx.strokeStyle = gridColor;
+        ctx.strokeStyle = graphGridColor;
         // vertical lines
-        for (i = 0; i < xAxisSegments + 1; i++)
+        for (i = 0; i < graphXAxisBounds + 1; i++)
         {
             ctx.beginPath()
-            ctx.moveTo(x + graphOffsetX + (xAxisSegmentLen*i), y + graphOffsetY);
-            ctx.lineTo(x + graphOffsetX + (xAxisSegmentLen*i), y + graphOffsetY + graphHeight);
+            ctx.moveTo(x + graphOffsetX + (graphXAxisIncrementLen*i), y + graphOffsetY);
+            ctx.lineTo(x + graphOffsetX + (graphXAxisIncrementLen*i), y + graphOffsetY + graphHeight);
             ctx.stroke();
         }
         // horizontal lines
-        for (i = 0; i < yAxisSegments; i++)
+        for (i = 0; i < graphYAxisBounds; i++)
         {
             ctx.beginPath()
-            ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i*yAxisSegmentLen));
-            ctx.lineTo(x + graphOffsetX + graphWidth, y + graphOffsetY + (i*yAxisSegmentLen));
+            ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i*graphYAxisIncrementLen));
+            ctx.lineTo(x + graphOffsetX + graphWidth, y + graphOffsetY + (i*graphYAxisIncrementLen));
             ctx.stroke();
         }
     }
 
     // draw axes
-    ctx.lineWidth = axisLineWidth;
-    ctx.strokeStyle = axisColor;
+    ctx.lineWidth = graphAxesWidth;
+    ctx.strokeStyle = graphAxesColor;
     ctx.beginPath();
     ctx.moveTo(x + graphOffsetX, y + graphOffsetY);
-    ctx.lineTo(x + graphOffsetX, y + height - graphOffsetY);
-    ctx.lineTo(x + width - graphOffsetX, y + height - graphOffsetY);
+    ctx.lineTo(x + graphOffsetX, y + graphPanelHeight - graphOffsetY);
+    ctx.lineTo(x + graphPanelWidth - graphOffsetX, y + graphPanelHeight - graphOffsetY);
     ctx.stroke();
 
     // draw labels
-    ctx.fillStyle = labelColor;
-    ctx.font = labelFont;
-    ctx.fillText(title, x + width/3, y + 20);
-    ctx.fillText(yAxisLabel, x + 10, y + 30);
-    ctx.fillText(xAxisLabel, x + width/3, y + height - 45); // fix these labels so they are centred properly
-    for (i = 0; i < yAxisSegments; i++)
+    ctx.fillStyle = graphTextColor;
+    ctx.font = graphFont;
+    ctx.fillText(graphTitle, x + graphPanelWidth/3, y + 20);
+    ctx.fillText(graphYAxisLabel, x + 10, y + 30);
+    ctx.fillText(graphXAxisLabel, x + graphPanelWidth/3, y + graphPanelHeight - 45); // fix these labels so they are centred properly
+    for (i = 0; i < graphYAxisBounds; i++)
     {
-        ctx.fillText((yAxisSegments-i).toString(), x + 30, y + graphOffsetY + (i*yAxisSegmentLen));
+        ctx.fillText((graphYAxisBounds-i).toString(), x + 30, y + graphOffsetY + (i*graphYAxisIncrementLen));
         ctx.beginPath();
-        ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i*((graphHeight) / yAxisSegments)));
-        ctx.lineTo(x + graphOffsetX + yAxisMarkersLen, y + graphOffsetY + (i*((graphHeight) / yAxisSegments)));
+        ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i*((graphHeight) / graphYAxisBounds)));
+        ctx.lineTo(x + graphOffsetX + graphYAxisMarkerLen, y + graphOffsetY + (i*((graphHeight) / graphYAxisBounds)));
         ctx.stroke();
     }
 
