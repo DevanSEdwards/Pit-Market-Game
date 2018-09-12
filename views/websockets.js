@@ -4,7 +4,7 @@ var isHost = document.getElementById("isHost").innerText == "true";
 isHost ? host() : play();
 
 function play() {
-    var ws = new WebSocket("ws://localhost:5000/pws/" + clientId);
+    var ws = new WebSocket("ws://pit-market-game.herokuapp.com/pws/" + clientId);
     var offerIds = [];
     ws.onmessage = function(event) {
         msg = JSON.parse(event.data);
