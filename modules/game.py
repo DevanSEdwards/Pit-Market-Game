@@ -31,7 +31,6 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
-        print("start")
         self.round_number += 1 #increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
         # - Distribute cards to player according to their buyer/seller identity.
@@ -57,7 +56,6 @@ class Game():
             "offer time limit" : 10
         }
         self.message_all(response)
-        print(response)
 
         # - Inform players of their card number and buyer/seller identity
         for player in self.players.values():
@@ -99,7 +97,7 @@ class Game():
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
         #Generate offer_id
-        print(player_id, price)
+        print("offer: " + player_id, price)
         offer_id = uuid4().hex
         time = datetime.now()
         #check player has not traded
@@ -113,10 +111,10 @@ class Game():
                     self.message_all(
                         {
                             "type": "offer",
-                            "offer_id": offer_id,
+                            "offerId": offer_id,
                             "isSeller": True,
                             "price": price,
-                            "time": time
+                            "time": str(time)
                         })
                 #invalid trade
 
@@ -129,10 +127,10 @@ class Game():
                     self.message_all(
                         {
                             "type": "offer",
-                            "offer_id": offer_id,
+                            "offerId": offer_id,
                             "isSeller": False,
                             "price": price,
-                            "time": time
+                            "time": str(time)
                         })
                 #invalid trade 
 
@@ -140,18 +138,24 @@ class Game():
         #Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
         pass
 
-    def pc_accept(self, player_id, offer_id):
+    def pc_accept(self, player_id, offerId):
         """Verify and complete a trade"""
+        print("accept")
+        offer_id = offerId
         time = datetime.now()
-        price = self.offers[offer_id]
+        price = self.offers[offer_id].price
         #check if offer has been accepted yet
         if not self.offers[offer_id].accepted:
+            print(0)
             #check if still within 10 seconds
-            if time > (self.offers[offer_id].time + timedelta(seconds=10)):
+            if True: #time > (self.offers[offer_id].time + timedelta(seconds=1000)):
+                print(1)
                 #check accepted has not traded yet
                 if not self.players[player_id].has_traded:
+                    print(2)
                     #accepter is buyer and offerer is seller
                     if (not self.players[player_id].is_seller and self.offers[offer_id].is_seller):
+                        print(3)
                         #valid trade
                         if (self.players[player_id].card <= price):
                             #acknowlege offer has been accepted
@@ -178,7 +182,7 @@ class Game():
                                 {
                                     "type": "announce trade",
                                     "price": price,
-                                    "time": datetime.datetime.now(),
+                                    "time": str(time),
                                     "round number": self.round_number
                                 })
                             # set player.has_traded to True
@@ -186,6 +190,7 @@ class Game():
                             self.players[self.offers[offer_id].player_id] = True
                     #accepter is seller and offerer is buyer
                     if (self.players[player_id].is_seller and not self.offers[offer_id].is_seller):
+                        print(4)
                         #valid trade
                         if (self.players[player_id].card >= price):
                             #acknowlege offer has been accepted
@@ -212,7 +217,7 @@ class Game():
                                 {
                                     "type": "announce trade",
                                     "price": price,
-                                    "time": datetime.datetime.now(),
+                                    "time": str(time),
                                     "round number": self.round_number
                                 })
                             self.players[player_id].has_traded = True
@@ -223,7 +228,7 @@ class Game():
     def message_all(self, response):
         message = json.dumps(response)
         self.ws.write_message(message)
-        print(message)
+        print("message_all: " + message)
         for player in self.players.values():
             player.ws.write_message(message)
        
