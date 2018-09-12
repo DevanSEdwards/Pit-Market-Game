@@ -7,7 +7,6 @@ from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
 from modules.trade_exception import TradeException
-from modules.selfsigned import generate_selfsigned_cert
 
 class MainHandler(RequestHandler):
     """Handle GET requests"""
