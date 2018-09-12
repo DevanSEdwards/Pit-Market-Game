@@ -117,12 +117,6 @@ def main():
     
     game_handler = GameHandler()
 
-    config_dict = {
-        "certfile": os.path.join(os.path.abspath('.'), "private", "cacert.pem"),
-        "keyfile": os.path.join(os.path.abspath('.'), "private", "prvtkey.pem"),
-        "port": int(os.environ.get("PORT", 5000)),
-        "address": "0.0.0.0"
-    }
     settings = {
         "static_path": os.path.join(os.path.dirname(__file__), "views"),
         "debug": debug
@@ -135,9 +129,8 @@ def main():
             (r"/(script\.js)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
     ]
     application = tornado.web.Application(urls, **settings)
-    ssl_options = dict(certfile=config_dict["certfile"], keyfile=config_dict["keyfile"])
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(int(config_dict["port"]), address=config_dict["address"])
+    http_server.listen(int(os.environ.get("PORT", 5000)), "0.0.0.0")
     tornado.ioloop.IOLoop.instance().start()
 
 
