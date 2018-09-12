@@ -31,11 +31,12 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
+        print("start")
         self.round_number += 1 #increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
         # - Distribute cards to player according to their buyer/seller identity.
         # - Change that identity if buyer/seller deck is empty
-        for player in self.players:
+        for player in self.players.values():
             if player.is_seller:
                 try:
                     player.give_card(sell_deck.pop())
@@ -56,9 +57,10 @@ class Game():
             "offer time limit" : 10
         }
         self.message_all(response)
+        print(response)
 
         # - Inform players of their card number and buyer/seller identity
-        for player in self.players:
+        for player in self.players.values():
             response = {
                 "type" : "card",
                 "value" : player.card,
@@ -97,8 +99,9 @@ class Game():
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
         #Generate offer_id
+        print(player_id, price)
         offer_id = uuid4().hex
-        time = datetime.datetime.now()
+        time = datetime.now()
         #check player has not traded
         if (not self.players[player_id].has_traded):
             #if Seller
@@ -220,6 +223,7 @@ class Game():
     def message_all(self, response):
         message = json.dumps(response)
         self.ws.write_message(message)
-        for player in self.players:
+        print(message)
+        for player in self.players.values():
             player.ws.write_message(message)
        

@@ -1,6 +1,6 @@
 var canvas = document.getElementById("display");
 var ctx = canvas.getContext("2d");
-var ws = new WebSocket("ws://localhost:5000/WebSocket");
+// var ws = new WebSocket("ws://localhost:5000/WebSocket");
 var _mouse = {x: 0, y: 0};
 
 /* VARIABLE STRUCTURES */
@@ -76,7 +76,7 @@ var tradePanelBGColor = "#666666";
 
 /* GAME & USER VARIABLES */
 var roundNo = 1;
-var buyer = true; // Buyer = true, Seller = false
+var isSeller; // Buyer = true, Seller = false
 var cardValue = 5;
 var profit = 0;
 
@@ -172,10 +172,10 @@ function drawTopPanel()
     ctx.fillText("$" + profit, topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing*2);
     ctx.fillText("Your card:", canvas.width - 150, 30);
 
-    drawCard(canvas.width - 150, 50, true);
+    drawCard(canvas.width - 150, 50, isSeller);
 }
 
-function drawCard(x, y, buying)
+function drawCard(x, y, selling)
 {
     ctx.textAlign = "center";
 
@@ -189,13 +189,13 @@ function drawCard(x, y, buying)
     ctx.fill();
     ctx.shadowColor = "transparent";
 
-    ctx.fillStyle = cardTextColor;    
+    ctx.fillStyle = cardTextColor;
     ctx.font = cardFont;
 
-    if (buying)
-        ctx.fillText("Buying", x  + cardWidth / 2, y + cardHeight / 4);
-    else
+    if (selling)
         ctx.fillText("Selling", x  + cardWidth / 2, y + cardHeight / 4);
+    else
+        ctx.fillText("Buying", x  + cardWidth / 2, y + cardHeight / 4);
     
     ctx.font = cardFont;
     ctx.fillText(cardValue, x  + cardWidth / 2, y + cardHeight / 2 + 30);
@@ -290,9 +290,9 @@ function drawButton(x, y, width, height, colour, text)
     ctx.font='30px Arial';
     ctx.fillText(text, x + pad, y + height - pad);
 }
-function drawOffer(time, offer, buyer)
+function drawOffer(time, offer, isSeller)
 {
-    if(buyer) { ctx.fillStyle="green";}
+    if(isSeller) { ctx.fillStyle="green";}
     else { ctx.fillStyle="blue"; }
     ctx.font='25px Arial';
 }
@@ -311,38 +311,42 @@ function getMousePos(canvas, evt)
 canvas.addEventListener("click",function(evt){_mousePos = getMousePos(canvas, evt);},false);
 /*******************/
 
-/* Web Sockets */
-var ws = new WebSocket("/websocket");
-ws.onopen=function()
-{
-    ws.send("");
-};
-ws.on_message=function(evt)
-{
-    var stream = evt.data;
-    // Recieve Offer
-    offer_lst.push(new Offer(stream));
-    // Recieve Transaction
-    transactions_lst.push(new Transaction(stream));
-    // Recieve Offer Confirm
-};
-function sendDataToServer(message) { 
-    console.log("#====== Sending data... ======#    ");
-    console.log(message);
-    if(!ws.write_message(message))
-    {
-        console.log("#====== Sending Failed! ======#");
-    }
-}
-ws.on_close()=function() { window.location.href ="/index.html"; }
-function sendOffer(player, time, value)
-{
-    var message = "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
-    sendDataToServer(message);
-}
-function sendTransation(time, offerID, playerID)
-{
-    var message = "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
-    sendDataToServer(message);
-}
-/***************/
+// /* Web Sockets */
+// var hostId = document.getElementById("playerId").innerText;
+// var ws = new WebSocket("ws://localhost:5000/pws/" + hostId);
+// ws.onopen=function()
+// {
+//     ws.send(JSON.stringify({
+//         "type": "offer",
+//         "price": 5
+//     }));
+// };
+// ws.on_message=function(evt)
+// {
+//     var stream = evt.data;
+//     // Recieve Offer
+//     offer_lst.push(new Offer(stream));
+//     // Recieve Transaction
+//     transactions_lst.push(new Transaction(stream));
+//     // Recieve Offer Confirm
+// };
+// function sendDataToServer(message) { 
+//     console.log("#====== Sending data... ======#    ");
+//     console.log(message);
+//     if(!ws.write_message(message))
+//     {
+//         console.log("#====== Sending Failed! ======#");
+//     }
+// }
+// ws.on_close()=function() { window.location.href ="/index.html"; }
+// function sendOffer(player, time, value)
+// {
+//     var message = "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+//     sendDataToServer(message);
+// }
+// function sendTransation(time, offerID, playerID)
+// {
+//     var message = "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+//     sendDataToServer(message);
+// }
+// /***************/

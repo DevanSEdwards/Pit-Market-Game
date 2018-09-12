@@ -19,11 +19,13 @@ class MainHandler(RequestHandler):
         # Hosting a new game (/?game=host)
         if arg == "host":
             host_id, game_id = self.game_handler.new_game()
+            # for game in self.game_handler.games:
+            #     print(game.host_id)
             self.render(
-                "views/game.html",
-                hostId = host_id,
+                "views/host.html",
+                clientId = host_id,
                 gameId = game_id,
-                playerId = ""
+                isHost = "true"
             )
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
@@ -33,9 +35,9 @@ class MainHandler(RequestHandler):
             else:
                 self.render(
                     "views/game.html",
-                    hostId = "",
+                    clientId = player_id,
                     gameId = "",
-                    playerId = player_id
+                    isHost = "false"
                 )
         # Render main page (/)
         else:
@@ -75,6 +77,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def open(self, client_id):
         """Store the client_id and a reference to their game"""
+        print("New client: {0}, {1}".format(client_id, self.host))
         self.client_id = client_id
         self.game = (
             self.game_handler.add_host_ws(client_id, self) if self.host else
@@ -86,10 +89,14 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
+        print(message)
         msg = json.loads(message) # TODO: Check if msg contains "type"
-
+        print(msg)
+        print(msg["type"])
+        print(self.commands)
         # If type is unknown send an error message
-        if msg.type not in self.commands:
+        if msg["type"] not in self.commands:
+            print("fail")
             self.write_message(json.dumps({"type": "error", "message": "bad type"}))
             return
         
@@ -97,9 +104,12 @@ class WebsocketHandler(websocket.WebSocketHandler):
         if not self.host:
             msg["player_id"] = self.client_id
         
-        method = getattr(self.game, self.commands[msg.type])
+        method = getattr(self.game, self.commands[msg["type"]])
         arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # TODO: Add try-catch incase msg has the wrong args
         
+        print(arguments)
+        print(method)
+
         # Call the method with corresponding arguments
         try:
             method(**arguments)
@@ -116,10 +126,7 @@ def main():
     game_handler = GameHandler()
 
     settings = {
-        "static_path": os.path.join(os.path.dirname(__file__), "views"),
-        "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
-        "login_url": "/login",
-        "xsrf_cookies": True,
+        "static_path": os.path.join(os.path.dirname(__file__), "views")
     }
     application = tornado.web.Application(
         [

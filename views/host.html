@@ -33,26 +33,12 @@
     <title>New Game</title>
   </head>
   <body>
-    <div hidden>
-      <p id="clientId">{{clientId}}</p><br>
-      <p id="gameId">{{gameId}}</p><br>
-      <p id="isHost">{{isHost}}</p><br>
-      <p id="isSeller"></p>
-      <p id="cardValue"></p>
-    </div>
-    <h1>Pitmarket Game</h1>
-    <div id="game" width="1336" height="720">
-      <canvas id="display" width="1336" height="720"></canvas>
-      <form id="inputOffer" method="POST" style="
-        position: absolute;
-        left: 700px;
-        top: 370px;
-      ">
-        <input type="text" width="100" size="" id="input_offer">
-        <!--input type="submit" value="Post!"-->
-      </form>
-    </div>
-    <script src="{{ static_url('script.js') }}"></script>
+    <p id="clientId">{{clientId}}</p><br>
+    <p id="gameId">{{gameId}}</p><br>
+    <p id="isHost">{{isHost}}</p><br>
+    <input id="btnStartRound" type="button" value="Start Round">
+    <p id="isSeller"></p>
+    <p id="cardValue"></p>
     <script src="{{ static_url('websockets.js') }}"></script>
   </body>
 </html>
