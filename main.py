@@ -136,7 +136,7 @@ def main():
     ]
     application = tornado.web.Application(urls, **settings)
     ssl_options = dict(certfile=config_dict["certfile"], keyfile=config_dict["keyfile"])
-    http_server = tornado.httpserver.HTTPServer(application, ssl_options=ssl_options)
+    http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(int(config_dict["port"]), address=config_dict["address"])
     tornado.ioloop.IOLoop.instance().start()
 
