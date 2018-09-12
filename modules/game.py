@@ -5,7 +5,8 @@ from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeException
-import json
+from modules.scheduling import PeriodicScheduler
+import json, sched, time
 
 class Game():
     """Store and manage data about a single game"""
@@ -18,6 +19,9 @@ class Game():
         self.offers = {} # Dictionary of offers {offer_id: Offer}
         self.trades = {} # Dictionary of trades {offer_id: trade }
         self.round_number = 0 #Initialise round number
+        sched = PeriodicScheduler()
+        sched.setup(20, self.message_all, ({"type": "persist"},))
+        sched.run()
 
     def add_player(self):
         player_id = uuid4().hex
@@ -227,8 +231,8 @@ class Game():
 
     def message_all(self, response):
         message = json.dumps(response)
-        self.ws.write_message(message)
+        if self.ws: self.ws.write_message(message)
         print("message_all: " + message)
         for player in self.players.values():
-            player.ws.write_message(message)
+            if player.ws: player.ws.write_message(message)
        
