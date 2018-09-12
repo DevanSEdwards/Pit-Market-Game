@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../public/styles/style.css"> -->
 
     <!-- JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -28,16 +28,14 @@
 
 
 	<!-- END OF JS -->
-	<link rel="stylesheet" type=text/css" href="style.css">
-  <link rel="stylesheet" type=text/css" href="game_submit.css">
+  <link rel="stylesheet" type="text/css" href="{{ static_url('style.css') }}">
+  <!-- <link rel="stylesheet" type="text/css" href="game_submit.css"> -->
     <title>New Game</title>
   </head>
   <body>
-    <p>
-      Host Id: {{hostId}}<br>
-      Game Id: {{gameId}}<br>
-      Player Id: {{playerId}}<br>
-    </p>
+    <p id="hostId">{{hostId}}</p><br>
+    <p id="gameId">{{gameId}}</p><br>
+    <p id="playerId">{{playerId}}</p><br>
   
     <h1>Pitmarket Game</h1>
     <div id="game" width="1336" height="720">
@@ -51,6 +49,6 @@
         <!--input type="submit" value="Post!"-->
       </form>
     </div>
-    <script src="script.js"></script>
+    <script src="{{ static_url('script.js') }}"></script>
   </body>
 </html>

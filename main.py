@@ -115,13 +115,22 @@ def main():
     
     game_handler = GameHandler()
 
+    settings = {
+        "static_path": os.path.join(os.path.dirname(__file__), "views"),
+        "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
+        "login_url": "/login",
+        "xsrf_cookies": True,
+    }
     application = tornado.web.Application(
         [
             (r"/", MainHandler, {"game_handler": game_handler}),
             (r"/hws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": True}),
-            (r"/pws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": False})
+            (r"/pws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": False}),
+            (r"/(style\.css)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
+            (r"/(script\.js)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
         ],
-        debug=debug # Enable live changes to code
+        debug=debug, # Enable live changes to code
+        **settings
     )
     http_server = tornado.httpserver.HTTPServer(application)
     port = int(os.environ.get("PORT", 5000))
