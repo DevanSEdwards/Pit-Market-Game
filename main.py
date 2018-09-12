@@ -7,6 +7,7 @@ from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
 from modules.trade_exception import TradeException
+from modules.selfsigned import generate_selfsigned_cert
 
 class MainHandler(RequestHandler):
     """Handle GET requests"""
@@ -117,24 +118,29 @@ def main():
     
     game_handler = GameHandler()
 
-    settings = {
-        "static_path": os.path.join(os.path.dirname(__file__), "views")
+    config_dict = {
+        "certfile": os.path.join(os.path.abspath('.'), "private", "cacert.pem"),
+        "keyfile": os.path.join(os.path.abspath('.'), "private", "prvtkey.pem"),
+        "port": int(os.environ.get("PORT", 5000)),
+        "address": "0.0.0.0"
     }
-    application = tornado.web.Application(
-        [
+    settings = {
+        "static_path": os.path.join(os.path.dirname(__file__), "views"),
+        "debug": debug
+    }
+    urls = [
             (r"/", MainHandler, {"game_handler": game_handler}),
             (r"/hws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": True}),
             (r"/pws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": False}),
             (r"/(style\.css)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
             (r"/(script\.js)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
-        ],
-        debug=debug, # Enable live changes to code
-        **settings
-    )
-    http_server = tornado.httpserver.HTTPServer(application)
-    port = int(os.environ.get("PORT", 5000))
-    http_server.listen(port)
+    ]
+    application = tornado.web.Application(urls, **settings)
+    ssl_options = dict(certfile=config_dict["certfile"], keyfile=config_dict["keyfile"])
+    http_server = tornado.httpserver.HTTPServer(application, ssl_options=ssl_options)
+    http_server.listen(int(config_dict["port"]), address=config_dict["address"])
     tornado.ioloop.IOLoop.instance().start()
+
 
 if __name__ == "__main__":
     main()

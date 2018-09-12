@@ -5,7 +5,7 @@ var offerIds = [];
 isHost ? host() : play();
 
 function play() {
-    var ws = new WebSocket("ws://" + window.location.host + "/pws/" + clientId);
+    var ws = new WebSocket("wss://" + window.location.host + "/pws/" + clientId);
     ws.onmessage = function(event) {
         msg = JSON.parse(event.data);
         console.log(msg);
@@ -61,7 +61,7 @@ function play() {
 }
 
 function host() {
-    var ws = new WebSocket("ws://" + window.location.host + "/hws/" + clientId);
+    var ws = new WebSocket("wss://" + window.location.host + "/hws/" + clientId);
     ws.onmessage = function(event) {
         msg = JSON.parse(event.data);
         console.log(msg);
