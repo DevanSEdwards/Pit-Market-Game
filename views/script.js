@@ -4,20 +4,26 @@ var ws = new WebSocket("ws://localhost:5000/WebSocket");
 var _mouse = {x: 0, y: 0};
 
 /* VARIABLE STRUCTURES */
-class Offer{
-    id= "",
-    time= 0,
-    price= 0
-
-    Offer(stream){ parseJSON(stream); }
-    function parseJSON(json){ /* TODO */ }
+class Offer {
+    
+    init()
+    {
+        this.id= "";
+        this.time= 0;
+        this.price= 0;
+    }
+    constructor(stream){ init(); parseJSON(stream); }
+    parseJSON(stream){ return; /* TODO */ }
 }
 class Transaction{
-    id= "",
-    time= 0,
-    price= 0
-    Transaction(stream){ parseJSON(stream); }
-    function parseJSON(json){ /* TODO */ }
+    init()
+        {
+        id= "";
+        time= 0;
+        price= 0;
+    }
+    constructor(stream){ init(); parseJSON(stream); }
+    parseJSON(stream){ return; /* TODO */ }
 }
 var offer_lst = new Array();
 var transaction_list = new Array();
@@ -321,22 +327,22 @@ ws.on_message=function(evt)
     // Recieve Offer Confirm
 };
 function sendDataToServer(message) { 
-    console.log("Sending data");
-    console.log{message}
+    console.log("#====== Sending data... ======#    ");
+    console.log(message);
     if(!ws.write_message(message))
     {
-        console.log("Sending Failed!");
+        console.log("#====== Sending Failed! ======#");
     }
 }
 ws.on_close()=function() { window.location.href ="/index.html"; }
 function sendOffer(player, time, value)
 {
-    var message "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+    var message = "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
     sendDataToServer(message);
 }
 function sendTransation(time, offerID, playerID)
 {
-    var message "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+    var message = "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
     sendDataToServer(message);
 }
 /***************/
