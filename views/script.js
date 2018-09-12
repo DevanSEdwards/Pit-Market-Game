@@ -1,5 +1,27 @@
 var canvas = document.getElementById("display");
 var ctx = canvas.getContext("2d");
+var ws = new WebSocket("ws://localhost:5000/WebSocket");
+var _mouse = {x: 0, y: 0};
+
+/* VARIABLE STRUCTURES */
+class Offer{
+    id= "",
+    time= 0,
+    price= 0
+
+    Offer(stream){ parseJSON(stream); }
+    function parseJSON(json){ /* TODO */ }
+}
+class Transaction{
+    id= "",
+    time= 0,
+    price= 0
+    Transaction(stream){ parseJSON(stream); }
+    function parseJSON(json){ /* TODO */ }
+}
+var offer_lst = new Array();
+var transaction_list = new Array();
+/***********************/
 
 /* GRAPH VARIABLES */
 var graphBGColor = "white";
@@ -71,7 +93,7 @@ function draw()
     drawTopPanel();
     
     ctx.textAlign = "center";
-    drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
+    //drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
 
     window.requestAnimationFrame(draw);
 }
@@ -120,7 +142,13 @@ function drawHotswapPanel()
 
     ctx.fillStyle = textColor;
     ctx.font = promptFont;
-    ctx.fillText("Post offer to buy", x + width/4, y + height/2);
+    ctx.fillText("Post offer to buy", x + width/6, y + height/2);
+
+    btn_offer.x=x + (width/6) * 4;
+    btn_offer.y=y + height / 3;
+    btn_offer.w= 180;
+    btn_offer.h= 40;
+    drawButton(btn_offer.x, btn_offer.y, btn_offer.w, btn_offer.h, 'rgba(125, 230, 50, 255)', "Post Offer!");
 }
 
 function drawTopPanel()
@@ -133,7 +161,7 @@ function drawTopPanel()
     ctx.fillText("Round: ", topPanelLabelsXOffset, topPanelLabelsYOffset);
     ctx.fillText(roundNo, topPanelFieldsXOffset, topPanelLabelsYOffset);
     ctx.fillText("Round time left: ", topPanelLabelsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing);
-    ctx.fillText("1:59", topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing);
+    ctx.fillText("01:59", topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing);
     ctx.fillText("Profit made: ", topPanelLabelsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing*2);
     ctx.fillText("$" + profit, topPanelFieldsXOffset, topPanelLabelsYOffset + topPanelLabelsYSpacing*2);
     ctx.fillText("Your card:", canvas.width - 150, 30);
@@ -245,7 +273,70 @@ function drawGraph(x, y)
     drawGraphPoint(3, 3);
 }
 
-function clearCanvas()
+function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+function drawButton(x, y, width, height, colour, text)
 {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var pad = 15
+    ctx.fillStyle=colour;
+    ctx.fillRect(x, y, width, height);
+    ctx.fillStyle='black';
+    ctx.font='30px Arial';
+    ctx.fillText(text, x + pad, y + height - pad);
 }
+function drawOffer(time, offer, buyer)
+{
+    if(buyer) { ctx.fillStyle="green";}
+    else { ctx.fillStyle="blue"; }
+    ctx.font='25px Arial';
+}
+
+
+/* Button Controllers */
+var btn_offer = {x: 0, y: 0, w: 0, h: 0};
+/**********************/
+
+/* Event Listeners */
+function getMousePos(canvas, evt)
+{
+    var rect = canvas.getBoundingClientRect();
+    return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+}
+canvas.addEventListener("click",function(evt){_mousePos = getMousePos(canvas, evt);},false);
+/*******************/
+
+/* Web Sockets */
+var ws = new WebSocket("/websocket");
+ws.onopen=function()
+{
+    ws.send("");
+};
+ws.on_message=function(evt)
+{
+    var stream = evt.data;
+    // Recieve Offer
+    offer_lst.push(new Offer(stream));
+    // Recieve Transaction
+    transactions_lst.push(new Transaction(stream));
+    // Recieve Offer Confirm
+};
+function sendDataToServer(message) { 
+    console.log("Sending data");
+    console.log{message}
+    if(!ws.write_message(message))
+    {
+        console.log("Sending Failed!");
+    }
+}
+ws.on_close()=function() { window.location.href ="/index.html"; }
+function sendOffer(player, time, value)
+{
+    var message "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+    sendDataToServer(message);
+}
+function sendTransation(time, offerID, playerID)
+{
+    var message "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
+    sendDataToServer(message);
+}
+/***************/

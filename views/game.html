@@ -29,6 +29,7 @@
 
 	<!-- END OF JS -->
 	<link rel="stylesheet" type=text/css" href="style.css">
+  <link rel="stylesheet" type=text/css" href="game_submit.css">
     <title>New Game</title>
   </head>
   <body>
@@ -39,8 +40,17 @@
     </p>
   
     <h1>Pitmarket Game</h1>
-    
-    <canvas id="display" width="1440" height="900"></canvas>
+    <div id="game" width="1336" height="720">
+      <canvas id="display" width="1336" height="720"></canvas>
+      <form id="inputOffer" method="POST" style="
+        position: absolute;
+        left: 700px;
+        top: 370px;
+      ">
+        <input type="text" width="100" size="" id="input_offer">
+        <!--input type="submit" value="Post!"-->
+      </form>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
