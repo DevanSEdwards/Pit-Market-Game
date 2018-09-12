@@ -30,7 +30,7 @@ class Game():
     #   These methods should only be called inside WebsocketHandler
     #   Should start with 'hc'
 
-    def hc_start_round(self, game_time = 120, offer_time_limit = 10):
+    def hc_start_round(self):
         self.round_number += 1 #increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
         # - Distribute cards to player according to their buyer/seller identity.
@@ -52,8 +52,8 @@ class Game():
         # - Inform host and all players that round is starting
         response = {
             "type" : "start round",
-            "length" : game_time,
-            "offer time limit" : offer_time_time
+            "length" : 120,
+            "offer time limit" : 10
         }
         self.message_all(response)
 
