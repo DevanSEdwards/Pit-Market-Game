@@ -1,11 +1,11 @@
 var clientId = document.getElementById("clientId").innerText;
 var isHost = document.getElementById("isHost").innerText == "true";
+var offerIds = [];
 
 isHost ? host() : play();
 
 function play() {
-    var ws = new WebSocket("ws://pit-market-game.herokuapp.com/pws/" + clientId);
-    var offerIds = [];
+    var ws = new WebSocket("ws://" + window.location.host + "/pws/" + clientId);
     ws.onmessage = function(event) {
         msg = JSON.parse(event.data);
         console.log(msg);
@@ -61,11 +61,35 @@ function play() {
 }
 
 function host() {
-    var ws = new WebSocket("ws://localhost:5000/hws/" + clientId);
+    var ws = new WebSocket("ws://" + window.location.host + "/hws/" + clientId);
     ws.onmessage = function(event) {
         msg = JSON.parse(event.data);
         console.log(msg);
 
+        switch(msg.type) {
+            case "offer":
+                var tradeBtn = document.createElement("input");
+                tradeBtn.id = msg.offerId;
+                offerIds.push(msg.offerId);
+                tradeBtn.type = "button";
+                tradeBtn.value = msg.price;
+                tradeBtn.disabled = true;
+
+                // Append btn to div
+                if (msg.isSeller)
+                    document.getElementById("sellOffers").appendChild(tradeBtn);
+                else
+                    document.getElementById("buyOffers").appendChild(tradeBtn);
+                break;
+            case "start round":
+                for (var i = 0; i < offerIds.length; i++) {
+                    document.getElementById(offerIds[i]).remove();
+                }
+                offerIds = [];
+                break;
+            case "end game":
+                window.location.href = "/";
+        }
     };
     document.getElementById("btnStartRound").addEventListener("click", function(){
         ws.send(JSON.stringify({
