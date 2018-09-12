@@ -19,9 +19,10 @@ class Game():
         self.offers = {} # Dictionary of offers {offer_id: Offer}
         self.trades = {} # Dictionary of trades {offer_id: trade }
         self.round_number = 0 #Initialise round number
-        sched = PeriodicScheduler()
-        sched.setup(20, self.message_all, ({"type": "persist"},))
-        sched.run()
+        # Schedule regular pings
+        # self.sched = PeriodicScheduler()
+        # self.sched.setup(20, self.message_all, [{"type": "persist"}])
+        # self.sched.run()
 
     def add_player(self):
         player_id = uuid4().hex

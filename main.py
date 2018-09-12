@@ -119,7 +119,8 @@ def main():
 
     settings = {
         "static_path": os.path.join(os.path.dirname(__file__), "views"),
-        "debug": debug
+        "debug": debug,
+        "websocket_ping_interval": 20
     }
     urls = [
             (r"/", MainHandler, {"game_handler": game_handler}),
