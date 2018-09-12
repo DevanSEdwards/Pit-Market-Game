@@ -1,7 +1,4 @@
-import os
-import sys
-import json
-import inspect
+import os, sys, json, inspect
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -9,6 +6,7 @@ from tornado import websocket
 from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
+from modules.trade_exception import TradeException
 
 class MainHandler(RequestHandler):
     """Handle GET requests"""
@@ -84,6 +82,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         )
         if self.game == None:
             self.close()
+        self.set_nodelay(True)
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
@@ -91,7 +90,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
         # If type is unknown send an error message
         if msg.type not in self.commands:
-            self.write_message({"type": "error", "message": "bad type"})
+            self.write_message(json.dumps({"type": "error", "message": "bad type"}))
             return
         
         # If client is a player, add the player_id to the message
@@ -102,7 +101,10 @@ class WebsocketHandler(websocket.WebSocketHandler):
         arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # TODO: Add try-catch incase msg has the wrong args
         
         # Call the method with corresponding arguments
-        method(**arguments)
+        try:
+            method(**arguments)
+        except TradeException:
+            pass
 
 def main():
     # Check if this module was called in debug mode, ie:
