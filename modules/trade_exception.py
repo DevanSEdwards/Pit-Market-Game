@@ -1,1 +1,2 @@
-class TradeException(Exception): pass
+class TradeException(Exception):
+    pass

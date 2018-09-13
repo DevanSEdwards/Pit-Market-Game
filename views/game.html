@@ -1,68 +1,74 @@
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Prevents a 404 error from chrome requesting an icon. -->
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Prevents a 404 error from chrome requesting an icon. -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
-    <!-- Fonts from Google Fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet"> 
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <!-- Fonts from Google Fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
 
-    <!-- CSS -->
-    <!-- <link rel="stylesheet" type="text/css" href="../public/styles/style.css"> -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
 
-    <!-- JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <!-- CSS -->
+  <!-- <link rel="stylesheet" type="text/css" href="../public/styles/style.css"> -->
 
-	<!-- Game JS -->
+  <!-- JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+  <!-- Game JS -->
 
 
-	<!-- END OF JS -->
+  <!-- END OF JS -->
   <link rel="stylesheet" type="text/css" href="{{ static_url('style.css') }}">
   <!-- <link rel="stylesheet" type="text/css" href="game_submit.css"> -->
-    <title>New Game</title>
-  </head>
-  <body>
-    <div>
-      <p id="clientId">{{clientId}}</p>
-      <p id="gameId">{{gameId}}</p>
-      <p id="isHost" hidden>{{isHost}}</p>
-      <p id="isSeller"></p>
-      <p id="cardValue"></p>
-      <input id="offerInput" type="number">
-      <input id="btnPostOffer" type="button" value="Post Offer">
-    </div>
-    <b>Buy Offers:</b><br>
-    <div id="buyOffers"></div>
-    <b>Sell Offers:</b><br>
-    <div id="sellOffers"></div>
-    <b>Successful Trades:</b><br>
-    <div id="tradeList"></div>
-    <div hidden>
-      <h1>Pitmarket Game</h1>
-      <div id="game" width="1336" height="720">
-        <canvas id="display" width="1336" height="720"></canvas>
-        <form id="inputOffer" method="POST" style="
+  <title>New Game</title>
+</head>
+
+<body>
+  <div>
+    <p id="clientId">{{clientId}}</p>
+    <p id="gameId">{{gameId}}</p>
+    <p id="isHost" hidden>{{isHost}}</p>
+    <p id="isSeller"></p>
+    <p id="cardValue"></p>
+    <input id="offerInput" type="number">
+    <input id="btnPostOffer" type="button" value="Post Offer">
+  </div>
+  <b>Buy Offers:</b><br>
+  <div id="buyOffers"></div>
+  <b>Sell Offers:</b><br>
+  <div id="sellOffers"></div>
+  <b>Successful Trades:</b><br>
+  <div id="tradeList"></div>
+  <div hidden>
+    <h1>Pitmarket Game</h1>
+    <div id="game" width="1336" height="720">
+      <canvas id="display" width="1336" height="720"></canvas>
+      <form id="inputOffer" method="POST" style="
           position: absolute;
           left: 700px;
           top: 370px;
         ">
-          <input type="text" width="100" size="" id="input_offer">
-          <!--input type="submit" value="Post!"-->
-        </form>
-      </div>
+        <input type="text" width="100" size="" id="input_offer">
+        <!--input type="submit" value="Post!"-->
+      </form>
     </div>
-    <script src="{{ static_url('script.js') }}"></script>
-    <script src="{{ static_url('websockets.js') }}"></script>
-  </body>
+  </div>
+  <script src="{{ static_url('script.js') }}"></script>
+  <script src="{{ static_url('websockets.js') }}"></script>
+</body>
+
 </html>

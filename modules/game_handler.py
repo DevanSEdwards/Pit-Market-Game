@@ -4,8 +4,10 @@ import string
 from uuid import uuid4
 from modules.game import Game
 
+
 class GameHandler:
     """Store and manage a set of all games"""
+
     def __init__(self):
         self.games = set()
 
@@ -17,15 +19,16 @@ class GameHandler:
 
     def _generate_game_id(self):
         """Return a unique 6 letter/digit code"""
-        game_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        game_id = ''.join(random.choices(
+            string.ascii_uppercase + string.digits, k=6))
         # Ensure unique codes
         if game_id in [g.game_id for g in self.games]:
             game_id = self._generate_game_id()
         return game_id
-    
+
     def add_player(self, game_id):
         """Check if the game_id matches a current game and create a new player
-    
+
         Return the player_id
         """
         for game in self.games:

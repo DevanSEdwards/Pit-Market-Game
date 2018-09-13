@@ -1,4 +1,7 @@
-import os, sys, json, inspect
+import os
+import sys
+import json
+import inspect
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -8,8 +11,10 @@ from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
 from modules.trade_exception import TradeException
 
+
 class MainHandler(RequestHandler):
     """Handle GET requests"""
+
     def initialize(self, game_handler):
         """Store a reference to the game handler instance"""
         self.game_handler = game_handler
@@ -23,9 +28,9 @@ class MainHandler(RequestHandler):
             #     print(game.host_id)
             self.render(
                 "views/host.html",
-                clientId = host_id,
-                gameId = game_id,
-                isHost = "true"
+                clientId=host_id,
+                gameId=game_id,
+                isHost="true"
             )
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
@@ -35,17 +40,18 @@ class MainHandler(RequestHandler):
             else:
                 self.render(
                     "views/game.html",
-                    clientId = player_id,
-                    gameId = "",
-                    isHost = "false"
+                    clientId=player_id,
+                    gameId="",
+                    isHost="false"
                 )
         # Render main page (/)
         else:
             self.render("views/index.html")
 
+
 class WebsocketHandler(websocket.WebSocketHandler):
     """Handle incoming messages during a game
-    
+
     It is expected that each type of message will be passed to a 
     corresponding method in a Game instance, and that the host_commands
     and player_commands static attributes will be updated to reflect
@@ -71,7 +77,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         self.game_handler = game_handler
         self.host = host
         self.commands = (
-            WebsocketHandler.host_commands if host else 
+            WebsocketHandler.host_commands if host else
             WebsocketHandler.player_commands
         )
 
@@ -89,18 +95,21 @@ class WebsocketHandler(websocket.WebSocketHandler):
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
         print("ws msg: " + message)
-        msg = json.loads(message) # TODO: Check if msg contains "type")
+        msg = json.loads(message)  # TODO: Check if msg contains "type")
         # If type is unknown send an error message
         if msg["type"] not in self.commands:
-            self.write_message(json.dumps({"type": "error", "message": "bad type"}))
+            self.write_message(json.dumps(
+                {"type": "error", "message": "bad type"}))
             return
-        
+
         # If client is a player, add the player_id to the message
         if not self.host:
             msg["player_id"] = self.client_id
-        
+
         method = getattr(self.game, self.commands[msg["type"]])
-        arguments = {arg: msg[arg] for arg in inspect.getargspec(method).args[1:]} # TODO: Add try-catch incase msg has the wrong args
+        # TODO: Add try-catch incase msg has the wrong args
+        arguments = {arg: msg[arg]
+                     for arg in inspect.getargspec(method).args[1:]}
 
         # Call the method with corresponding arguments
         try:
@@ -108,26 +117,32 @@ class WebsocketHandler(websocket.WebSocketHandler):
         except TradeException:
             pass
 
+
 def main():
     # Check if this module was called in debug mode, ie:
     #   > python main.py debug
     debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
     # Log all GET, POST... requests
-    if debug: enable_pretty_logging()
-    
+    if debug:
+        enable_pretty_logging()
+
     game_handler = GameHandler()
 
     settings = {
         "static_path": os.path.join(os.path.dirname(__file__), "views"),
         "debug": debug,
-        "websocket_ping_interval": 20
+        "websocket_ping_interval": 20  # Keeps connection alive on heroku
     }
     urls = [
-            (r"/", MainHandler, {"game_handler": game_handler}),
-            (r"/hws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": True}),
-            (r"/pws/(.*)", WebsocketHandler, {"game_handler": game_handler, "host": False}),
-            (r"/(style\.css)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
-            (r"/(script\.js)", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
+        (r"/", MainHandler, {"game_handler": game_handler}),
+        (r"/hws/(.*)", WebsocketHandler,
+         {"game_handler": game_handler, "host": True}),
+        (r"/pws/(.*)", WebsocketHandler,
+         {"game_handler": game_handler, "host": False}),
+        (r"/(style\.css)", tornado.web.StaticFileHandler,
+         dict(path=settings['static_path'])),
+        (r"/(script\.js)", tornado.web.StaticFileHandler,
+         dict(path=settings['static_path'])),
     ]
     application = tornado.web.Application(urls, **settings)
     http_server = tornado.httpserver.HTTPServer(application)

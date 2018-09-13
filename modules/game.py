@@ -5,24 +5,24 @@ from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeException
-from modules.scheduling import PeriodicScheduler
-import json, sched, time
+import json
+import sched
+import time
+
 
 class Game():
     """Store and manage data about a single game"""
+
     def __init__(self, host_id, game_id):
         self.host_id = host_id
         self.game_id = game_id
         self.ws = None
-        self.players = {} # Dictionary of players { player_id: player }
-        self.is_next_seller = True # First player should be a seller
-        self.offers = {} # Dictionary of offers {offer_id: Offer}
-        self.trades = {} # Dictionary of trades {offer_id: trade }
-        self.round_number = 0 #Initialise round number
-        # Schedule regular pings
-        # self.sched = PeriodicScheduler()
-        # self.sched.setup(20, self.message_all, [{"type": "persist"}])
-        # self.sched.run()
+        self.players = {}  # Dictionary of players { player_id: player }
+        self.is_next_seller = True  # First player should be a seller
+        self.offers = {}  # Dictionary of offers {offer_id: Offer}
+        self.trades = {}  # Dictionary of trades {offer_id: trade }
+        self.round_number = 0  # Initialise round number
+        self.sched = sched.scheduler(time.time, time.sleep)
 
     def add_player(self):
         player_id = uuid4().hex
@@ -36,7 +36,7 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
-        self.round_number += 1 #increment round numner
+        self.round_number += 1  # increment round numner
         sell_deck, buy_deck = create_deck(len(self.players))
         # - Distribute cards to player according to their buyer/seller identity.
         # - Change that identity if buyer/seller deck is empty
@@ -53,40 +53,40 @@ class Game():
                 except KeyError:
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
-                    
+
         # - Inform host and all players that round is starting
         response = {
-            "type" : "start round",
-            "length" : 120,
-            "offer time limit" : 10
+            "type": "start round",
+            "length": 120,
+            "offer time limit": 10
         }
         self.message_all(response)
 
         # - Inform players of their card number and buyer/seller identity
         for player in self.players.values():
             response = {
-                "type" : "card",
-                "value" : player.card,
-                "isSeller" : player.is_seller
+                "type": "card",
+                "value": player.card,
+                "isSeller": player.is_seller
             }
             message = json.dumps(response)
             player.ws.write_message(message)
-        pass
-        
+        self.sched.enter(10, 1, lambda: print("yo"))
+        self.sched.run()
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
         response = {
-                "type" : "end round"
-            }
+            "type": "end round"
+        }
         self.message_all(response)
         pass
 
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
         response = {
-                "type" : "end game"
-            }
+            "type": "end game"
+        }
         self.message_all(response)
         for player in self.players:
             player.ws.close()
@@ -101,18 +101,19 @@ class Game():
 
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
-        #Generate offer_id
+        # Generate offer_id
         print("offer: " + player_id, price)
         offer_id = uuid4().hex
         time = datetime.now()
-        #check player has not traded
+        # check player has not traded
         if (not self.players[player_id].has_traded):
-            #if Seller
+            # if Seller
             if self.players[player_id].is_seller:
-                #valid offer
-                if (self.players[player_id].card <= price): 
-                    #add to offer dictionary
-                    self.offers[offer_id] = Offer(offer_id, True, price, time, player_id)
+                # valid offer
+                if (self.players[player_id].card <= price):
+                    # add to offer dictionary
+                    self.offers[offer_id] = Offer(
+                        offer_id, True, price, time, player_id)
                     self.message_all(
                         {
                             "type": "offer",
@@ -121,14 +122,15 @@ class Game():
                             "price": price,
                             "time": str(time)
                         })
-                #invalid trade
+                # invalid trade
 
-            #must be a buyer
+            # must be a buyer
             else:
-                #valid offer
+                # valid offer
                 if (self.players[player_id].card >= price):
-                    #add to offer dictionary
-                    self.offers[offer_id] = Offer(offer_id, False, price, time, player_id)
+                    # add to offer dictionary
+                    self.offers[offer_id] = Offer(
+                        offer_id, False, price, time, player_id)
                     self.message_all(
                         {
                             "type": "offer",
@@ -137,10 +139,9 @@ class Game():
                             "price": price,
                             "time": str(time)
                         })
-                #invalid trade 
+                # invalid trade
 
-
-        #Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
+        # Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
         pass
 
     def pc_accept(self, player_id, offerId):
@@ -149,35 +150,37 @@ class Game():
         offer_id = offerId
         time = datetime.now()
         price = self.offers[offer_id].price
-        #check if offer has been accepted yet
+        # check if offer has been accepted yet
         if not self.offers[offer_id].accepted:
             print(0)
-            #check if still within 10 seconds
-            if True: #time > (self.offers[offer_id].time + timedelta(seconds=1000)):
+            # check if still within 10 seconds
+            # time > (self.offers[offer_id].time + timedelta(seconds=1000)):
+            if True:
                 print(1)
-                #check accepted has not traded yet
+                # check accepted has not traded yet
                 if not self.players[player_id].has_traded:
                     print(2)
                     #accepter is buyer and offerer is seller
                     if (not self.players[player_id].is_seller and self.offers[offer_id].is_seller):
                         print(3)
-                        #valid trade
+                        # valid trade
                         if (self.players[player_id].card <= price):
-                            #acknowlege offer has been accepted
+                            # acknowlege offer has been accepted
                             self.offers[offer_id].accepted = True
-                            #add to trade dictionary
-                            self.trades[offer_id] = Trade(offer_id, price, time, player_id, self.offers[offer_id].player_id)
+                            # add to trade dictionary
+                            self.trades[offer_id] = Trade(
+                                offer_id, price, time, player_id, self.offers[offer_id].player_id)
                             # Send message to players
                             self.players[player_id].ws.write_message(json.dumps(
                                 {
-                                    "type" : "trade",
+                                    "type": "trade",
                                     "success": True,
                                     "offerID": offer_id,
                                     "price": self.offers[offer_id].price
                                 }))
                             self.players[self.offers[offer_id].player_id].ws.write_message(json.dumps(
                                 {
-                                    "type" : "trade",
+                                    "type": "trade",
                                     "success": True,
                                     "offerID": offer_id,
                                     "price": price
@@ -196,23 +199,24 @@ class Game():
                     #accepter is seller and offerer is buyer
                     if (self.players[player_id].is_seller and not self.offers[offer_id].is_seller):
                         print(4)
-                        #valid trade
+                        # valid trade
                         if (self.players[player_id].card >= price):
-                            #acknowlege offer has been accepted
+                            # acknowlege offer has been accepted
                             self.offers[offer_id].accepted = True
-                            #add trade to dicitonary
-                            self.trades[offer_id] = Trade(offer_id, price, time, self.offers[offer_id].player_id, player_id)
+                            # add trade to dicitonary
+                            self.trades[offer_id] = Trade(
+                                offer_id, price, time, self.offers[offer_id].player_id, player_id)
                             # Send message to players
                             self.players[player_id].ws.write_message(json.dumps(
                                 {
-                                    "type" : "trade",
+                                    "type": "trade",
                                     "success": True,
                                     "offerID": offer_id,
                                     "price": price
                                 }))
                             self.players[self.offers[offer_id].player_id].ws.write_message(json.dumps(
                                 {
-                                    "type" : "trade",
+                                    "type": "trade",
                                     "success": True,
                                     "offerID": offer_id,
                                     "price": price
@@ -232,8 +236,9 @@ class Game():
 
     def message_all(self, response):
         message = json.dumps(response)
-        if self.ws: self.ws.write_message(message)
+        if self.ws:
+            self.ws.write_message(message)
         print("message_all: " + message)
         for player in self.players.values():
-            if player.ws: player.ws.write_message(message)
-       
+            if player.ws:
+                player.ws.write_message(message)

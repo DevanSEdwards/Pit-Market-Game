@@ -1,9 +1,10 @@
 from math import gcd
 from random import shuffle
 
-def create_deck(players, domain = 7, mean = 6, lower_limit = 2):
+
+def create_deck(players, domain=7, mean=6, lower_limit=2):
     """Return a pair of value decks (lists) for sellers and buyers
-    
+
     players -- Number of players (buyers + sellers). (>= 0)
     domain -- Number of unique cards to be distributed in each deck.
         (> 0, default 7)
@@ -33,7 +34,8 @@ def create_deck(players, domain = 7, mean = 6, lower_limit = 2):
     # Create a buy deck by reflecting the sell deck around the mean
     buy_deck = [2 * mean - i for i in sell_deck]
     # Remove the last card if the number of players is odd
-    if players % 2 == 1: buy_deck = buy_deck[:-1]
+    if players % 2 == 1:
+        buy_deck = buy_deck[:-1]
 
     # Shuffle decks and return
     shuffle(sell_deck)
