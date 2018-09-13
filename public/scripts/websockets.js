@@ -41,7 +41,13 @@ function play() {
             case "trade":
                 if (msg.success) {
                     document.getElementById("btnPostOffer").disabled = true;
+                    document.getElementById("btnPostOffer").value = "Traded at: " + msg.price.toString();
                 }
+            case "announce trade":
+                var announce = document.createElement("p");
+                announce.innerHTML = "Successful Trade: " + msg.price.toString();
+                var tradeList = document.getElementById("tradeList");
+                tradeList.appendChild(announce);
         }
     };
     document.getElementById("btnPostOffer").addEventListener("click", () => {
