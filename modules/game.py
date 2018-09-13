@@ -234,7 +234,9 @@ class Game():
 
     def message_all(self, response):
         message = json.dumps(response)
-        if self.ws: self.ws.write_message(message)
+        if self.ws:
+            self.ws.write_message(message)
         print("message_all: " + message)
         for player in self.players.values():
-            player.ws.write_message(message)
+            if player.ws:
+                player.ws.write_message(message)
