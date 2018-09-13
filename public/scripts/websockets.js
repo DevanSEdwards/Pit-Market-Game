@@ -20,7 +20,7 @@ function play() {
                 draw();
                 break;
             case "offer":
-                addOffer(msg, msg.isSeller ? !isSeller : isSeller);
+                addOffer(msg, msg.isSeller ? !isSeller : isSeller, ws);
                 break;
             case "start round":
                 offerTimeout = msg["offer time limit"] * 1000;
@@ -60,7 +60,7 @@ function host() {
 
         switch (msg.type) {
             case "offer":
-                addOffer(msg, false);
+                addOffer(msg, false, ws);
                 break;
             case "start round":
                 var timeRemaining = msg.length;
@@ -91,7 +91,7 @@ function host() {
     });
 }
 
-function addOffer(msg, addAcceptEvent) {
+function addOffer(msg, addAcceptEvent, ws) {
     var tradeBtn = document.createElement("input");
     tradeBtn.id = msg.offerId;
     offerIds.push(msg.offerId);
