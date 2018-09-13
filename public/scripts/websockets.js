@@ -97,7 +97,6 @@ function addOffer(msg, addAcceptEvent) {
     offerIds.push(msg.offerId);
     tradeBtn.type = "button";
     tradeBtn.value = msg.price;
-    tradeBtn.disabled = true;
 
     var fadeTime = 500;
     window.setTimeout(() => {
