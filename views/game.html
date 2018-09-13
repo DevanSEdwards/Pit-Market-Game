@@ -32,7 +32,7 @@
 
 
   <!-- END OF JS -->
-  <link rel="stylesheet" type="text/css" href="{{ static_url('style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
   <!-- <link rel="stylesheet" type="text/css" href="game_submit.css"> -->
   <title>New Game</title>
 </head>
@@ -40,6 +40,7 @@
 <body>
   <div>
     <p id="clientId">{{clientId}}</p>
+    <p id="roundCounter">Time: 0:00</p>
     <p id="gameId">{{gameId}}</p>
     <p id="isHost" hidden>{{isHost}}</p>
     <p id="isSeller"></p>
@@ -67,8 +68,9 @@
       </form>
     </div>
   </div>
-  <script src="{{ static_url('script.js') }}"></script>
-  <script src="{{ static_url('websockets.js') }}"></script>
+  <script src="{{ static_url('scripts/script.js') }}"></script>
+  <script src="{{ static_url('scripts/tools.js') }}"></script>
+  <script src="{{ static_url('scripts/websockets.js') }}"></script>
 </body>
 
 </html>

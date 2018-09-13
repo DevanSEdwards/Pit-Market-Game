@@ -71,8 +71,6 @@ class Game():
             }
             message = json.dumps(response)
             player.ws.write_message(message)
-        self.sched.enter(10, 1, lambda: print("yo"))
-        self.sched.run()
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""

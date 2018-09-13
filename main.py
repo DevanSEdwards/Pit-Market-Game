@@ -129,7 +129,7 @@ def main():
     game_handler = GameHandler()
 
     settings = {
-        "static_path": os.path.join(os.path.dirname(__file__), "views"),
+        "static_path": os.path.join(os.path.dirname(__file__), "public"),
         "debug": debug,
         "websocket_ping_interval": 20  # Keeps connection alive on heroku
     }
@@ -138,11 +138,7 @@ def main():
         (r"/hws/(.*)", WebsocketHandler,
          {"game_handler": game_handler, "host": True}),
         (r"/pws/(.*)", WebsocketHandler,
-         {"game_handler": game_handler, "host": False}),
-        (r"/(style\.css)", tornado.web.StaticFileHandler,
-         dict(path=settings['static_path'])),
-        (r"/(script\.js)", tornado.web.StaticFileHandler,
-         dict(path=settings['static_path'])),
+         {"game_handler": game_handler, "host": False})
     ]
     application = tornado.web.Application(urls, **settings)
     http_server = tornado.httpserver.HTTPServer(application)
