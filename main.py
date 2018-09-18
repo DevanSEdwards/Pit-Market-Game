@@ -119,12 +119,8 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
 
 def main():
-    # Check if this module was called in debug mode, ie:
-    #   > python main.py debug
-    # debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
-    # Log all GET, POST... requests
     if __debug__:
-        print("Running in debug mode...")
+        # Log all GET, POST... requests
         enable_pretty_logging()
 
     game_handler = GameHandler()

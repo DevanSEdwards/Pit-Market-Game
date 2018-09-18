@@ -103,44 +103,28 @@ class Game():
         print("offer: " + player_id, price)
         offer_id = uuid4().hex
         time = datetime.now()
-        # check player has not traded
-        if (not self.players[player_id].has_traded):
-            # if Seller
-            if self.players[player_id].is_seller:
-                # valid offer
-                if (self.players[player_id].card <= price):
-                    # add to offer dictionary
-                    self.offers[offer_id] = Offer(
-                        offer_id, True, price, time, player_id)
-                    self.message_all(
-                        {
-                            "type": "offer",
-                            "offerId": offer_id,
-                            "isSeller": True,
-                            "price": price,
-                            "time": str(time)
-                        })
-                # invalid trade
+        player = self.players[player_id]
 
-            # must be a buyer
-            else:
-                # valid offer
-                if (self.players[player_id].card >= price):
-                    # add to offer dictionary
-                    self.offers[offer_id] = Offer(
-                        offer_id, False, price, time, player_id)
-                    self.message_all(
-                        {
-                            "type": "offer",
-                            "offerId": offer_id,
-                            "isSeller": False,
-                            "price": price,
-                            "time": str(time)
-                        })
-                # invalid trade
+        # Check offer is valid
+        if player.has_traded:
+            raise TradeError("Already traded this round")
+        if (player.is_seller == (player.card > price)) and (player.card != price):
+            raise TradeError("Price out of range")
+        
+        # Add offer to the dictionary
+        self.offers[offer_id] = Offer(
+            offer_id, True, price, time, player_id)
+        # Announce the offer to all clients
+        self.message_all(
+            {
+                "type": "offer",
+                "offerId": offer_id,
+                "isSeller": True,
+                "price": price,
+                "time": str(time)
+            })
 
         # Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
-        pass
 
     def pc_accept(self, player_id, offerId):
         """Verify and complete a trade"""
@@ -149,13 +133,13 @@ class Game():
         time = datetime.now()
         player, offer, price = self.players[player_id], self.offers[offer_id], self.offers[offer_id].price
 
-        # Check for a valid trade
+        # Check trade is valid
         if offer.accepted:
             raise TradeError("Offer already accepted")
         if False and (time > (offer.time + timedelta(seconds=1000))):
             raise TradeError("Offer expired")
         if player.has_traded:
-            raise TradeError("Player already traded this round")
+            raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
             raise TradeError("Buyer/Seller mismatch")
         if (player.is_seller == (player.card > price)) and (player.card != price):
