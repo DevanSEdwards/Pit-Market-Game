@@ -31,6 +31,12 @@ class Game():
         self.is_next_seller = not self.is_next_seller
         return player_id
 
+    def remove_player(self, player_id):
+        player = self.players[player_id]
+        self.is_next_seller = player.is_seller
+        # TODO Check for and remove offers from this player.
+        del player
+
     # - Host Commands -------------------------------------------------
     #   These methods should only be called inside WebsocketHandler
     #   Should start with 'hc'
@@ -78,7 +84,6 @@ class Game():
             "type": "end round"
         }
         self.message_all(response)
-        pass
 
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
@@ -91,7 +96,6 @@ class Game():
         self.ws.close()
         self.game_finished = True
         del self
-        pass
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler

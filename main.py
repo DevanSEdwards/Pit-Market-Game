@@ -92,6 +92,12 @@ class WebsocketHandler(websocket.WebSocketHandler):
             self.close()
         self.set_nodelay(True)
 
+    def on_close(self):
+        if self.host:
+            self.game.hc_end_game()
+        else:
+            self.game.remove_player(self.client_id)
+
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
         print("ws msg: " + message)
