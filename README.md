@@ -62,12 +62,9 @@ To run the app locally run
   
 and go to localhost:5000 in your browser.
 
-To enable live changes to code and logging of GET/POST requests, call
+Live changes to code and logging of GET/POST requests are enabled by default. All your code changes will apply instantly - just reload the page. To run Pit-Market-Game without these features call:
 
-	> python main.py debug
-
-All your code changes will apply instantly - just
-reload the page.
+	> python -O main.py
 
 # Testing
 
