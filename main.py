@@ -7,9 +7,10 @@ import tornado.ioloop
 import tornado.web
 from tornado import websocket
 from tornado.web import RequestHandler
-from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
 from modules.trade_exception import TradeError
+if __debug__:
+    from tornado.log import enable_pretty_logging
 
 
 class MainHandler(RequestHandler):
@@ -101,11 +102,20 @@ class WebsocketHandler(websocket.WebSocketHandler):
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
         print("ws msg: " + message)
-        msg = json.loads(message)  # TODO: Check if msg contains "type")
+        msg = json.loads(message)
+        # Check msg contains a type attribute
+        if "type" not in msg:
+            self.write_message(json.dumps({
+                "type": "error",
+                "message": "no type attribute"
+            }))
+            return
         # If type is unknown send an error message
         if msg["type"] not in self.commands:
-            self.write_message(json.dumps(
-                {"type": "error", "message": "bad type"}))
+            self.write_message(json.dumps({
+                "type": "error",
+                "message": "unknown type"
+            }))
             return
 
         # If client is a player, add the player_id to the message
@@ -113,9 +123,11 @@ class WebsocketHandler(websocket.WebSocketHandler):
             msg["player_id"] = self.client_id
 
         method = getattr(self.game, self.commands[msg["type"]])
-        # TODO: Add try-catch incase msg has the wrong args
-        arguments = {arg: msg[arg]
-                     for arg in inspect.getargspec(method).args[1:]}
+        try:
+            arguments = {arg: msg[arg]
+                         for arg in inspect.getargspec(method).args[1:]}
+        except KeyError as error:
+            print("Missing attribute: " + error.args[0])
 
         # Call the method with corresponding arguments
         try:
