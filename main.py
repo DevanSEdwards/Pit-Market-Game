@@ -9,7 +9,7 @@ from tornado import websocket
 from tornado.web import RequestHandler
 from tornado.log import enable_pretty_logging
 from modules.game_handler import GameHandler
-from modules.trade_exception import TradeException
+from modules.trade_exception import TradeError
 
 
 class MainHandler(RequestHandler):
@@ -114,23 +114,24 @@ class WebsocketHandler(websocket.WebSocketHandler):
         # Call the method with corresponding arguments
         try:
             method(**arguments)
-        except TradeException:
-            pass
+        except TradeError as error:
+            print(error.message)
 
 
 def main():
     # Check if this module was called in debug mode, ie:
     #   > python main.py debug
-    debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
+    # debug = len(sys.argv) > 1 and sys.argv[1].lower() == 'debug'
     # Log all GET, POST... requests
-    if debug:
+    if __debug__:
+        print("Running in debug mode...")
         enable_pretty_logging()
 
     game_handler = GameHandler()
 
     settings = {
         "static_path": os.path.join(os.path.dirname(__file__), "public"),
-        "debug": debug,
+        "debug": __debug__,
         "websocket_ping_interval": 20  # Keeps connection alive on heroku
     }
     urls = [
