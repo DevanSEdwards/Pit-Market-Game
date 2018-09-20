@@ -44,10 +44,17 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
-        self.round_number += 1  # increment round numner
+        """TODO docstring"""
+        # Delete all offers
+        self.offers = {}
+        # Increment round number
+        self.round_number += 1
+        # Set all players to not traded
+        for p in self.players.values():
+            p.has_traded = False
+        # Distribute cards to player according to their buyer/seller identity.
+        # Change that identity if buyer/seller deck is empty
         sell_deck, buy_deck = create_deck(len(self.players))
-        # - Distribute cards to player according to their buyer/seller identity.
-        # - Change that identity if buyer/seller deck is empty
         for player in self.players.values():
             if player.is_seller:
                 try:
@@ -61,16 +68,16 @@ class Game():
                 except KeyError:
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
-
-        # - Inform host and all players that round is starting
+        # Setup function to end the round later
+        self.io.call_later(120, self.end_round)
+        # Inform host and all players that round is starting
         response = {
             "type": "start round",
             "length": 120,
             "offer time limit": 10
         }
         self.message_all(response)
-
-        # - Inform players of their card number and buyer/seller identity
+        # Inform players of their card number and buyer/seller identity
         for player in self.players.values():
             response = {
                 "type": "card",
@@ -184,6 +191,9 @@ class Game():
 
     def delete_offer(self, offer_id):
         del self.offers[offer_id]
+
+    def end_round(self):
+        pass
 
     def message_all(self, response):
         message = json.dumps(response)
