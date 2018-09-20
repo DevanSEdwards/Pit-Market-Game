@@ -5,6 +5,7 @@ import inspect
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
+from react import jsx
 from tornado import websocket
 from tornado.web import RequestHandler
 from modules.game_handler import GameHandler
@@ -140,6 +141,15 @@ def main():
     if __debug__:
         # Log all GET, POST... requests
         enable_pretty_logging()
+
+    transformer = jsx.JSXTransformer()
+    for root, dirs, files in os.walk("./react"):
+        for file in files:
+            if file.endswith(".jsx"):
+                transformer.transform(
+                    os.path.join(root, file),
+                    os.path.join("./public/scripts", file[:-1])
+                )
 
     game_handler = GameHandler()
 
