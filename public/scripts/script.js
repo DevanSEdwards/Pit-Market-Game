@@ -28,6 +28,7 @@ var transaction_list = new Array();
 /***********************/
 
 /* GRAPH VARIABLES */
+
 var graphBGColor = "white";
 var graphBorderColor = "#AAAAAA";
 var graphPointColor = "#333333";
