@@ -7,6 +7,7 @@ from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeError
+from modules.round import Round
 
 
 class Game():
@@ -19,8 +20,13 @@ class Game():
         self.players = {}  # Dictionary of players { player_id: player }
         self.is_next_seller = True  # First player should be a seller
         self.offers = {}  # Dictionary of offers {offer_id: Offer}
-        self.trades = {}  # Dictionary of trades {offer_id: trade }
         self.round_number = 0  # Initialise round number
+        self.rounds = []  # List of Round objects
+        self.deck_settings = {
+            'domain': 7,
+            'mean': 6,
+            'lower_limit': 2
+        }
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
@@ -44,17 +50,24 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self):
-        """TODO docstring"""
+        """"""
+        # TODO make these variables arguments
+        tax = None
+        floor = None
+        ceiling = None
         # Delete all offers
         self.offers = {}
+        # Create a new round object to store round data
+        self.rounds.append(Round(tax, floor, ceiling))
         # Increment round number
-        self.round_number += 1
+        self.round_number = len(self.rounds) - 1
         # Set all players to not traded
         for p in self.players.values():
             p.has_traded = False
         # Distribute cards to player according to their buyer/seller identity.
         # Change that identity if buyer/seller deck is empty
-        sell_deck, buy_deck = create_deck(len(self.players))
+        sell_deck, buy_deck = create_deck(
+            len(self.players), **self.deck_settings)
         for player in self.players.values():
             if player.is_seller:
                 try:
@@ -163,8 +176,8 @@ class Game():
         # Acknowlege offer has been accepted
         offer.accepted = True
         # Add to trade dictionary
-        self.trades[offer_id] = Trade(
-            offer_id, price, time, player_id, self.offers[offer_id].player_id)
+        self.rounds[self.round_number].trades.append(Trade(
+            offer_id, price, time, player_id, self.offers[offer_id].player_id))
         # Record that thes players have traded
         player.has_traded = True
         self.players[offer.player_id].has_traded = True
