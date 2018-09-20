@@ -120,6 +120,8 @@ class Game():
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
             offer_id, True, price, time, player_id)
+
+        self.io.call_later(10, self.delete_offer, offer_id)
         # Announce the offer to all clients
         self.message_all(
             {
@@ -134,7 +136,6 @@ class Game():
 
     def pc_accept(self, player_id, offerId):
         """Verify and complete a trade"""
-        print("accept")
         offer_id = offerId
         time = datetime.now()
         player, offer, price = self.players[player_id], self.offers[offer_id], self.offers[offer_id].price
@@ -180,6 +181,9 @@ class Game():
             })
 
     # - Utilities -----------------------------------------------------
+
+    def delete_offer(self, offer_id):
+        del self.offers[offer_id]
 
     def message_all(self, response):
         message = json.dumps(response)
