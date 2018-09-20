@@ -1,3 +1,5 @@
+import json
+import tornado.ioloop
 from datetime import datetime, timedelta
 from uuid import uuid4
 from modules.player import Player
@@ -5,9 +7,6 @@ from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeError
-import json
-import sched
-import time
 
 
 class Game():
@@ -22,7 +21,10 @@ class Game():
         self.offers = {}  # Dictionary of offers {offer_id: Offer}
         self.trades = {}  # Dictionary of trades {offer_id: trade }
         self.round_number = 0  # Initialise round number
-        self.sched = sched.scheduler(time.time, time.sleep)
+
+        # Store a reference to the IO loop, to be used for calling:
+        # self.io.call_later(...)
+        self.io = tornado.ioloop.IOLoop.current()
 
     def add_player(self):
         player_id = uuid4().hex
@@ -114,7 +116,7 @@ class Game():
             raise TradeError("Already traded this round")
         if (player.is_seller == (player.card > price)) and (player.card != price):
             raise TradeError("Price out of range")
-        
+
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
             offer_id, True, price, time, player_id)
@@ -140,6 +142,7 @@ class Game():
         # Check trade is valid
         if offer.accepted:
             raise TradeError("Offer already accepted")
+        # TODO change this so offers are deleted after time limit instead
         if False and (time > (offer.time + timedelta(seconds=1000))):
             raise TradeError("Offer expired")
         if player.has_traded:
@@ -184,5 +187,5 @@ class Game():
             self.ws.write_message(message)
         print("message_all: " + message)
         for player in self.players.values():
-            if player.ws:
+            if player.ws:  # BUG sometimes this gets called without player.ws existing
                 player.ws.write_message(message)
