@@ -142,14 +142,15 @@ def main():
         # Log all GET, POST... requests
         enable_pretty_logging()
 
-    transformer = jsx.JSXTransformer()
-    for root, dirs, files in os.walk("./react"):
-        for file in files:
-            if file.endswith(".jsx"):
-                transformer.transform(
-                    os.path.join(root, file),
-                    os.path.join("./public/scripts", file[:-1])
-                )
+    # transformer = jsx.JSXTransformer()
+    # for root, dirs, files in os.walk("./react"):
+    #     for file in files:
+    #         if file.endswith(".jsx"):
+    #             print(file)
+    #             transformer.transform(
+    #                 os.path.join(root, file),
+    #                 os.path.join("./public/scripts", file[:-1])
+    #             )
 
     game_handler = GameHandler()
 

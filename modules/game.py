@@ -22,7 +22,7 @@ class Game():
         self.offers = {}  # Dictionary of offers {offer_id: Offer}
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round objects
-        self.deck_settings = {
+        self.deck_settings = { # Shouldn't be changed after the first round
             'domain': 7,
             'mean': 6,
             'lower_limit': 2
