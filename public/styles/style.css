@@ -5,10 +5,102 @@ html {
 body
 {
     text-align: center;
-    font-family: 'Cabin', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #display
 {
     border: 1px solid black;
 }
+
+#home-title
+{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0066ff;
+    font-weight: normal;
+    font-size: 64px;
+}
+
+#credits-string
+{
+    color: rgb(192, 192, 192);
+}
+
+h2
+{
+    color: rgb(192, 192, 192);
+    /*font-weight: normal;*/
+}
+
+.btn
+{
+    background-color: #3399ff;
+    color: #003399;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border: 1px solid #0066ff;
+    height: 45px;
+    min-width: 90px;
+}
+
+.btn:hover
+{
+    background-color: #0066ff;
+    color: white;
+    border: 1px solid #003399;
+}
+
+.txt-field
+{
+    height: 45px;
+    padding: 0px 10px;
+    color: #003399;
+    border: 1px solid #0066ff;
+    text-align: center;
+}
+
+#card
+{
+    display: inline-block;
+    width: 120px;
+    height: 160px;
+    border: 1px solid #0066ff;
+}
+
+.offers-label
+{
+    color: rgb(192, 192, 192)
+}
+
+#post-container
+{
+    padding: 100px;
+}
+
+.offer-container
+{
+    border: 1px solid #0066ff;
+    width: 33vw;
+    min-height: 200px;
+}
+
+#offers-container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#host-controls-container
+{
+    padding: 100px;
+}
+
+/*
+.txt-field:focus
+{
+    height: 60px;
+    width: 180px;
+}
+*/
