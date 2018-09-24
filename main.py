@@ -21,6 +21,7 @@ class MainHandler(RequestHandler):
         self.game_handler = game_handler
 
     def get(self):
+        # TODO send gameId, isHost and clientId as cookies
         arg = self.get_argument("game", default="")
         # Hosting a new game (/?game=host)
         if arg == "host":
@@ -71,6 +72,9 @@ class WebsocketHandler(websocket.WebSocketHandler):
         "accept": "pc_accept"
     }
 
+    # TODO add method for setting if host or player
+    # TODO add method for setting client_id
+
     def initialize(self, game_handler, host):
         """Store a reference to the game_handler instance and whether
         the client is a host.
@@ -119,7 +123,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
             return
 
         # If client is a player, add the player_id to the message
-        if not self.host:
+        if not self.host:  # TODO and self.client_id
             msg["player_id"] = self.client_id
 
         method = getattr(self.game, self.commands[msg["type"]])
