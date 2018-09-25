@@ -45,16 +45,13 @@ class Offer
 
 
 	// Create HTML element
-	var html = "<div class='offer-shape ";
-	if(this.buyer) { html += "buyer"; } else { html += "seller"; }
-	html+="'><div class='offer-internal' style='float: left;'>$ ";
-	html+=String(this.val);
-	html+="</div><div class='offer-internal' style='float: right;'>";
-	html+="<button onclick='acceptOffer(";
-	html+=String(this.offer_id);
-	html+=")'' ";
-	if(_BUYER == this.buyer){ html += "disabled"; }
-	html+=">Accept</button></div></div>";
+	var html = `
+		<div class='offer-shape ${offerBuyer ? 'buyer': 'seller'}>
+			<div class='offer-internal' style='float: left;'>$ ${String(this.val)}</div>
+			<div class='offer-internal' style='float: right;'>
+				<button onclick='acceptOffer(${String(this.offer_id)})' ${_BUYER == this.buyer ? 'disabled' : ''}>Accept</button>
+			</div>
+		</div>`;
 
 	// Draw to screen
 	document.getElementById("offer-list").innerHTML = html + old;
@@ -67,16 +64,13 @@ class Offer
 
 function test_draw(offerBuyer, playerBuyer)
 {	/* Testing file for drawing offers */
-	var html = "<div class='offer-shape ";
-	if(offerBuyer) { html += "buyer"; }
-	else { html += "seller"; }
-	html+="'><div class='offer-internal' style='float: left;'>$ ";
-	//html+=string(this.value);
-	html+=String(25);
-	html+="</div><div class='offer-internal' style='float: right;'>";
-	html+="<button ";
-	if(playerBuyer == false){ html += "disabled"; }
-	html+=">Accept</button></div></div>";
+	var html = `
+		<div class='offer-shape ${offerBuyer ? 'buyer': 'seller'}>
+			<div class='offer-internal' style='float: left;'>$ ${25}</div>
+			<div class='offer-internal' style='float: right;'>
+				<button ${!playerBuyer ? 'disabled' : ''}>Accept</button>
+			</div>
+		</div>`;
 
 	document.getElementById("offer-list").innerHTML+=html;
 	return 0;
