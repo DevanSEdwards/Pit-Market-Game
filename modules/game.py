@@ -75,7 +75,7 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Setup function to end the round later
-        self.force_end_round = self.io.call_later(length, self.end_round) # TODO store these so we can cancel them later if need be
+        self.force_end_round = self.io.call_later(length, self.end_round) 
  
         # Inform host and all players that round is starting
         response = {
@@ -98,10 +98,7 @@ class Game():
     def hc_end_round(self):
         """Bring the current round to a premature end"""
         self.io.cancel(force_end_round)
-        response = {
-            "type": "end round"
-        }
-        self.message_all(response)
+        self.end_round()
 
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
@@ -136,7 +133,9 @@ class Game():
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
-        if (player.is_seller == (player.card > price)) and (player.card != price): #TODO TAX
+        if (player.is_seller and (player.card < price + tax)):
+            raise TradeError("Price out of range")
+        if (not player.is_seller and (player.card > price)):
             raise TradeError("Price out of range")
 
         # Add offer to the dictionary
