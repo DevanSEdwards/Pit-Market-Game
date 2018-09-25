@@ -83,6 +83,7 @@ h2
     border: 1px solid #0066ff;
     width: 33vw;
     min-height: 200px;
+    /*margin: 20px;*/
 }
 
 #offers-container
@@ -104,3 +105,30 @@ h2
     width: 180px;
 }
 */
+
+.offer-shape
+{
+  border-style:     solid;
+  border-radius:    10px;
+  border-width:     2px;
+  width:            80%;
+  font-size:        15pt;
+}
+
+.offer-internal
+{
+    width: 45%;
+    margin: 5px;
+}
+
+.buyer
+{
+    float:  left;
+    background:     #8FBC8F;
+}
+
+.seller
+{
+    float:  right;
+    background:       #DEB887;
+}
