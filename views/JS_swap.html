@@ -7,6 +7,9 @@
 			var inner = '<object type="text/html" data="' + page + '"></object>';
 			document.getElementById(div).innerHTML=inner;
 		}
+		/*	FORMAT FOR FUNCTIONS
+			function load_PAGENAME() { loadpage('EXTERNAL_HTML.hmtl', 'd_DIVISION'); }
+		 */
 		function load_Game() { loadpage('e_Game.html', 'd_game'); }
 		function load_PostGame() { loadpage('e_postGame.html', 'd_game'); }
 		function load_Lobby() { loadpage('e_lobby.html', 'd_game'); }
@@ -16,12 +19,17 @@
 </head>
 <body>
 	<div id='d_buttons'>
+		<!-- Buttons for loading pages 
+		  -- Remove these button 
+		  -->
 		<button type="button" onclick="load_Lobby()">Lobby</button>
 		<button type="button" onclick="load_Game()">Game</button>
 		<button type="button" onclick="load_PostRound()">Post Round</button>
 		<button type="button" onclick="load_PostGame()">End-Game</button>
 		<button type="button" onclick="load_Settings()">Settings</button>
+		<!-- End of Button -->
 	</div>
+	<!-- Everything will be loaded into this division -->
 	<div id='d_game'></div>
 </body>
 </html>	
