@@ -16,6 +16,15 @@ function play() {
                 document.getElementById("isSeller").innerText = msg.isSeller ? "Seller" : "Buyer";
                 document.getElementById("cardValue").innerText = "Card: " + msg.value;
                 isSeller = msg.isSeller;
+                if (isSeller)
+                {
+                    document.getElementById("card").innerText = "Selling";
+                }
+                else
+                {
+                    document.getElementById("card").innerText = "Buying";
+                }
+                
                 cardValue = msg.value;
                 draw();
                 break;

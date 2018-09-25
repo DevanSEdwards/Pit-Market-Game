@@ -22,7 +22,6 @@ class Offer
 	get value() { return this.value; }
 	isBuyer() { return this.buyer; }
 	isSeller() { return !this.buyer; }
-
 }
 
 function recieveNewOffer(offer)

@@ -13,15 +13,14 @@
   <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="../public/styles/style.css">
+  <!--<link rel="stylesheet" type="text/css" href="../public/styles/style.css">-->
 
   <!-- Game JS -->
   <script type="text/javascript" src="offers.js"></script>
   <!-- END OF JS -->
-  <!--
+  
   <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-  -->
-  <!-- <link rel="stylesheet" type="text/css" href="game_submit.css"> -->
+  
   <title>Pit Market Game</title>
 </head>
 
@@ -32,18 +31,19 @@
     <p id="roundCounter">Time: 0:00</p>
     <p id="gameId">{{gameId}}</p>
     <p id="isHost" hidden>{{isHost}}</p>
-    <p id="isSeller"></p>
-    <p>Your card:</p>
-    <div id="card">
-      <p id="cardValue">sdfsdf</p>
-    </div>
+    <p id="isSeller"></p>  
   </div>
     
-    <div id="post-container">
-      <p class="offers-label">Post an offer</p>
-      <input class="txt-field" id="offerInput" type="number">
-      <input class="btn" id="btnPostOffer" type="button" value="Post Offer">
-    </div>
+  <p>Your card:</p>
+  <div id="card">
+    <p id="cardValue"></p>
+  </div>
+
+  <div id="post-container">
+    <p class="offers-label">Post an offer</p>
+    <input class="txt-field" id="offerInput" type="number">
+    <input class="btn" id="btnPostOffer" type="button" value="Post Offer">
+  </div>
 
   <div id="offers-container">
       <div>
