@@ -55,7 +55,7 @@ class Game():
         # Delete all offers
         self.offers = {}
         # Create a new round object to store round data
-        self.rounds.append(Round(length, offerTimeLimit, tax, floor, ceiling))
+        self.rounds.append(Round(length, offerTimeLimit, tax, ceiling, floor))
         # Increment round number
         self.round_number = len(self.rounds) - 1
         # Set all players to not traded
@@ -116,9 +116,6 @@ class Game():
         self.game_finished = True
         del self
 
-    def hc_round_setting(self, self, length, offerTimeLimit, tax, ceiling, floor)
-        """Initliaise the round settings"""
-
     def hc_card_settings(self, domain, mean, lowerLimit)
         """Initliaise the deck settings"""
         self.deck[domain] = domain
@@ -162,23 +159,21 @@ class Game():
 
     def pc_accept(self, player_id, offerId):
         """Verify and complete a trade"""
-        offer_id = offerId
+        offer_id.= offerId
         time = datetime.now()
-        player, offer, price = self.players[player_id], self.offers[offer_id], self.offers[offer_id].price
+        if offer_id not in self.offers:
+            raise TradeError("Offer expired")
+        player, offer, price, tax = self.players[player_id], self.offers[offer_id], self.offers[offer_id].price, self.rounds[self.round_number].tax
 
         # Check trade is valid
-        if offer.accepted:
-            raise TradeError("Offer already accepted")
-        # TODO change this so offers are deleted after time limit instead
-        if False and (time > (offer.time + timedelta(seconds=1000))):
-            raise TradeError("Offer expired")
+
         if player.has_traded:
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
             raise TradeError("Buyer/Seller mismatch")
         if (player.is_seller == (player.card > price)) and (player.card != price):
             raise TradeError("Price out of range")
-
+        
         # Acknowlege offer has been accepted
         offer.accepted = True
         # Add to trade dictionary
@@ -205,6 +200,7 @@ class Game():
                 "time": str(time),
                 "round number": self.round_number
             })
+        self.delete_offer(offer_id)
 
     # - Utilities -----------------------------------------------------
 
