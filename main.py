@@ -63,6 +63,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
     # Indexed by the corresponding message type, like:
     # "msg_type" : "method_name"
     host_commands = {
+        "card settings": "hc_card_settings",
         "start round": "hc_start_round",
         "end round": "hc_end_round",
         "end game": "hc_end_game"

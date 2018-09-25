@@ -21,12 +21,13 @@ class Game():
         self.is_next_seller = True  # First player should be a seller
         self.offers = {}  # Dictionary of offers {offer_id: Offer}
         self.round_number = 0  # Initialise round number
-        self.rounds = []  # List of Round objects
-        self.deck_settings = { # Shouldn't be changed after the first round
-            'domain': 7,
-            'mean': 6,
-            'lower_limit': 2
+        self.rounds = []  # List of Round settings
+        self.deck = { # Shouldn't be changed after the first round
+            'domain': None,
+            'mean': None,
+            'lower_limit': None,
         }
+        #deck_settings["domain"] = 
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
@@ -49,16 +50,12 @@ class Game():
     #   These methods should only be called inside WebsocketHandler
     #   Should start with 'hc'
 
-    def hc_start_round(self):
+    def hc_start_round(self, length, offerTimeLimit, tax, ceiling, floor):
         """"""
-        # TODO make these variables arguments
-        tax = None
-        floor = None
-        ceiling = None
         # Delete all offers
         self.offers = {}
         # Create a new round object to store round data
-        self.rounds.append(Round(tax, floor, ceiling))
+        self.rounds.append(Round(length, offerTimeLimit, tax, floor, ceiling))
         # Increment round number
         self.round_number = len(self.rounds) - 1
         # Set all players to not traded
@@ -118,6 +115,15 @@ class Game():
         self.ws.close()
         self.game_finished = True
         del self
+
+    def hc_round_setting(self, self, length, offerTimeLimit, tax, ceiling, floor)
+        """Initliaise the round settings"""
+
+    def hc_card_settings(self, domain, mean, lowerLimit)
+        """Initliaise the deck settings"""
+        self.deck[domain] = domain
+        self.deck[mean] = mean
+        self.deck[lowerLimit] = lowerLimit
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
