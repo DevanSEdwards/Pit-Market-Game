@@ -55,11 +55,14 @@ h2
 .txt-field
 {
     height: 45px;
+    width: 160px;
     padding: 0px 10px;
-    color: #003399;
+    color: black;
     border: 5px solid rgb(192, 192, 192);
     border-radius: 5px;
     text-align: center;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 #card
@@ -74,6 +77,19 @@ h2
 .offers-label
 {
     color: rgb(192, 192, 192)
+}
+
+.info-label
+{
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.info-label span
+{
+    color: rgb(192, 192, 192);
+    font-weight: normal;
 }
 
 #post-container
