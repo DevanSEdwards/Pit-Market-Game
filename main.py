@@ -99,7 +99,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         if self.host:
             self.game.hc_end_game()
         else:
-            self.game.remove_player(self.client_id)
+            pass
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""

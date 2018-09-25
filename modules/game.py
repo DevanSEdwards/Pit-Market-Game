@@ -32,6 +32,7 @@ class Game():
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
         self.io = tornado.ioloop.IOLoop.current()
+        self.force_end_round = None
 
     def add_player(self):
         player_id = uuid4().hex
@@ -39,12 +40,6 @@ class Game():
         # Alternate between buyer and seller for each new player
         self.is_next_seller = not self.is_next_seller
         return player_id
-
-    def remove_player(self, player_id):
-        player = self.players[player_id]
-        self.is_next_seller = player.is_seller
-        # TODO Check for and remove offers from this player.
-        del player
 
     # - Host Commands -------------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -79,7 +74,8 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Setup function to end the round later
-        self.io.call_later(length, self.end_round) # TODO store these so we can cancel them later if need be
+        self.force_end_round = self.io.call_later(length, self.end_round) # TODO store these so we can cancel them later if need be
+ 
         # Inform host and all players that round is starting
         response = {
             "type": "start round",
@@ -100,6 +96,7 @@ class Game():
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
+        self.io.cancel(force_end_round)
         response = {
             "type": "end round"
         }
@@ -138,7 +135,7 @@ class Game():
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
-        if (player.is_seller == (player.card > price)) and (player.card != price):
+        if (player.is_seller == (player.card > price)) and (player.card != price): #TODO TAX
             raise TradeError("Price out of range")
 
         # Add offer to the dictionary
@@ -211,7 +208,7 @@ class Game():
     def delete_offer(self, offer_id):
         del self.offers[offer_id]
 
-    def end_round(self):
+    def end_round(self): #TODO
         pass
 
     def message_all(self, response):
