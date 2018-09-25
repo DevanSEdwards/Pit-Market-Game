@@ -79,12 +79,12 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Setup function to end the round later
-        self.io.call_later(120, self.end_round) # TODO store these so we can cancel them later if need be
+        self.io.call_later(length, self.end_round) # TODO store these so we can cancel them later if need be
         # Inform host and all players that round is starting
         response = {
             "type": "start round",
-            "length": 120,
-            "offer time limit": 10
+            "length": length,
+            "offer time limit": offerTimeLimit
         }
         self.message_all(response)
         # Inform players of their card number and buyer/seller identity
@@ -96,6 +96,7 @@ class Game():
             }
             message = json.dumps(response)
             player.ws.write_message(message)
+        self.start_time_milli = int(round(time.time() * 1000))
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
@@ -131,7 +132,7 @@ class Game():
         # Generate offer_id
         print("offer: " + player_id, price)
         offer_id = uuid4().hex
-        time = datetime.now() # TODO change to milliseconds since the start of the round
+        time = int(round(time.time() * 1000)) - self.start_time_milli # milliseconds since the start of the round
         player = self.players[player_id]
 
         # Check offer is valid
@@ -171,7 +172,10 @@ class Game():
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
             raise TradeError("Buyer/Seller mismatch")
-        if (player.is_seller == (player.card > price)) and (player.card != price):
+        # Price range check    
+        if (player.is_seller and ((player.card + tax) > price))
+            raise TradeError("Price out of range")
+        if (not player.is_seller and (player.card < (price + tax):
             raise TradeError("Price out of range")
         
         # Acknowlege offer has been accepted
