@@ -4,20 +4,9 @@
 <head>
   <!-- Prevents a 404 error from chrome requesting an icon. -->
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <!-- Fonts from Google Fonts-->
   <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="../public/styles/style.css">
-
-  <!-- Game JS -->
   <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-
   <title>Hosting Game</title>
 </head>
 
@@ -27,41 +16,11 @@
   <p id="gameId">{{gameId}}</p>
   <p id="isHost" hidden>{{isHost}}</p>
 
-  <div id="host-controls-container">
-      <input class="btn" id="btnAddTax" type="button" value="Add Tax">
-      <input class="txt-field" id="taxInput" type="number">
-      <br>
-      <input class="btn" id="btnAddFloor" type="button" value="Add Floor">
-      <input class="txt-field" id="floorInput" type="number">
-      <br>
-      <input class="btn" id="btnAddCeil" type="button" value="Add Ceiling">
-      <input class="txt-field" id="ceilInput" type="number">
-      <br>
-      <br>
-
-      <input class="btn" id="btnStartRound" type="button" value="Start Round">
-      <input class="btn" id="btnEndGame" type="button" value="End Game"><br>
-      
-  </div>
-  
-  
-  <div id="offers-container">
-      <div>
-        <p class="offers-label">Buy Offers</p>
-        <div class="offer-container" id="buyOffers"></div>
-      </div>
-      <div>
-        <p class="offers-label">Sell Offers</p>
-        <div class="offer-container" id="sellOffers"></div>
-      </div>
-      <div>
-        <p class="offers-label">Successful Trades</p>
-        <div class="offer-container" id="tradeList"></div>
-      </div>   
-  </div>
+  <div id=root></div>
 
   <script src="{{ static_url('scripts/tools.js') }}"></script>
   <script src="{{ static_url('scripts/websockets.js') }}"></script>
+  <script src="{{ static_url('scripts/host.js') }}"></script>
 </body>
 
 </html>
