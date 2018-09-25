@@ -33,6 +33,7 @@ class Game():
         # self.io.call_later(...)
         self.io = tornado.ioloop.IOLoop.current()
         self.force_end_round = None
+        self.start_time_milli = None
 
     def add_player(self):
         player_id = uuid4().hex
@@ -208,8 +209,11 @@ class Game():
     def delete_offer(self, offer_id):
         del self.offers[offer_id]
 
-    def end_round(self): #TODO
-        pass
+    def end_round(self):
+        response = {
+            "type": "end round"
+        }
+        self.message_all(response)
 
     def message_all(self, response):
         message = json.dumps(response)
