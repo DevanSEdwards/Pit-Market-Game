@@ -82,7 +82,7 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Setup function to end the round later
-        self.io.call_later(120, self.end_round)
+        self.io.call_later(120, self.end_round) # TODO store these so we can cancel them later if need be
         # Inform host and all players that round is starting
         response = {
             "type": "start round",
@@ -128,7 +128,7 @@ class Game():
         # Generate offer_id
         print("offer: " + player_id, price)
         offer_id = uuid4().hex
-        time = datetime.now()
+        time = datetime.now() # TODO change to milliseconds since the start of the round
         player = self.players[player_id]
 
         # Check offer is valid
