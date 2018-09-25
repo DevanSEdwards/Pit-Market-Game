@@ -1,7 +1,8 @@
 function loadpage(page)
 {
-    var inner = '<object type="text/html" data="./host/' + page + '.html"></object>';
-    document.getElementById('root').innerHTML=inner;
+    pages = document.getElementById('root').children;
+    pages.hidden = true;
+    document.getElementById(page + "Page").hidden = false;
 }
 
 loadpage("round");
