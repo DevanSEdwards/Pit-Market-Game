@@ -38,19 +38,19 @@ class GameHandler:
         # No game_id match
         return None
 
-    def add_player_ws(self, player_id, ws):
+    def add_player_ws(self, ws):
         """Check for matching id and return the player's game instance"""
         for game in self.games:
-            if player_id in game.players:
-                game.players[player_id].ws = ws
+            if ws.client_id in game.players:
+                game.players[ws.client_id].ws = ws
                 return game
         # No player_id match
         return None
 
-    def add_host_ws(self, host_id, ws):
+    def add_host_ws(self, ws):
         """Check for matching id and return the host's game instance"""
         for game in self.games:
-            if host_id == game.host_id:
+            if ws.client_id == game.host_id:
                 game.ws = ws
                 return game
         # No host_id match
