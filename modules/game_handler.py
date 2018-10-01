@@ -55,3 +55,10 @@ class GameHandler:
                 return game
         # No host_id match
         return None
+
+    def valid_id(self, client_id, game_id, is_host):
+        return (
+            any(client_id == game.host_id for game in self.games)
+            if is_host else
+            any(game_id == game.game_id and client_id in game.players for game in self.games)
+        )
