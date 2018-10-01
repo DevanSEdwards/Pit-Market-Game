@@ -22,18 +22,17 @@ class Game():
         self.offers = {}  # Dictionary of offers {offer_id: Offer}
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round settings
-        self.deck = { # Shouldn't be changed after the first round
+        self.deck_settings = {  # Shouldn't be changed after the first round
             'domain': None,
             'mean': None,
             'lower_limit': None,
         }
-        #deck_settings["domain"] = 
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
         self.io = tornado.ioloop.IOLoop.current()
+        self.start_time = None
         self.force_end_round = None
-        self.start_time_milli = None
 
     def add_player(self):
         player_id = uuid4().hex
@@ -75,8 +74,8 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Setup function to end the round later
-        self.force_end_round = self.io.call_later(length, self.end_round) 
- 
+        self.force_end_round = self.io.call_later(length, self.end_round)
+
         # Inform host and all players that round is starting
         response = {
             "type": "start round",
@@ -93,11 +92,11 @@ class Game():
             }
             message = json.dumps(response)
             player.ws.write_message(message)
-        self.start_time_milli = int(round(time.time() * 1000))
+        self.start_time = datetime.now()
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
-        self.io.cancel(force_end_round)
+        self.io.cancel(self.force_end_round)
         self.end_round()
 
     def hc_end_game(self):
@@ -112,11 +111,11 @@ class Game():
         self.game_finished = True
         del self
 
-    def hc_card_settings(self, domain, mean, lowerLimit)
+    def hc_card_settings(self, domain, mean, lowerLimit):
         """Initliaise the deck settings"""
-        self.deck[domain] = domain
-        self.deck[mean] = mean
-        self.deck[lowerLimit] = lowerLimit
+        self.deck_settings[domain] = domain
+        self.deck_settings[mean] = mean
+        self.deck_settings[lowerLimit] = lowerLimit
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -127,13 +126,14 @@ class Game():
         # Generate offer_id
         print("offer: " + player_id, price)
         offer_id = uuid4().hex
-        time = int(round(time.time() * 1000)) - self.start_time_milli # milliseconds since the start of the round
+        # milliseconds since the start of the round
+        time = (datetime.now() - self.start_time).milliseconds
         player = self.players[player_id]
 
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
-        if (player.is_seller and (player.card < price + tax)):
+        if player.is_seller and (player.card < price + self.rounds[self.round_number].tax):
             raise TradeError("Price out of range")
         if (not player.is_seller and (player.card > price)):
             raise TradeError("Price out of range")
@@ -153,28 +153,30 @@ class Game():
                 "time": str(time)
             })
 
-        # Add check that offer hasn't been posted by player for 10 seconds %UNSURE HOW TO DO THIS
-
     def pc_accept(self, player_id, offerId):
         """Verify and complete a trade"""
-        offer_id.= offerId
+        offer_id = offerId
         time = datetime.now()
         if offer_id not in self.offers:
             raise TradeError("Offer expired")
-        player, offer, price, tax = self.players[player_id], self.offers[offer_id], self.offers[offer_id].price, self.rounds[self.round_number].tax
+        player, offer, price, tax = (
+            self.players[player_id],
+            self.offers[offer_id],
+            self.offers[offer_id].price,
+            self.rounds[self.round_number].tax
+        )
 
         # Check trade is valid
-
         if player.has_traded:
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
             raise TradeError("Buyer/Seller mismatch")
-        # Price range check    
-        if (player.is_seller and ((player.card + tax) > price))
+        # Price range check
+        if player.is_seller and (player.card + tax) > price:
             raise TradeError("Price out of range")
-        if (not player.is_seller and (player.card < (price + tax):
+        if not player.is_seller and player.card < price:
             raise TradeError("Price out of range")
-        
+
         # Acknowlege offer has been accepted
         offer.accepted = True
         # Add to trade dictionary
@@ -216,9 +218,9 @@ class Game():
 
     def message_all(self, response):
         message = json.dumps(response)
-        if self.ws:
+        if self.ws is not None:
             self.ws.write_message(message)
         print("message_all: " + message)
         for player in self.players.values():
-            if player.ws:  # BUG sometimes this gets called without player.ws existing
+            if player.ws is not None:
                 player.ws.write_message(message)
