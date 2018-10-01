@@ -12,17 +12,15 @@ function getCookie(cname) {
     var ca = decodedCookie.split(`;`);
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ` `) {
+        while (c.charAt(0) == ` `)
             c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) == 0)
             return c.substring(name.length, c.length);
-        }
     }
     return ``;
 }
 
-function send_cookie_data() {
+function sendCookieData() {
     state.websocket.send(JSON.stringify({
         type: `id`,
         gameId: getCookie(`gameId`),
@@ -32,5 +30,7 @@ function send_cookie_data() {
 }
 
 state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
-state.websocket.onopen = send_cookie_data;
+state.websocket.onopen = sendCookieData;
+state.websocket.onclose = () => { window.location.replace('/'); };
+// Need to split into player/host at this point
 loadpage(`deckSettings`);
