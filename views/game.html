@@ -65,17 +65,17 @@
   <div id="post-container">
     <p class="offers-label">Post an offer</p>
     <input class="txt-field" id="offerInput" type="number">
-    <input class="btn" id="btnPostOffer" type="button" value="Post Offer">
+    <input class="btn" id="btnPostOffer" type="button" value="Post Offer" onclick="submitOffer()">
   </div>
 
   <div id="offers-container">
-      <div>
+      <div><!-- Offer List -->
         <p class="offers-label">Trade Offers</p>
         <div class="offer-container" id="offer-list">
           <!-- DO NOT ADD INTERNAL HTML -->
         </div>
       </div>
-      <div>
+      <div><!-- Trades List -->
         <p class="offers-label">Successful Trades</p>
         <div class="offer-container" id="trade-list">
           <!-- DO NOT ADD INTERNAL HTML -->
@@ -94,7 +94,7 @@
         ">
         <input type="text" width="100" size="" id="input_offer">
         <!--input type="submit" value="Post!"-->
-      </form>
+      </form> 
     </div>
   </div>
   <!--script src="{{ static_url('scripts/script.js') }}"></script>

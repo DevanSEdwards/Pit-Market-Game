@@ -5,7 +5,7 @@ var _HEIGHT = 500;
 // Variables
 var lst_offers = [];
 
-var _BUYER = false;
+var _BUYER = true;
 
 class Offer
 {
@@ -46,12 +46,13 @@ class Offer
 
 	// Create HTML element
 	var html = `
-		<div class='offer-shape ${offerBuyer ? 'buyer': 'seller'}>
+		<div class='offer-shape ${this.buyer ? "buyer'": "seller'"}>
 			<div class='offer-internal' style='float: left;'>$ ${String(this.val)}</div>
 			<div class='offer-internal' style='float: right;'>
 				<button onclick='acceptOffer(${String(this.offer_id)})' ${_BUYER == this.buyer ? 'disabled' : ''}>Accept</button>
 			</div>
-		</div>`;
+		</div>
+		`;
 
 	// Draw to screen
 	document.getElementById("offer-list").innerHTML = html + old;
@@ -60,20 +61,6 @@ class Offer
 	this.drawn = true;
 	return 0;
 	}
-}
-
-function test_draw(offerBuyer, playerBuyer)
-{	/* Testing file for drawing offers */
-	var html = `
-		<div class='offer-shape ${offerBuyer ? 'buyer': 'seller'}>
-			<div class='offer-internal' style='float: left;'>$ ${25}</div>
-			<div class='offer-internal' style='float: right;'>
-				<button ${!playerBuyer ? 'disabled' : ''}>Accept</button>
-			</div>
-		</div>`;
-
-	document.getElementById("offer-list").innerHTML+=html;
-	return 0;
 }
 
 function drawOfferList()
@@ -88,6 +75,7 @@ function drawOfferList()
 /* Use these functions to connect to web sockets */
 function recieveNewOffer(offer_id, buyer, val, time)
 {
+	// Buyer is whether the offer is to buy or now
 	lst_offers.push(new Offer(offer_id, buyer, val, time))
 }
 
@@ -95,4 +83,16 @@ function acceptOffer(offerID)
 {
 	console.log("Accepting Offer...");
 	console.log(String(offerID));
+}
+
+
+function submitOffer()
+{
+	offerVal = document.getElementById("offerInput").value;
+	// Submit offer to web server
+
+	// If no errors; display new offer
+	// TODO: Recieve offerID from server
+	recieveNewOffer('NULL', _BUYER, offerVal, Date.now());
+	drawOfferList();
 }
