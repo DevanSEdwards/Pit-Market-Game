@@ -1,0 +1,67 @@
+<svg viewBox="0 0 500 500" id="deckChart" style="
+    width: 300px;
+    overflow: visible">
+    <polyline
+        id="sellChartLine"
+        class="chartLine"
+        fill="none"
+        stroke="#0074d9"
+        stroke-width="5"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        points="" >
+    </polyline>
+    <polyline
+        id="buyChartLine"
+        class="chartLine"
+        fill="none"
+        stroke="#d97400"
+        stroke-width="5"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        points="" />
+</svg>
+<script>
+    function drawDeckChart(mean, domain, lowerLimit, size=500) {
+        var yTrans = Math.max(-lowerLimit, lowerLimit + domain - 2 * mean - 1);
+        var yScale = size / (2 * Math.max(mean - lowerLimit, domain + lowerLimit - mean - 1));
+        var xScale = size / domain; 
+
+        var point;
+        var n = 0;
+
+        var svg = document.getElementById("deckChart");
+        var sellChartLine = document.getElementById("sellChartLine");
+        var buyChartLine = document.getElementById("buyChartLine");
+
+        // Remove all points
+        for (let i = sellChartLine.points.numberOfItems - 1; i >= 0; i--)
+            sellChartLine.points.removeItem(i);
+        for (let i = buyChartLine.points.numberOfItems - 1; i >= 0; i--)
+            buyChartLine.points.removeItem(i);
+
+        // Add new points
+        for (let i = lowerLimit; i < lowerLimit + domain; i++) {
+            point = svg.createSVGPoint();
+            point.x = xScale * n++;
+            point.y = yScale * (i + yTrans);
+            sellChartLine.points.appendItem(point);
+            point = svg.createSVGPoint();
+            point.x = xScale * n;
+            point.y = yScale * (i + yTrans);
+            sellChartLine.points.appendItem(point);
+        }
+        for (let i = 2 * mean - lowerLimit - domain + 1; i < 2 * mean - lowerLimit + 1; i++) {
+            point = svg.createSVGPoint();
+            point.x = xScale * n--;
+            point.y = yScale * (i + yTrans);
+            buyChartLine.points.appendItem(point);
+            point = svg.createSVGPoint();
+            point.x = xScale * n;
+            point.y = yScale * (i + yTrans);
+            buyChartLine.points.appendItem(point);
+        }
+    }
+
+    drawDeckChart(6, 8, 2);
+</script>

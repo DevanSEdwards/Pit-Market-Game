@@ -23,6 +23,7 @@ class MainHandler(RequestHandler):
         self.game_handler = game_handler
 
     def get(self):
+        # TODO send gameId, isHost and clientId as cookies
         arg = self.get_argument("game", default="")
 
         now = datetime.datetime.now()
@@ -128,7 +129,11 @@ class WebsocketHandler(websocket.WebSocketHandler):
             return
 
         # If client is a player, add the player_id to the message
+<<<<<<< HEAD
         if not self.is_host:
+=======
+        if not self.host:  # TODO and self.client_id
+>>>>>>> front-end
             msg["player_id"] = self.client_id
 
         method = getattr(self.game, self.commands[msg["type"]])

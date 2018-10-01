@@ -5,10 +5,172 @@ html {
 body
 {
     text-align: center;
-    font-family: 'Cabin', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #display
 {
     border: 1px solid black;
+}
+
+#home-title
+{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0066ff;
+    font-weight: normal;
+    font-size: 64px;
+}
+
+#credits-string
+{
+    color: rgb(192, 192, 192);
+}
+
+h2
+{
+    color: rgb(192, 192, 192);
+    /*font-weight: normal;*/
+}
+
+.btn
+{
+    background-color: limegreen;
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border: 1px solid limegreen;
+    border-radius: 5px;
+    height: 45px;
+    min-width: 90px;
+}
+
+.btn:hover
+{
+    background-color: lime;
+    color: black;
+    border: 1px solid lime;
+}
+
+.txt-field
+{
+    height: 45px;
+    width: 160px;
+    padding: 0px 10px;
+    color: black;
+    border: 5px solid rgb(192, 192, 192);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#card
+{
+    display: inline-block;
+    width: 120px;
+    height: 160px;
+    border: 1px solid black;
+    box-shadow: 5px 5px 1px rgb(192, 192, 192);
+}
+
+.offers-label
+{
+    color: rgb(192, 192, 192)
+}
+
+.info-label
+{
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.info-label span
+{
+    color: rgb(192, 192, 192);
+    font-weight: normal;
+}
+
+#post-container
+{
+    padding: 60px;
+}
+
+.offer-container
+{
+    border: 5px solid rgb(192, 192, 192);
+    border-radius: 5px;
+    width: 45vw;
+    min-height: 300px;
+    margin: 20px;
+}
+
+#offers-container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#host-controls-container
+{
+    padding: 60px;
+}
+
+/*
+.txt-field:focus
+{
+    height: 60px;
+    width: 180px;
+}
+*/
+
+.offer-shape
+{
+  border-style:     solid;
+  border-radius:    10px;
+  border-width:     2px;
+  width:            80%;
+  font-size:        15pt;
+  margin-top:       5px;
+}
+
+.offer-internal
+{
+    width: 45%;
+    margin: 5px;
+}
+
+.buyer
+{
+    float:  left;
+    background:     #8FBC8F;
+}
+
+.seller
+{
+    float:  right;
+    background:       #DEB887;
+}
+
+.offer-shape-buyer
+{
+    background-color: red;
+    color:black;
+    border: 1px solid black;
+}
+
+.offer-shape-seller
+{
+    background-color: limegreen;
+    color: black;
+    border: 1px solid black;
+}
+
+#top-container
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
