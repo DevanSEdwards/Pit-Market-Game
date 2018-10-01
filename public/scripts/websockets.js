@@ -6,7 +6,7 @@ var offerTimeout = 10000;
 isHost ? host() : play();
 
 function play() {
-    var ws = new WebSocket("wss://" + window.location.host + "/pws/" + clientId);
+    var ws = new WebSocket(`wss://${window.location.host}/pws/${clientId}`);
     ws.onmessage = (event) => {
         msg = JSON.parse(event.data);
         console.log(msg);
@@ -14,7 +14,7 @@ function play() {
         switch (msg.type) {
             case "card":
                 document.getElementById("isSeller").innerText = msg.isSeller ? "Seller" : "Buyer";
-                document.getElementById("cardValue").innerText = "Card: " + msg.value;
+                document.getElementById("cardValue").innerText = `Card: ${msg.value}`;
                 isSeller = msg.isSeller;
                 if (isSeller)
                 {
@@ -36,7 +36,7 @@ function play() {
                 var timeRemaining = msg.length;
                 var countInterval = window.setInterval(() => {
                     document.getElementById("roundCounter").innerText =
-                        "Time: " + Math.floor(timeRemaining / 60).toString() + ":" + (timeRemaining % 60).toString().padStart(2, "0");
+                        `Time: ${Math.floor(timeRemaining / 60).toString()}:${(timeRemaining % 60).toString().padStart(2, "0")}`;
                     if (timeRemaining-- == 0)
                         clearInterval(countInterval);
                 }, 1000)
@@ -50,11 +50,11 @@ function play() {
             case "trade":
                 if (msg.success) {
                     document.getElementById("btnPostOffer").disabled = true;
-                    document.getElementById("btnPostOffer").value = "Traded at: " + msg.price.toString();
+                    document.getElementById("btnPostOffer").value = `Traded at: ${msg.price.toString()}`;
                 }
             case "announce trade":
                 var announce = document.createElement("p");
-                announce.innerHTML = "Successful Trade: " + msg.price.toString();
+                announce.innerHTML = `Successful Trade: ${msg.price.toString()}`;
                 var tradeList = document.getElementById("tradeList");
                 tradeList.appendChild(announce);
         }
@@ -68,7 +68,7 @@ function play() {
 }
 
 function host() {
-    var ws = new WebSocket("wss://" + window.location.host + "/hws/" + clientId);
+    var ws = new WebSocket(`wss://${window.location.host}/pws/${clientId}`);
     ws.onmessage = (event) => {
         msg = JSON.parse(event.data);
         console.log(msg);
@@ -81,7 +81,7 @@ function host() {
                 var timeRemaining = msg.length;
                 var countInterval = window.setInterval(() => {
                     document.getElementById("roundCounter").innerText =
-                        "Time: " + Math.floor(timeRemaining / 60).toString() + ":" + (timeRemaining % 60).toString().padStart(2, "0");
+                        `Time: ${Math.floor(timeRemaining / 60).toString()}:${(timeRemaining % 60).toString().padStart(2, "0")}`;
                     if (timeRemaining-- == 0)
                         clearInterval(countInterval);
                 }, 1000)
