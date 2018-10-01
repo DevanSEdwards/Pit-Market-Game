@@ -10,15 +10,15 @@ export default class State
         lowerLimit: 2
     };
     offers = [];
-    rounds = {
-        settings = {
-            length: 120,
-            offerTimeLimit: 10,
-            tax: null,
-            ceiling: null,
-            floor: null
-        },
-        trade: []            
-    };
+    rounds = [
+        // settings = {
+        //     length: 120,
+        //     offerTimeLimit: 10,
+        //     tax: null,
+        //     ceiling: null,
+        //     floor: null
+        // },
+        // trades: []            
+    ];
     websocket = null;
 }

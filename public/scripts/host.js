@@ -38,8 +38,8 @@ function send_cookie_data(ws)
 }
 
 function main() {
-    var ws = new WebSocket(`wss://${window.location.host}/ws`);
-    send_cookie_data(ws);
+    State.WebSocket = new WebSocket(`wss://${window.location.host}/ws`);
+    send_cookie_data(State.WebSocket);
     loadpage(`deckSettings`);
 }
 
