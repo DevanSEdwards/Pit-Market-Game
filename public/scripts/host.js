@@ -1,46 +1,40 @@
-import State from './state';
+// import State from './state';
 
-function loadpage(page)
-{
+var state = new State();
+
+function loadpage(page) {
     pages = document.getElementById(`root`).children;
     pages.hidden = true;
     document.getElementById(`${page}Page`).hidden = false;
 }
 
-function getCookie(cname)
-{
+function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) 
-    {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') 
-        {
+        while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) 
-        {
+        if (c.indexOf(name) == 0) {
             return c.substring(name.length, c.length);
         }
     }
     return "";
 }
 
-function send_cookie_data(ws)
-{
-    ws.send(JSON.stringify({
+function send_cookie_data() {
+    state.websocket.send(JSON.stringify({
         "type": "id",
-        "gameId": getCookie(gameId),
-        "isHost": getCookie(isHost),
-        "clientId": getCookie(clientId)
+        "gameId": getCookie("gameId"),
+        "isHost": getCookie("isHost"),
+        "clientId": getCookie("clientId")
     }));
 }
 
-function main() {
-    State.WebSocket = new WebSocket(`wss://${window.location.host}/ws`);
-    send_cookie_data(State.WebSocket);
-    loadpage(`deckSettings`);
-}
+console.log("hello");
+state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
+state.websocket.onopen = send_cookie_data;
 
-document.onload = main;
+loadpage(`deckSettings`);
