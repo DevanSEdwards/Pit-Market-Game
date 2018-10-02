@@ -95,8 +95,16 @@ function host() {
         }
     };
     document.getElementById("btnStartRound").addEventListener("click", () => {
+        var roundLength = document.getElementById("roundLength");
+        var tradeLength = document.getElementById("tradeLength");
+
         ws.send(JSON.stringify({
-            "type": "start round"
+            "type": "start round",
+            "length": roundLength.options[roundLength.selectedIndex].value,
+            "offerTimeLimit": tradeLength.options[roundLength.selectedIndex].value,
+            "tax": document.getElementById("taxInput").value,
+            "ceiling": document.getElementById("floorInput").value,
+            "floor": document.getElementById("ceilInput").value
         }));
     });
     document.getElementById("btnEndGame").addEventListener("click", () => {
