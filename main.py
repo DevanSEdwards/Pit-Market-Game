@@ -27,11 +27,11 @@ class MainHandler(RequestHandler):
 
         now = datetime.datetime.now()
         cookie_expiry = now + datetime.timedelta(minutes=60)
-        client_id = self.get_cookie("clientId")
+        client_id = self.get_cookie("clientId", "")
 
         # Hosting a new game (/?game=host)
         if arg == "host":
-            if client_id is None or not self.game_handler.valid_id(client_id, None, True):
+            if client_id == "" or not self.game_handler.valid_id(client_id, None, True):
                 host_id, game_id = self.game_handler.new_game()
                 self.set_cookie("clientId", host_id, expires=cookie_expiry)
                 self.set_cookie("gameId", game_id, expires=cookie_expiry)
@@ -43,7 +43,7 @@ class MainHandler(RequestHandler):
                 self.clear_all_cookies()
                 self.redirect("/")
                 return
-            if client_id is None:
+            if client_id == "":
                 player_id = self.game_handler.add_player(arg)
                 if player_id == None:
                     self.render("views/index.html")
