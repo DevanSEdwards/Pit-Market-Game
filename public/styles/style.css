@@ -128,44 +128,54 @@ h2
 
 .offer-shape
 {
-  border-style:     solid;
-  border-radius:    10px;
-  border-width:     2px;
+  border-radius:    5px;
   width:            80%;
   font-size:        15pt;
-  margin-top:       5px;
+  margin: 5px 10px;
+  border: 1px solid rgb(192, 192, 192);
 }
 
 .offer-internal
 {
-    width: 45%;
+    width: 30%;
     margin: 5px;
+    float: left;
 }
 
 .buyer
 {
     float:  left;
-    background:     #8FBC8F;
+    background: white;
 }
 
 .seller
 {
     float:  right;
-    background:       #DEB887;
+    background: white;
 }
 
-.offer-shape-buyer
-{
-    background-color: red;
-    color:black;
-    border: 1px solid black;
-}
-
-.offer-shape-seller
+.btn-offer
 {
     background-color: limegreen;
     color: black;
-    border: 1px solid black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border: 1px solid limegreen;
+    border-radius: 5px;
+    min-width: 90px;
+    width:90%;
+}
+
+.btn-offer:hover
+{
+    background-color: lime;
+    border: 1px solid lime;
+}
+
+.offer-internal
+{
+    border: 0px solid green;
 }
 
 #top-container
