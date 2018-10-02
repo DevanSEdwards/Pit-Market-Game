@@ -23,7 +23,6 @@ class MainHandler(RequestHandler):
         self.game_handler = game_handler
 
     def get(self):
-        # TODO send gameId, isHost and clientId as cookies
         arg = self.get_argument("game", default="")
 
         now = datetime.datetime.now()
@@ -52,7 +51,7 @@ class MainHandler(RequestHandler):
                 self.set_cookie("clientId", player_id, expires=cookie_expiry)
                 self.set_cookie("gameId", arg, expires=cookie_expiry)
                 self.set_cookie("isHost", "false", expires=cookie_expiry)
-            self.render("views/game.html")
+            self.render("views/player.html")
         # Render main page (/)
         else:
             self.render("views/index.html")
