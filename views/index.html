@@ -1,41 +1,32 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
+    
+    <script>
+      function join() {
+        var room = document.getElementById("room").value;
+        window.location.replace("/?game=" + room)
+      }
+    </script>
 
-<head>
-  <!-- Prevents a 404 error from chrome requesting an icon. -->
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-  
-  <script>
-    function join() {
-      var room = document.getElementById("room").value;
-      window.location.replace("/?game=" + room)
-    }
-  </script>
-
-  <title>Pit Market Game</title>
-</head>
-
-<body>
-  <h1 id="home-title">Pit Market Game</h1>
-  <div>
-    <h2>HOST A GAME</h2>
-    <a href="/?game=host">Host a game</a>
-    <form id="form" method="method" name="form">
-      <h2>JOIN A GAME</h2>
-      <p>Enter game code:</p>
-      <input class="txt-field" id="room" name="room" type="text" placeholder="Game Code">
-      <input class="btn" onclick="join()" type="button" value="Join">
-    </form>
-  </div>
-  <div>
-    <p id="credits-string">Developed by: Wesley Billingham, Alfred Burgess, Deven Edwards, Jayden Kur, Timothy Wise, Brave Ziazan</p>
-  </div>
-</body>
-
+    <title>Pit Market Game</title>
+  </head>
+  <body>
+    <h1 id="home-title">Pit Market Game</h1>
+    <div>
+      <h2>HOST A GAME</h2>
+      <a href="/?game=host">Host a game</a>
+      <form id="form" method="method" name="form">
+        <h2>JOIN A GAME</h2>
+        <p>Enter game code:</p>
+        <input class="txt-field" id="room" name="room" type="text" placeholder="Game Code">
+        <input class="btn" onclick="join()" type="button" value="Join">
+      </form>
+    </div>
+    <div>
+      <p id="credits-string">Developed by: Wesley Billingham, Alfred Burgess, Deven Edwards, Jayden Kur, Timothy Wise, Brave Ziazan</p>
+    </div>
+  </body>
 </html>
