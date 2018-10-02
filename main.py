@@ -43,10 +43,12 @@ class MainHandler(RequestHandler):
             if not self.game_handler.valid_id(client_id, arg, False):
                 self.clear_all_cookies()
                 self.redirect("/")
+                return
             if client_id is None:
                 player_id = self.game_handler.add_player(arg)
                 if player_id == None:
                     self.render("views/index.html")
+                    return
                 self.set_cookie("clientId", player_id, expires=cookie_expiry)
                 self.set_cookie("gameId", arg, expires=cookie_expiry)
                 self.set_cookie("isHost", "false", expires=cookie_expiry)
@@ -155,16 +157,6 @@ def main():
     if __debug__:
         # Log all GET, POST... requests
         enable_pretty_logging()
-
-    # transformer = jsx.JSXTransformer()
-    # for root, dirs, files in os.walk("./react"):
-    #     for file in files:
-    #         if file.endswith(".jsx"):
-    #             print(file)
-    #             transformer.transform(
-    #                 os.path.join(root, file),
-    #                 os.path.join("./public/scripts", file[:-1])
-    #             )
 
     game_handler = GameHandler()
 
