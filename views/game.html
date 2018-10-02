@@ -6,6 +6,11 @@
     <title>Pit Market Game</title>
   </head>
   <body>
+    <div id=root>
+      <object id="lobbyPage" type="text/html"data="{{ static_url('html/player/lobby.html') }}" hidden></object>
+      <object id="endGamePage" type="text/html" data="{{ static_url('html/player/endGame.html') }}" hidden></object>
+      <object id="roundPage" type="text/html" data="{{ static_url('html/player/round.html') }}" hidden></object>
+    </div>
     <!--<script type="text/javascript" src="transactions.js"></script>-->
     <script src="{{ static_url('scripts/state.js') }}"></script>
     <script src="{{ static_url('scripts/setup.js') }}"></script>
