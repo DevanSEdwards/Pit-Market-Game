@@ -33,4 +33,4 @@ function sendCookieData() {
 
 state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
 state.websocket.onopen = sendCookieData;
-state.websocket.onclose = () => { window.location.replace('/'); };
+state.websocket.onclose = () => { window.location.replace(`/`); };
