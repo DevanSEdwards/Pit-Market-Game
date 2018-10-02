@@ -1,105 +1,14 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <!-- Prevents a 404 error from chrome requesting an icon. -->
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Fonts from Google Fonts-->
-  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="../public/styles/style.css">
-
-  <!-- TODO: Make External -->
-  <style type="text/css">
-  
-  </style>
-  <!-- JavaScript -->
-
-  <!-- Game JS -->
-  <script type="text/javascript" src="offers.js"></script>
-  <script type="text/javascript" src="transactions.js"></script>
-  <!-- END OF JS -->
-  
-  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-  
-  <title>Pit Market Game</title>
-</head>
-
-<body>
-  <!-- TODO: UNHIDE HEADER -->
-  <div id="header-container" hidden>
-    <p id="clientId">{{clientId}}</p>
-    <p id="roundCounter">Time: 0:00</p>
-    <p id="gameId">{{gameId}}</p>
-    <p id="isHost" hidden>{{isHost}}</p>
-    <p id="isSeller"></p>  
-  </div>
-   
-  <div id="top-container">
-    <div>
-      <p class="info-label"><span>Round: </span>1</p>
-      <p class="info-label"><span>Time: </span>1:59</p>
-      <p class="info-label"><span>Profit: </span>$999</p>
-    </div>
-    <div>
-      <p class="offers-label">Additional Rules</p>
-      <p>fdgdfg</p>
-    </div>
-    <div>
-      <p class="offers-label">Your card:</p>
-      <div id="card">
-       <p id="cardValue"></p>
-      </div>
-    </div>
-  </div>  
-
-  
-  
-
-  <div id="post-container">
-    <p class="offers-label">Post an offer</p>
-    <input class="txt-field" id="offerInput" type="number">
-    <input class="btn" id="btnPostOffer" type="button" value="Post Offer" onclick="submitOffer()">
-  </div>
-
-  <div id="offers-container">
-      <div><!-- Offer List -->
-        <p class="offers-label">Trade Offers</p>
-        <div class="offer-container" id="offer-list">
-          <!-- DO NOT ADD INTERNAL HTML -->
-        </div>
-      </div>
-      <div><!-- Trades List -->
-        <p class="offers-label">Successful Trades</p>
-        <div class="offer-container" id="trade-list">
-          <!-- DO NOT ADD INTERNAL HTML -->
-        </div>
-      </div>   
-  </div>
-  
-  <div hidden>
-    <h1>Pitmarket Game</h1>
-    <div id="game" width="1336" height="720">
-      <canvas id="display" width="1336" height="720"></canvas>
-      <form id="inputOffer" method="POST" style="
-          position: absolute;
-          left: 700px;
-          top: 370px;
-        ">
-        <input type="text" width="100" size="" id="input_offer">
-        <!--input type="submit" value="Post!"-->
-      </form> 
-    </div>
-  </div>
-  <!--script src="{{ static_url('scripts/script.js') }}"></script>
-  <script src="{{ static_url('scripts/tools.js') }}"></script>
-  <script src="{{ static_url('scripts/websockets.js') }}"></script-->
-</body>
-
+  <head>
+    <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
+    <title>Pit Market Game</title>
+  </head>
+  <body>
+    <!--<script type="text/javascript" src="transactions.js"></script>-->
+    <script src="{{ static_url('scripts/state.js') }}"></script>
+    <script src="{{ static_url('scripts/setup.js') }}"></script>
+    <script src="{{ static_url('scripts/offers.js') }}"></script>
+  </body>
 </html>

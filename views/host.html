@@ -1,25 +1,19 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <!-- Prevents a 404 error from chrome requesting an icon. -->
-  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  <!-- Fonts from Google Fonts-->
-  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-  <title>Hosting Game</title>
-</head>
-
-<body>
-  <div id=root>
-    <object id="deckSettingsPage" type="text/html" data="{{ static_url('host/deckSettings.html') }}" hidden></object>
-    <object id="endGamePage" type="text/html" data="{{ static_url('host/endGame.html') }}" hidden></object>
-    <object id="roundPage" type="text/html" data="{{ static_url('host/round.html') }}" hidden></object>
-    <object id="roundSettingsPage" type="text/html" data="{{ static_url('host/roundSettings.html') }}" hidden></object>
-  </div>
-  <script src="{{ static_url('scripts/state.js') }}"></script>
-  <script src="{{ static_url('scripts/setup.js') }}"></script>
-  <script src="{{ static_url('scripts/host.js') }}"></script>
-</body>
-
+  <head>
+    <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
+    <title>Pit Market Game</title>
+  </head>
+  <body>
+    <div id=root>
+      <object id="deckSettingsPage" type="text/html"data="{{ static_url('host/deckSettings.html') }}" hidden></object>
+      <object id="endGamePage" type="text/html" data="{{ static_url('host/endGame.html') }}" hidden></object>
+      <object id="roundPage" type="text/html" data="{{ static_url('host/round.html') }}" hidden></object>
+      <object id="roundSettingsPage" type="text/html" data="{{ static_url('host/roundSettings.html') }}" hidden></object>
+    </div>
+    <script src="{{ static_url('scripts/state.js') }}"></script>
+    <script src="{{ static_url('scripts/setup.js') }}"></script>
+    <script src="{{ static_url('scripts/host.js') }}"></script>
+  </body>
 </html>
