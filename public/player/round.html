@@ -1,0 +1,49 @@
+<div id="top-container">
+    <div>
+        <p class="info-label"><span>Round: </span>1</p>
+        <p class="info-label"><span>Time: </span>1:59</p>
+        <p class="info-label"><span>Profit: </span>$999</p>
+    </div>
+    <div>
+        <p class="offers-label">Additional Rules</p>
+        <p>fdgdfg</p>
+    </div>
+    <div>
+        <p class="offers-label">Your card:</p>
+        <div id="card">
+            <p id="cardValue"></p>
+        </div>
+    </div>
+</div>
+<div id="post-container">
+    <p class="offers-label">Post an offer</p>
+    <input class="txt-field" id="offerInput" type="number">
+    <input class="btn" id="btnPostOffer" type="button" value="Post Offer"
+        onclick="submitOffer()">
+</div>
+<div id="offers-container">
+    <div><!-- Offer List -->
+        <p class="offers-label">Trade Offers</p>
+        <div class="offer-container" id="offer-list">
+            <!-- DO NOT ADD INTERNAL HTML -->
+        </div>
+    </div>
+    <div><!-- Trades List -->
+        <p class="offers-label">Successful Trades</p>
+        <div class="offer-container" id="trade-list">
+            <!-- DO NOT ADD INTERNAL HTML -->
+        </div>
+    </div>
+</div>
+<div hidden>
+    <h1>Pitmarket Game</h1>
+    <div id="game" width="1336" height="720">
+        <canvas id="display" width="1336" height="720"></canvas>
+        <form id="inputOffer" method="POST" style="position: absolute;
+            left: 700px;
+            top: 370px;">
+            <input type="text" width="100" size="" id="input_offer">
+            <!--input type="submit" value="Post!"-->
+        </form>
+    </div>
+</div>
