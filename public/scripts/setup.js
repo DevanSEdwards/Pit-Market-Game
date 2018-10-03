@@ -1,7 +1,8 @@
-// Send our identity to the server and create a state object
+// Send our identity to the server and setup a state object
 
 var state = new State();
 
+// To be used in main.js
 function loadpage(page) {
     pages = document.getElementById(`root`).children;
     pages.hidden = true;
@@ -23,12 +24,14 @@ function getCookie(cname) {
 }
 
 function storeCookieData() {
+    // Add cookie data to state
     state.gameId = getCookie(`gameId`);
     state.isHost = getCookie(`isHost`);
     state.clientId = getCookie(`clientId`);
 }
 
 function sendCookieData() {
+    // Send an id message
     storeCookieData();
     state.websocket.send(JSON.stringify({
         type: `id`,
@@ -38,6 +41,24 @@ function sendCookieData() {
     }));
 }
 
+function setState(newState) {
+    // Set the state to the values of the incoming state object
+    for (var property in newState)
+        if (newState.hasOwnProperty(property) && property != "type")
+            state[property] = newState[property];
+    // Call the main function from main.js
+    main();
+}
+
+// Open a websocket
 state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
+// Once the websocket is open send an id message
 state.websocket.onopen = sendCookieData;
+// Expect a state message back
+state.websocket.onmessage = event => {
+    let msg = JSON.parse(event.data);
+    if (msg.type == "state")
+        setState(msg);
+}
+// If the websocket is closed redirect to index
 state.websocket.onclose = () => { window.location.replace(`/`); };
