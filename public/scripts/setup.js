@@ -22,12 +22,19 @@ function getCookie(cname) {
     return ``;
 }
 
+function storeCookieData() {
+    state.gameId = getCookie(`gameId`);
+    state.isHost = getCookie(`isHost`);
+    state.clientId = getCookie(`clientId`);
+}
+
 function sendCookieData() {
+    storeCookieData();
     state.websocket.send(JSON.stringify({
         type: `id`,
-        gameId: getCookie(`gameId`),
-        isHost: getCookie(`isHost`),
-        clientId: getCookie(`clientId`)
+        gameId: state.gameId,
+        isHost: state.isHost,
+        clientId: state.clientId
     }));
 }
 
