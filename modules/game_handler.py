@@ -62,7 +62,7 @@ class GameHandler:
         for game in self.games:
             if ws.client_id == game.host_id:
                 game.ws = ws
-                self.send_state(ws, game, False)
+                self.send_state(ws, game, True)
                 return game
         # No host_id match
         return None
