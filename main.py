@@ -6,7 +6,6 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import datetime
-#from react import jsx
 from tornado import websocket
 from tornado.web import RequestHandler
 from modules.game_handler import GameHandler
