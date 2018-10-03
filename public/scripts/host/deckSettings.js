@@ -41,8 +41,8 @@ function drawDeckChart(mean, domain, lowerLimit, size=500) {
 
 function redrawDeck() {
     drawDeckChart(
-        parseInt(document.getElementById(`domainInput`).value),
         parseInt(document.getElementById(`meanInput`).value),
+        parseInt(document.getElementById(`domainInput`).value),
         parseInt(document.getElementById(`lowerLimitInput`).value)
     )
 }
