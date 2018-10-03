@@ -14,6 +14,16 @@ if __debug__:
     from tornado.log import enable_pretty_logging
 
 
+def file_get_contents(filename):
+    with open(filename) as f:
+        return f.read()
+        
+# Templating Values
+host_pages = {"deckSettings", "endGame", "round", "roundSettings"}
+player_pages = {"endGame", "round", "lobby"}
+host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
+player_template = {page: file_get_contents("./public/html/player/" + page + ".html") for page in player_pages}
+
 class MainHandler(RequestHandler):
     """Handle GET requests"""
 
@@ -35,7 +45,7 @@ class MainHandler(RequestHandler):
                 self.set_cookie("clientId", host_id, expires=cookie_expiry)
                 self.set_cookie("gameId", game_id, expires=cookie_expiry)
                 self.set_cookie("isHost", "true", expires=cookie_expiry)
-            self.render("views/host.html")
+            self.render("views/host.html", **host_template)
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
             if not self.game_handler.valid_id(client_id, arg, False):
@@ -50,7 +60,7 @@ class MainHandler(RequestHandler):
                 self.set_cookie("clientId", player_id, expires=cookie_expiry)
                 self.set_cookie("gameId", arg, expires=cookie_expiry)
                 self.set_cookie("isHost", "false", expires=cookie_expiry)
-            self.render("views/player.html")
+            self.render("views/player.html", **player_template)
         # Render main page (/)
         else:
             self.render("views/index.html")
@@ -150,7 +160,6 @@ class WebsocketHandler(websocket.WebSocketHandler):
         except TradeError as error:
             print(error.message)
 
-
 def main():
     if __debug__:
         # Log all GET, POST... requests
@@ -171,6 +180,7 @@ def main():
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(int(os.environ.get("PORT", 5000)), "0.0.0.0")
     tornado.ioloop.IOLoop.current().start()
+
 
 
 if __name__ == "__main__":

@@ -7,10 +7,11 @@
     <title>Pit Market Game</title>
   </head>
   <body>
+    {% autoescape None %}
     <div id=root>
-      <object id="lobbyPage" type="text/html"data="{{ static_url('html/player/lobby.html') }}" hidden></object>
-      <object id="endGamePage" type="text/html" data="{{ static_url('html/player/endGame.html') }}" hidden></object>
-      <object id="roundPage" type="text/html" data="{{ static_url('html/player/round.html') }}" hidden></object>
+      <div id="endGamePage" hidden>{{ endGame }}</div>
+      <div id="roundPage" hidden>{{ round }}</div>
+      <div id="lobbyPage" hidden>{{ lobby }}</div>
     </div>
     <!--<script type="text/javascript" src="transactions.js"></script>-->
     <script src="{{ static_url('scripts/player/state.js') }}"></script>

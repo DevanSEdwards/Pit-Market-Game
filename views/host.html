@@ -7,13 +7,15 @@
     <title>Pit Market Game</title>
   </head>
   <body>
+    {% autoescape None %}
     <div id=root>
-      <object id="deckSettingsPage" type="text/html"data="{{ static_url('html/host/deckSettings.html') }}" hidden></object>
-      <object id="endGamePage" type="text/html" data="{{ static_url('html/host/endGame.html') }}" hidden></object>
-      <object id="roundPage" type="text/html" data="{{ static_url('html/host/round.html') }}" hidden></object>
-      <object id="roundSettingsPage" type="text/html" data="{{ static_url('html/host/roundSettings.html') }}" hidden></object>
+      <div id="deckSettingsPage" hidden>{{ deckSettings }}</div>
+      <div id="endGamePage" hidden>{{ endGame }}</div>
+      <div id="roundPage" hidden>{{ round }}</div>
+      <div id="roundSettingsPage" hidden>{{ roundSettings }}</div>
     </div>
     <script src="{{ static_url('scripts/host/state.js') }}"></script>
+    <script src="{{ static_url('scripts/host/deckSettings.js') }}"></script>
     <script src="{{ static_url('scripts/host/main.js') }}"></script>
     <script src="{{ static_url('scripts/setup.js') }}"></script>
   </body>
