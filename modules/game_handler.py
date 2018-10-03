@@ -38,11 +38,21 @@ class GameHandler:
         # No game_id match
         return None
 
+    def send_state(self, ws, game, isHost):
+        response = {
+            "type": "state",
+            "gameId": game.game_id,
+            "isHost": isHost,
+        }
+        message = json.dumps(response)
+        ws.write_message(message)
+
     def add_player_ws(self, ws):
         """Check for matching id and return the player's game instance"""
         for game in self.games:
             if ws.client_id in game.players:
                 game.players[ws.client_id].ws = ws
+                self.send_state(ws, game, False)
                 return game
         # No player_id match
         return None
@@ -52,6 +62,7 @@ class GameHandler:
         for game in self.games:
             if ws.client_id == game.host_id:
                 game.ws = ws
+                self.send_state(ws, game, False)
                 return game
         # No host_id match
         return None
@@ -62,3 +73,7 @@ class GameHandler:
             if is_host else
             any(game_id == game.game_id and client_id in game.players for game in self.games)
         )
+        
+   
+        
+        

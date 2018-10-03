@@ -40,6 +40,8 @@ class Game():
         # Alternate between buyer and seller for each new player
         self.is_next_seller = not self.is_next_seller
         return player_id
+    
+		
 
     # - Host Commands -------------------------------------------------
     #   These methods should only be called inside WebsocketHandler
