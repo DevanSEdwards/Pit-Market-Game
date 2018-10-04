@@ -50,14 +50,6 @@ class GameHandler:
                 "price": o.price,
                 "time": o.time
             } for o in game.offers],
-            "rounds": [{
-                "length": r.length,
-                "offerTimeLimit": r.offer_time_limit,
-                "tax": r.tax,
-                "ceiling": r.ceiling,
-                "floor": r.floor,
-                "trades": [t.price for t in r.trades]
-            } for r in game.rounds],
             "inRound": game.in_round,
             "currentRound": game.round_number
         }
@@ -66,9 +58,30 @@ class GameHandler:
                 "domain": game.deck_settings["domain"],
                 "mean": game.deck_settings["mean"],
                 "lowerLimit": game.deck_settings["lower_limit"]
-            }
-        } if is_host else {
-            "isSeller": game.players[client_id].is_seller
+            },
+            "rounds": [{
+                "length": r.length,
+                "offerTimeLimit": r.offer_time_limit,
+                "tax": r.tax,
+                "ceiling": r.ceiling,
+                "floor": r.floor,
+                "trades": [t.price for t in r.trades]
+            } for r in game.rounds]
+        }
+            if is_host else
+        {
+            "isSeller": game.players[client_id].is_seller,
+            "rounds": [{
+                "length": game.rounds[i].length,
+                "offerTimeLimit": game.rounds[i].offer_time_limit,
+                "tax": game.rounds[i].tax,
+                "ceiling": game.rounds[i].ceiling,
+                "floor": game.rounds[i].floor,
+                "isSeller": game.players[client_id].stats[i].is_seller,
+                "card": game.players[client_id].stats[i].card,
+                "tradePrice": game.players[client_id].stats[i].trade_price,
+                "trades": [t.price for t in game.rounds[i].trades]
+            } for i in range(len(game.rounds))]
         })
         message = json.dumps(response)
         ws.write_message(message)
@@ -95,10 +108,11 @@ class GameHandler:
         return None
 
     def valid_id(self, client_id, game_id, is_host):
+        print(client_id)
         return (
             any(client_id == game.host_id for game in self.games)
             if is_host else
-            any(game_id == game.game_id and client_id in game.players for game in self.games)
+            any(game_id == game.game_id for game in self.games)
         )
         
    

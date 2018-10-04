@@ -8,6 +8,7 @@ from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeError
 from modules.round import Round
+from modules.player_stat import PlayerStat
 
 
 class Game():
@@ -76,6 +77,9 @@ class Game():
                 except KeyError:
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
+        # Record the player stats for later
+        for player in self.players:
+            player.stats = PlayerStat(player.card, player.is_seller, None)
         # Setup function to end the round later
         self.force_end_round = self.io.call_later(length, self.end_round)
 
@@ -187,12 +191,13 @@ class Game():
         # Add to trade dictionary
         self.rounds[self.round_number].trades.append(Trade(
             offer_id, price, time, player_id, self.offers[offer_id].player_id))
-        # Record that thes players have traded
-        player.has_traded = True
-        self.players[offer.player_id].has_traded = True
 
-        # Send trade confirmation to players involved
         for p in (player, self.players[offer.player_id]):
+            # Record that thes players have traded
+            p.has_traded = True
+            # Record the trade price
+            p.stats[self.round_number].trade_price = price
+            # Send trade confirmation to players involved
             p.ws.write_message(json.dumps(
                 {
                     "type": "trade",
