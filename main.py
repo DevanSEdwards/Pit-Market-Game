@@ -49,6 +49,7 @@ class MainHandler(RequestHandler):
             self.render("views/host.html", **host_template)
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
+            # Check for valid gameId
             if not self.game_handler.valid_id(client_id, arg, False):
                 self.clear_all_cookies()
                 self.redirect("/")
@@ -59,8 +60,8 @@ class MainHandler(RequestHandler):
                     self.render("views/index.html")
                     return
                 self.set_cookie("clientId", player_id, expires=cookie_expiry)
-                self.set_cookie("gameId", arg, expires=cookie_expiry)
-                self.set_cookie("isHost", "false", expires=cookie_expiry)
+            self.set_cookie("gameId", arg, expires=cookie_expiry)
+            self.set_cookie("isHost", "false", expires=cookie_expiry)
             self.render("views/player.html", **player_template)
         # Render main page (/)
         else:
