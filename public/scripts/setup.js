@@ -48,6 +48,7 @@ function setState(newState) {
     for (var property in newState)
         if (newState.hasOwnProperty(property) && property != "type")
             state[property] = newState[property];
+    console.log(state);
     // Call the main function from main.js
     main();
 }

@@ -121,6 +121,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
             return
         # If type is unknown send an error message
         if msg["type"] not in self.commands:
+            print("Bad Type")
             self.write_message(json.dumps({
                 "type": "error",
                 "message": "unknown type attribute"
