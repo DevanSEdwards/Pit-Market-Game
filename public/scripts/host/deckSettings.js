@@ -1,3 +1,10 @@
+function initDeckSettings() {
+    document.getElementById(`meanInput`).value = state.deckSetting.mean;
+    document.getElementById(`domainInput`).value = state.deckSetting.domain;
+    document.getElementById(`lowerLimitInput`).value = state.deckSetting.lowerLimit;
+    redrawDeck();
+}
+
 function drawDeckChart(mean, domain, lowerLimit, size=500) {
     var yTrans = Math.max(-lowerLimit, lowerLimit + domain - 2 * mean - 1);
     var yScale = size / (2 * Math.max(mean - lowerLimit, domain + lowerLimit - mean - 1));
@@ -45,4 +52,14 @@ function redrawDeck() {
         parseInt(document.getElementById(`domainInput`).value),
         parseInt(document.getElementById(`lowerLimitInput`).value)
     )
+}
+
+function submitDeck() {
+    state.websocket.send(JSON.stringify({
+        type: `deckSettings`,
+        mean: parseInt(document.getElementById(`meanInput`).value),
+        domain: parseInt(document.getElementById(`domainInput`).value),
+        lowerLimit: parseInt(document.getElementById(`lowerLimitInput`).value)
+    }));
+    loadpage(`roundSettings`);
 }
