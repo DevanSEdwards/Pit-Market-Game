@@ -17,12 +17,10 @@ if __debug__:
 def file_get_contents(filename):
     with open(filename) as f:
         return f.read()
-        
+
 # Templating Values
 host_pages = {"deckSettings", "endGame", "round", "roundSettings"}
 player_pages = {"endGame", "round", "lobby"}
-host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
-player_template = {page: file_get_contents("./public/html/player/" + page + ".html") for page in player_pages}
 
 class MainHandler(RequestHandler):
     """Handle GET requests"""
@@ -34,6 +32,9 @@ class MainHandler(RequestHandler):
     def get(self):
         arg = self.get_argument("game", default="")
 
+        host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
+        player_template = {page: file_get_contents("./public/html/player/" + page + ".html") for page in player_pages}
+        
         now = datetime.datetime.now()
         cookie_expiry = now + datetime.timedelta(minutes=60)
         client_id = self.get_cookie("clientId", "")
