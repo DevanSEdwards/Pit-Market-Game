@@ -23,10 +23,11 @@ class Game():
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round settings
         self.deck_settings = {  # Shouldn't be changed after the first round
-            'domain': None,
-            'mean': None,
-            'lower_limit': None,
+            'domain': 7,
+            'mean': 7,
+            'lower_limit': 8,
         }
+        self.in_round = False
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
@@ -96,6 +97,8 @@ class Game():
             player.ws.write_message(message)
         self.start_time = datetime.now()
 
+        self.in_round = True
+
     def hc_end_round(self):
         """Bring the current round to a premature end"""
         self.io.cancel(self.force_end_round)
@@ -115,9 +118,9 @@ class Game():
 
     def hc_card_settings(self, domain, mean, lowerLimit):
         """Initliaise the deck settings"""
-        self.deck_settings[domain] = domain
-        self.deck_settings[mean] = mean
-        self.deck_settings[lowerLimit] = lowerLimit
+        self.deck_settings["domain"] = domain
+        self.deck_settings["mean"] = mean
+        self.deck_settings["lower_limit"] = lowerLimit
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -144,7 +147,7 @@ class Game():
         self.offers[offer_id] = Offer(
             offer_id, True, price, time, player_id)
 
-        self.io.call_later(10, self.delete_offer, offer_id)
+        self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id)
         # Announce the offer to all clients
         self.message_all(
             {
@@ -217,6 +220,7 @@ class Game():
             "type": "end round"
         }
         self.message_all(response)
+        self.in_round = False
 
     def message_all(self, response):
         message = json.dumps(response)

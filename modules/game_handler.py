@@ -38,21 +38,48 @@ class GameHandler:
         # No game_id match
         return None
 
-    def send_state(self, ws, game, isHost):
+    def send_state(self, ws, game, client_id, is_host):
         response = {
             "type": "state",
+            "clientId": game.host_id,
             "gameId": game.game_id,
-            "isHost": isHost,
+            "isHost": is_host,
+            "offers": [{
+                "offerId": o.offer_id,
+                "isSeller": o.is_seller,
+                "price": o.price,
+                "time": o.time
+            } for o in game.offers],
+            "rounds": [{
+                "length": r.length,
+                "offerTimeLimit": r.offer_time_limit,
+                "tax": r.tax,
+                "ceiling": r.ceiling,
+                "floor": r.floor,
+                "trades": [t.price for t in r.trades]
+            } for r in game.rounds],
+            "inRound": game.in_round,
+            "currentRound": game.round_number
         }
+        response.update({
+            "deckSetting": {
+                "domain": game.deck_settings["domain"],
+                "mean": game.deck_settings["mean"],
+                "lowerLimit": game.deck_settings["lower_limit"]
+            }
+        } if is_host else {
+            "isSeller": game.players[client_id].is_seller
+        })
         message = json.dumps(response)
         ws.write_message(message)
+        print(response)
 
     def add_player_ws(self, ws):
         """Check for matching id and return the player's game instance"""
         for game in self.games:
             if ws.client_id in game.players:
                 game.players[ws.client_id].ws = ws
-                self.send_state(ws, game, False)
+                self.send_state(ws, game, ws.client_id, False)
                 return game
         # No player_id match
         return None
@@ -62,7 +89,7 @@ class GameHandler:
         for game in self.games:
             if ws.client_id == game.host_id:
                 game.ws = ws
-                self.send_state(ws, game, True)
+                self.send_state(ws, game, ws.client_id, True)
                 return game
         # No host_id match
         return None

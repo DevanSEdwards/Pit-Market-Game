@@ -56,7 +56,7 @@ function redrawDeck() {
 
 function submitDeck() {
     state.websocket.send(JSON.stringify({
-        type: `deckSettings`,
+        type: `card settings`,
         mean: parseInt(document.getElementById(`meanInput`).value),
         domain: parseInt(document.getElementById(`domainInput`).value),
         lowerLimit: parseInt(document.getElementById(`lowerLimitInput`).value)
