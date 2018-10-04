@@ -5,7 +5,9 @@ var state = new State();
 // To be used in main.js
 function loadpage(page) {
     pages = document.getElementById(`root`).children;
-    pages.hidden = true;
+    for (let p = 0; p < pages.length; p++)
+        pages[p].hidden = true;
+
     document.getElementById(`${page}Page`).hidden = false;
 }
 
