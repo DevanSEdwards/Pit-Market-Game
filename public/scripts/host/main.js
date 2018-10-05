@@ -1,7 +1,8 @@
 // Called in setup.js
 function main() {
     initDeckSettings();
-    loadpage(`deckSettings`);
+    document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
+    loadpage(state.inRound ? `round` : state.currentRound == 0 ? `deckSettings` : `lobby`);
     state.websocket.onmessage = handleMessage;
 }
 

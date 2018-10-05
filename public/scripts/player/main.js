@@ -1,6 +1,7 @@
 // Called in setup.js
 function main() {
-    loadpage(`lobby`);
+    drawOfferList();
+    loadpage(state.inRound ? `round` : `lobby`);
     state.websocket.onmessage = handleMessage;
 }
 
@@ -24,6 +25,7 @@ function handleMessage(event) {
             // draw();
             break;
         case `offer`:
+            recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
         case `trade`:
             // if (msg.success) {
@@ -46,7 +48,7 @@ function handleMessage(event) {
             state.inRound = false;
             break;
         case `end game`:
-            window.location.replace(`/`);
+            loadpage(`endGame`);
             break;
     }
 };
