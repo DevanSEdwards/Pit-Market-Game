@@ -30,12 +30,3 @@ class Round {
         this.trades = []; // List of integers (prices)
     }
 }
-
-class Offer {
-    constructor(offerId, isSeller, price, time) {
-        this.offerId = offerId;
-        this.isSeller = isSeller;
-        this.price = price;
-        this.time = time;
-    }
-}
