@@ -27,6 +27,11 @@ body
     color: rgb(192, 192, 192);
 }
 
+#gameIdDisplay
+{
+    font-family: Consolas, monospace;
+}
+
 h2
 {
     color: rgb(192, 192, 192);
