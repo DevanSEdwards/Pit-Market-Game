@@ -85,7 +85,6 @@ class GameHandler:
         })
         message = json.dumps(response)
         ws.write_message(message)
-        print(response)
 
     def add_player_ws(self, ws):
         """Check for matching id and return the player's game instance"""
@@ -106,15 +105,6 @@ class GameHandler:
                 return game
         # No host_id match
         return None
-
-    def valid_id(self, client_id, game_id, is_host):
-        print(client_id)
-        return (
-            any(client_id == game.host_id for game in self.games)
-            if is_host else
-            any(game_id == game.game_id for game in self.games)
-        )
-        
    
         
         
