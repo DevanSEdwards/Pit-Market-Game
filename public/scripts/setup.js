@@ -2,6 +2,11 @@
 
 var state = new State();
 
+function send(msg) {
+    console.log(msg);
+    state.websocket.send(JSON.stringify(msg));
+}
+
 // To be used in main.js
 function loadpage(page) {
     pages = document.getElementById(`root`).children;
@@ -35,23 +40,25 @@ function storeCookieData() {
 function sendCookieData() {
     // Send an id message
     storeCookieData();
-    state.websocket.send(JSON.stringify({
+    send({
         type: `id`,
         gameId: state.gameId,
         isHost: state.isHost,
         clientId: state.clientId
-    }));
+    });
 }
 
 function setState(newState) {
     // Set the state to the values of the incoming state object
     for (var property in newState)
-        if (newState.hasOwnProperty(property) && property != "type")
+        if (newState.hasOwnProperty(property) && property != `type`)
             state[property] = newState[property];
     console.log(state);
     // Call the main function from main.js
     main();
 }
+
+// - Run --------------------------------------------------------------
 
 // Open a websocket
 state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
@@ -60,8 +67,13 @@ state.websocket.onopen = sendCookieData;
 // Expect a state message back
 state.websocket.onmessage = event => {
     let msg = JSON.parse(event.data);
-    if (msg.type == "state")
+    if (msg.type === `state`)
         setState(msg);
 }
 // If the websocket is closed redirect to index
-state.websocket.onclose = () => { window.location.replace(`/`); };
+state.websocket.onclose = () => {
+    console.log("websocket closed");
+    window.location.replace(`/`);
+};
+
+// --------------------------------------------------------------------
