@@ -1,5 +1,6 @@
 import json
 import tornado.ioloop
+import math
 from datetime import datetime, timedelta
 from uuid import uuid4
 from modules.player import Player
@@ -9,6 +10,7 @@ from modules.create_deck import create_deck
 from modules.trade_exception import TradeError
 from modules.round import Round
 from modules.player_stat import PlayerStat
+from termcolor import cprint
 
 
 class Game():
@@ -25,8 +27,8 @@ class Game():
         self.rounds = []  # List of Round settings
         self.deck_settings = {  # Shouldn't be changed after the first round
             'domain': 7,
-            'mean': 7,
-            'lower_limit': 8,
+            'mean': 6,
+            'lower_limit': 2,
         }
         self.in_round = False
 
@@ -39,6 +41,8 @@ class Game():
     def add_player(self):
         player_id = uuid4().hex
         self.players[player_id] = Player(player_id, self.is_next_seller)
+        # TODO give player a card if they join halfway through?
+        self.players[player_id].stats = [PlayerStat(None, None, None)] * len(self.rounds)
         # Alternate between buyer and seller for each new player
         self.is_next_seller = not self.is_next_seller
         return player_id
@@ -78,7 +82,7 @@ class Game():
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
         # Record the player stats for later
-        for player in self.players:
+        for player in self.players.values():
             player.stats = PlayerStat(player.card, player.is_seller, None)
         # Setup function to end the round later
         self.force_end_round = self.io.call_later(length, self.end_round)
@@ -133,16 +137,16 @@ class Game():
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
         # Generate offer_id
-        print("offer: " + player_id, price)
         offer_id = uuid4().hex
         # milliseconds since the start of the round
-        time = (datetime.now() - self.start_time).milliseconds
+        time = math.ceil((datetime.now() - self.start_time).total_seconds() * 1000)
         player = self.players[player_id]
+        tax = self.rounds[self.round_number].tax
 
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
-        if player.is_seller and (player.card < price + self.rounds[self.round_number].tax):
+        if player.is_seller and (player.card < price + (0 if tax is None else tax)):
             raise TradeError("Price out of range")
         if (not player.is_seller and (player.card > price)):
             raise TradeError("Price out of range")
@@ -231,7 +235,11 @@ class Game():
         message = json.dumps(response)
         if self.ws is not None:
             self.ws.write_message(message)
-        print("message_all: " + message)
+        else:
+            print("Host Disconnected")
+        cprint("=> " + message, 'green', 'on_white')
         for player in self.players.values():
             if player.ws is not None:
                 player.ws.write_message(message)
+            else:
+                print(player.player_id + " Disconnected")
