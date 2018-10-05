@@ -12,6 +12,7 @@ from modules.game_handler import GameHandler
 from modules.trade_exception import TradeError
 if __debug__:
     from tornado.log import enable_pretty_logging
+    from termcolor import cprint
 
 
 def file_get_contents(filename):
@@ -41,7 +42,7 @@ class MainHandler(RequestHandler):
 
         # Hosting a new game (/?game=host)
         if arg == "host":
-            if client_id == "" or not self.game_handler.valid_id(client_id, None, True):
+            if client_id == "" or not any(client_id == game.host_id for game in self.game_handler.games):
                 host_id, game_id = self.game_handler.new_game()
                 self.set_cookie("clientId", host_id, expires=cookie_expiry)
                 self.set_cookie("gameId", game_id, expires=cookie_expiry)
@@ -49,13 +50,17 @@ class MainHandler(RequestHandler):
             self.render("views/host.html", **host_template)
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
+            arg = str.upper(arg)
             # Check for valid gameId
-            if not self.game_handler.valid_id(client_id, arg, False):
+            if not any(arg == game.game_id for game in self.game_handler.games):
+                print(arg)
+                print(game.game_id for game in self.game_handler.games)
                 self.clear_all_cookies()
                 self.redirect("/")
                 return
-            if client_id == "":
+            if client_id == "" or not any(client_id in game.players.keys() for game in self.game_handler.games):
                 player_id = self.game_handler.add_player(arg)
+                # print(player_id)
                 if player_id == None:
                     self.render("views/index.html")
                     return
@@ -111,8 +116,8 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
-        print("ws msg: " + message)
         msg = json.loads(message)
+        cprint(msg, 'grey' if self.is_host is None else 'yellow' if self.is_host else 'red', 'on_white')
         # Check msg contains a type attribute
         if "type" not in msg:
             self.write_message(json.dumps({
@@ -132,7 +137,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         # If this websocket is not associated with a user, associate it
         if self.is_host is None:
             self.client_id = msg["clientId"]
-            self.is_host = msg["isHost"]
+            self.is_host = str.lower(msg["isHost"]) == "true"
             self.commands, self.game = ((
                 WebsocketHandler.host_commands,
                 self.game_handler.add_host_ws(self)
