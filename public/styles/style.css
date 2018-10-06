@@ -15,15 +15,28 @@ body
 
 #home-title
 {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #0066ff;
-    font-weight: normal;
+    font-family: Cabin, Arial, Helvetica, sans-serif;
+    color: lightcoral;
+    font-weight: bold;
     font-size: 64px;
 }
 
 #credits-string
 {
+    margin-top: 50vh;
     color: rgb(192, 192, 192);
+}
+
+#host-link
+{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+#form
+{
+    margin: 20vh;
 }
 
 h2
@@ -34,12 +47,12 @@ h2
 
 .btn
 {
-    background-color: limegreen;
+    background-color: mediumturquoise;
     color: black;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    border: 1px solid limegreen;
+    border: 0px solid limegreen;
     border-radius: 5px;
     height: 45px;
     min-width: 90px;
@@ -47,9 +60,8 @@ h2
 
 .btn:hover
 {
-    background-color: lime;
+    background-color: turquoise;
     color: black;
-    border: 1px solid lime;
 }
 
 .txt-field
@@ -57,12 +69,11 @@ h2
     height: 45px;
     width: 160px;
     padding: 0px 10px;
-    color: black;
+    color: grey;
     border: 5px solid rgb(192, 192, 192);
     border-radius: 5px;
     text-align: center;
     font-size: 16px;
-    font-weight: bold;
 }
 
 #card
