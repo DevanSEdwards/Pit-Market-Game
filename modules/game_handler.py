@@ -38,11 +38,60 @@ class GameHandler:
         # No game_id match
         return None
 
+    def send_state(self, ws, game, client_id, is_host):
+        response = {
+            "type": "state",
+            "clientId": game.host_id,
+            "gameId": game.game_id,
+            "isHost": is_host,
+            "offers": [{
+                "offerId": o.offer_id,
+                "isSeller": o.is_seller,
+                "price": o.price,
+                "time": o.time
+            } for o in game.offers],
+            "inRound": game.in_round,
+            "currentRound": game.round_number
+        }
+        response.update({
+            "deckSetting": {
+                "domain": game.deck_settings["domain"],
+                "mean": game.deck_settings["mean"],
+                "lowerLimit": game.deck_settings["lower_limit"]
+            },
+            "rounds": [{
+                "length": r.length,
+                "offerTimeLimit": r.offer_time_limit,
+                "tax": r.tax,
+                "ceiling": r.ceiling,
+                "floor": r.floor,
+                "trades": [t.price for t in r.trades]
+            } for r in game.rounds]
+        }
+            if is_host else
+        {
+            "isSeller": game.players[client_id].is_seller,
+            "rounds": [{
+                "length": game.rounds[i].length,
+                "offerTimeLimit": game.rounds[i].offer_time_limit,
+                "tax": game.rounds[i].tax,
+                "ceiling": game.rounds[i].ceiling,
+                "floor": game.rounds[i].floor,
+                "isSeller": game.players[client_id].stats[i].is_seller,
+                "card": game.players[client_id].stats[i].card,
+                "tradePrice": game.players[client_id].stats[i].trade_price,
+                "trades": [t.price for t in game.rounds[i].trades]
+            } for i in range(len(game.rounds))]
+        })
+        message = json.dumps(response)
+        ws.write_message(message)
+
     def add_player_ws(self, ws):
         """Check for matching id and return the player's game instance"""
         for game in self.games:
             if ws.client_id in game.players:
                 game.players[ws.client_id].ws = ws
+                self.send_state(ws, game, ws.client_id, False)
                 return game
         # No player_id match
         return None
@@ -52,13 +101,10 @@ class GameHandler:
         for game in self.games:
             if ws.client_id == game.host_id:
                 game.ws = ws
+                self.send_state(ws, game, ws.client_id, True)
                 return game
         # No host_id match
         return None
-
-    def valid_id(self, client_id, game_id, is_host):
-        return (
-            any(client_id == game.host_id for game in self.games)
-            if is_host else
-            any(game_id == game.game_id and client_id in game.players for game in self.games)
-        )
+   
+        
+        

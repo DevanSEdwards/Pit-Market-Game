@@ -1,98 +1,68 @@
-// Constants
-var _BUFFER = 15;
-var _WIDTH = 500;
-var _HEIGHT = 500;
-// Variables
-var lst_offers = [];
-
-var _BUYER = true;
-
-class Offer
-{
-	constructor(offer_id, buyer, val, time)
-	{
-		this.offer_id = offer_id;
-		if(buyer == 0) { this.buyer = false } else { this.buyer = true; }
-		this.val = val;
-		this.time = time;
-		this.drawn = false;
-	}
-	// Getters
-	offer_id() { return this.offer_id; }
-	buyer() { return this.buyer; }
-	//seller() { if(this.buyer){return false;} else {return true;} }
-	val() { return this.val; }
-	time() { return this.time; }
-
-	// Methods
-	drawHTML()
-	{
-	if(this.drawn) { /*Don't draw it again */ return 1; }
-	/* OFFER FORMAT
-      <div class='offer-shape buyer'>
-        <div class='offer-internal' style='float: left;'>
-          $ XX
-        </div>
-        <div class='offer-internal' style='float: right;'>
-          <button>Accept</button>
-        </div>
-      </div>
-	 */
-
-
-	// Get initial content
-	var old = document.getElementById("offer-list").innerHTML;
-
-
-	// Create HTML element
-	var html = `
-		<div class='offer-shape ${this.buyer ? "buyer'": "seller'"}>
-			<div class='offer-internal' style='float: left;'>$ ${String(this.val)}</div>
-			<div class='offer-internal' style='float: right;'>
-				<button onclick='acceptOffer(${String(this.offer_id)})' ${_BUYER == this.buyer ? 'disabled' : ''}>Accept</button>
-			</div>
-		</div>
-		`;
-
-	// Draw to screen
-	document.getElementById("offer-list").innerHTML = html + old;
-
-	// Set as drawn
-	this.drawn = true;
-	return 0;
-	}
+function Offer(offerId, isSeller, price, time) {
+	this.offerId = offerId;
+	this.isSeller = isSeller;
+	this.price = price;
+	this.time = time;
 }
 
-function drawOfferList()
-{
-	for(var i = 0; i < lst_offers.length; i++)
-	{
-		lst_offers[i].drawHTML();
-	}
+function drawOfferList() {
+	// TODO: Don't redraw every element everytime
+	document.getElementById("offer-list").innerHTML = state.offers
+		.map(offer => `
+			<div class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
+				<div class='offer-internal' style='float: left;'>$ ${String(offer.price)}</div>
+				<div class='offer-internal' style='float: right;'>
+					<button onclick='acceptOffer('${String(offer.offerId)}')'
+						${state.isSeller === offer.isSeller ? `hidden` : ``}>Accept</button>
+				</div>
+			</div>`)
+		.join(``);
 }
 
-
-/* Use these functions to connect to web sockets */
-function recieveNewOffer(offer_id, buyer, val, time)
-{
-	// Buyer is whether the offer is to buy or now
-	lst_offers.push(new Offer(offer_id, buyer, val, time))
-}
-
-function acceptOffer(offerID)
-{
-	console.log("Accepting Offer...");
-	console.log(String(offerID));
-}
-
-
-function submitOffer()
-{
-	offerVal = document.getElementById("offerInput").value;
-	// Submit offer to web server
-
-	// If no errors; display new offer
-	// TODO: Recieve offerID from server
-	recieveNewOffer('NULL', _BUYER, offerVal, Date.now());
+function recieveNewOffer(offerId, isSeller, price, time) {
+	// Called in main.js when a message of type 'offer' is received
+	// isSeller is whether the offer is to sell or not
+	state.offers.push(new Offer(offerId, isSeller, price, time));
 	drawOfferList();
 }
+
+function acceptOffer(offerId) {
+	// Send acceptance message to server
+	send({
+		type: `accept`,
+		offerId: offerId
+	});
+}
+
+function submitOffer() {
+	offerprice = parseInt(document.getElementById(`offerInput`).value);
+	// Submit offer to web server
+	send({
+		type: `offer`,
+		price: offerprice
+	});
+}
+
+// Methods
+// drawHTML() {
+// 	if (this.drawn) { return; } // Don't draw it again
+
+// 	// Get initial content
+// 	var old = document.getElementById("offer-list").innerHTML;
+
+// 	// Create HTML element
+// 	var html = `
+// 	<div class='offer-shape ${this.isSeller ? "seller" : "buyer"}'>
+// 		<div class='offer-internal' style='float: left;'>$ ${String(this.price)}</div>
+// 		<div class='offer-internal' style='float: right;'>
+// 			<button onclick='acceptOffer(${String(this.offerId)})'
+// 				${state.isSeller == this.isSeller ? 'hidden' : ''}>Accept</button>
+// 		</div>
+// 	</div>`;
+
+// 	// Draw to screen
+// 	document.getElementById("offer-list").innerHTML = html + old;
+
+// 	// Set as drawn
+// 	this.drawn = true;
+// }

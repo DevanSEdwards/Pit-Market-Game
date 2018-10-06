@@ -6,6 +6,7 @@ body
 {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
 #display
@@ -37,6 +38,11 @@ body
 #form
 {
     margin: 20vh;
+}
+
+#gameIdDisplay
+{
+    font-family: Consolas, monospace;
 }
 
 h2

@@ -1,15 +1,38 @@
-<div id="host-controls-container">
-    <input class="btn" id="btnAddTax" type="button" value="Add Tax">
-    <input class="txt-field" id="taxInput" type="number">
-    <br>
-    <input class="btn" id="btnAddFloor" type="button" value="Add Floor">
-    <input class="txt-field" id="floorInput" type="number">
-    <br>
-    <input class="btn" id="btnAddCeil" type="button" value="Add Ceiling">
-    <input class="txt-field" id="ceilInput" type="number">
-    <br>
-    <br>
-
-    <input class="btn" id="btnStartRound" type="button" value="Start Round">
-    <input class="btn" id="btnEndGame" type="button" value="End Game"><br>
-</div>
+<p>Game Code:</p>
+<h1 id="gameIdDisplay">000000</h1>
+<br>
+<input class="btn" id="btnRoundLength" type="button" value="Change Round Length">
+<select class="txt-field" id="roundLength" type="number">
+    <option value="60">1:00</option>
+    <option value="90">1:30</option>
+    <option value="120" selected>2:00</option>
+    <option value="150">2:30</option>
+    <option value="180">3:00</option>
+</select>
+<br>
+<br>
+<input class="btn" id="btnTradeLength" type="button" value="Change Trade Length">
+<select class="txt-field" id="tradeLength" type="number">
+    <option value="5">5 Seconds</option>
+    <option value="10" selected>10 Seconds</option>
+    <option value="15">15 Seconds</option>
+    <option value="20">20 Seconds</option>
+    <option value="25">25 Seconds</option>
+    <option value="30">30 Seconds</option>
+</select>
+<br>
+<br>
+<input class="btn" id="btnAddTax" type="button" value="Add Tax">
+<input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+<br>
+<br>
+<input class="btn" id="btnAddFloor" type="button" value="Add Floor">
+<input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+<br>
+<br>
+<input class="btn" id="btnAddCeil" type="button" value="Add Ceiling">
+<input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+<br>
+<br>
+<input class="btn" id="btnStartRound" type="button" value="Start Round" onclick="submitRoundSettings()">
+<input class="btn" id="btnEndGame" type="button" value="End Game" onclick="submitEndGame()"><br>

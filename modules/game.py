@@ -1,5 +1,6 @@
 import json
 import tornado.ioloop
+import math
 from datetime import datetime, timedelta
 from uuid import uuid4
 from modules.player import Player
@@ -8,6 +9,8 @@ from modules.trade import Trade
 from modules.create_deck import create_deck
 from modules.trade_exception import TradeError
 from modules.round import Round
+from modules.player_stat import PlayerStat
+from termcolor import cprint
 
 
 class Game():
@@ -23,10 +26,11 @@ class Game():
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round settings
         self.deck_settings = {  # Shouldn't be changed after the first round
-            'domain': None,
-            'mean': None,
-            'lower_limit': None,
+            'domain': 7,
+            'mean': 6,
+            'lower_limit': 2,
         }
+        self.in_round = False
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
@@ -37,9 +41,13 @@ class Game():
     def add_player(self):
         player_id = uuid4().hex
         self.players[player_id] = Player(player_id, self.is_next_seller)
+        # TODO give player a card if they join halfway through?
+        self.players[player_id].stats = [PlayerStat(None, None, None)] * len(self.rounds)
         # Alternate between buyer and seller for each new player
         self.is_next_seller = not self.is_next_seller
         return player_id
+    
+		
 
     # - Host Commands -------------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -73,6 +81,9 @@ class Game():
                 except KeyError:
                     player.is_seller = True
                     player.give_card(sell_deck.pop())
+        # Record the player stats for later
+        for player in self.players.values():
+            player.stats = PlayerStat(player.card, player.is_seller, None)
         # Setup function to end the round later
         self.force_end_round = self.io.call_later(length, self.end_round)
 
@@ -94,6 +105,8 @@ class Game():
             player.ws.write_message(message)
         self.start_time = datetime.now()
 
+        self.in_round = True
+
     def hc_end_round(self):
         """Bring the current round to a premature end"""
         self.io.cancel(self.force_end_round)
@@ -113,9 +126,9 @@ class Game():
 
     def hc_card_settings(self, domain, mean, lowerLimit):
         """Initliaise the deck settings"""
-        self.deck_settings[domain] = domain
-        self.deck_settings[mean] = mean
-        self.deck_settings[lowerLimit] = lowerLimit
+        self.deck_settings["domain"] = domain
+        self.deck_settings["mean"] = mean
+        self.deck_settings["lower_limit"] = lowerLimit
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -124,16 +137,16 @@ class Game():
     def pc_offer(self, player_id, price):
         """Verify and post a new offer to the game"""
         # Generate offer_id
-        print("offer: " + player_id, price)
         offer_id = uuid4().hex
         # milliseconds since the start of the round
-        time = (datetime.now() - self.start_time).milliseconds
+        time = math.ceil((datetime.now() - self.start_time).total_seconds() * 1000)
         player = self.players[player_id]
+        tax = self.rounds[self.round_number].tax
 
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
-        if player.is_seller and (player.card < price + self.rounds[self.round_number].tax):
+        if player.is_seller and (player.card < price + (0 if tax is None else tax)):
             raise TradeError("Price out of range")
         if (not player.is_seller and (player.card > price)):
             raise TradeError("Price out of range")
@@ -142,7 +155,7 @@ class Game():
         self.offers[offer_id] = Offer(
             offer_id, True, price, time, player_id)
 
-        self.io.call_later(10, self.delete_offer, offer_id)
+        self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id)
         # Announce the offer to all clients
         self.message_all(
             {
@@ -182,12 +195,13 @@ class Game():
         # Add to trade dictionary
         self.rounds[self.round_number].trades.append(Trade(
             offer_id, price, time, player_id, self.offers[offer_id].player_id))
-        # Record that thes players have traded
-        player.has_traded = True
-        self.players[offer.player_id].has_traded = True
 
-        # Send trade confirmation to players involved
         for p in (player, self.players[offer.player_id]):
+            # Record that thes players have traded
+            p.has_traded = True
+            # Record the trade price
+            p.stats[self.round_number].trade_price = price
+            # Send trade confirmation to players involved
             p.ws.write_message(json.dumps(
                 {
                     "type": "trade",
@@ -215,12 +229,17 @@ class Game():
             "type": "end round"
         }
         self.message_all(response)
+        self.in_round = False
 
     def message_all(self, response):
         message = json.dumps(response)
         if self.ws is not None:
             self.ws.write_message(message)
-        print("message_all: " + message)
+        else:
+            print("Host Disconnected")
+        cprint("=> " + message, 'green', 'on_white')
         for player in self.players.values():
             if player.ws is not None:
                 player.ws.write_message(message)
+            else:
+                print(player.player_id + " Disconnected")

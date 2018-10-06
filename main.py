@@ -6,14 +6,22 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import datetime
-from react import jsx
 from tornado import websocket
 from tornado.web import RequestHandler
 from modules.game_handler import GameHandler
 from modules.trade_exception import TradeError
 if __debug__:
     from tornado.log import enable_pretty_logging
+    from termcolor import cprint
 
+
+def file_get_contents(filename):
+    with open(filename) as f:
+        return f.read()
+
+# Templating Values
+host_pages = {"deckSettings", "endGame", "round", "roundSettings"}
+player_pages = {"endGame", "round", "lobby"}
 
 class MainHandler(RequestHandler):
     """Handle GET requests"""
@@ -25,33 +33,41 @@ class MainHandler(RequestHandler):
     def get(self):
         arg = self.get_argument("game", default="")
 
+        host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
+        player_template = {page: file_get_contents("./public/html/player/" + page + ".html") for page in player_pages}
+        
         now = datetime.datetime.now()
         cookie_expiry = now + datetime.timedelta(minutes=60)
         client_id = self.get_cookie("clientId", "")
 
         # Hosting a new game (/?game=host)
         if arg == "host":
-            if client_id == "" or not self.game_handler.valid_id(client_id, None, True):
+            if client_id == "" or not any(client_id == game.host_id for game in self.game_handler.games):
                 host_id, game_id = self.game_handler.new_game()
                 self.set_cookie("clientId", host_id, expires=cookie_expiry)
                 self.set_cookie("gameId", game_id, expires=cookie_expiry)
                 self.set_cookie("isHost", "true", expires=cookie_expiry)
-            self.render("views/host.html")
+            self.render("views/host.html", **host_template)
         # Attempting to join a game (/?game=GAMEID)
         elif len(arg) == 6 and arg.isalnum():
-            if not self.game_handler.valid_id(client_id, arg, False):
+            arg = str.upper(arg)
+            # Check for valid gameId
+            if not any(arg == game.game_id for game in self.game_handler.games):
+                print(arg)
+                print(game.game_id for game in self.game_handler.games)
                 self.clear_all_cookies()
                 self.redirect("/")
                 return
-            if client_id == "":
+            if client_id == "" or not any(client_id in game.players.keys() for game in self.game_handler.games):
                 player_id = self.game_handler.add_player(arg)
+                # print(player_id)
                 if player_id == None:
                     self.render("views/index.html")
                     return
                 self.set_cookie("clientId", player_id, expires=cookie_expiry)
-                self.set_cookie("gameId", arg, expires=cookie_expiry)
-                self.set_cookie("isHost", "false", expires=cookie_expiry)
-            self.render("views/player.html")
+            self.set_cookie("gameId", arg, expires=cookie_expiry)
+            self.set_cookie("isHost", "false", expires=cookie_expiry)
+            self.render("views/player.html", **player_template)
         # Render main page (/)
         else:
             self.render("views/index.html")
@@ -100,8 +116,8 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Call the appropriate Game method, based on the message type"""
-        print("ws msg: " + message)
         msg = json.loads(message)
+        cprint(msg, 'grey' if self.is_host is None else 'yellow' if self.is_host else 'red', 'on_white')
         # Check msg contains a type attribute
         if "type" not in msg:
             self.write_message(json.dumps({
@@ -111,6 +127,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
             return
         # If type is unknown send an error message
         if msg["type"] not in self.commands:
+            print("Bad Type")
             self.write_message(json.dumps({
                 "type": "error",
                 "message": "unknown type attribute"
@@ -120,7 +137,7 @@ class WebsocketHandler(websocket.WebSocketHandler):
         # If this websocket is not associated with a user, associate it
         if self.is_host is None:
             self.client_id = msg["clientId"]
-            self.is_host = msg["isHost"]
+            self.is_host = str.lower(msg["isHost"]) == "true"
             self.commands, self.game = ((
                 WebsocketHandler.host_commands,
                 self.game_handler.add_host_ws(self)
@@ -151,7 +168,6 @@ class WebsocketHandler(websocket.WebSocketHandler):
         except TradeError as error:
             print(error.message)
 
-
 def main():
     if __debug__:
         # Log all GET, POST... requests
@@ -172,6 +188,7 @@ def main():
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(int(os.environ.get("PORT", 5000)), "0.0.0.0")
     tornado.ioloop.IOLoop.current().start()
+
 
 
 if __name__ == "__main__":

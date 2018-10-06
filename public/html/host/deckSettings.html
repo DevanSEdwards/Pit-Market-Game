@@ -1,1 +1,37 @@
-<div>Deck Settings!</div>
+<h1>Deck Settings</h1>
+<div>
+    <label>Domain</label>
+    <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck()">
+    <br>
+    <label>Mean</label>
+    <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck()">
+    <br>
+    <label>Lower Limit</label>
+    <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck()">
+    <br>
+    <svg viewBox="0 0 500 500" id="deckChart" style="
+        width: 300px;
+        overflow: visible">
+        <polyline
+            id="sellChartLine"
+            class="chartLine"
+            fill="none"
+            stroke="#0074d9"
+            stroke-width="5"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            points="" >
+        </polyline>
+        <polyline
+            id="buyChartLine"
+            class="chartLine"
+            fill="none"
+            stroke="#d97400"
+            stroke-width="5"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            points="" />
+    </svg>
+    <br>
+    <input class="btn" id="btnStartRound" type="button" value="Begin Game" onclick="submitDeck()">
+</div>
