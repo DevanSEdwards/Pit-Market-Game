@@ -11,15 +11,35 @@
     <br>
     <svg viewBox="0 0 500 500" id="deckChart" style="
         width: 300px;
-        overflow: visible">
+        overflow: visible;
+        padding: 50px">
+        <style>
+            .chartLine {
+                fill: none;
+                stroke-width: 5;
+                stroke-linejoin: round;
+                stroke-linecap: round;
+            }
+            text {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 20px;
+                font-weight: bold;
+                alignment-baseline: central;
+            }
+            #meanChartLine {
+                stroke: black; 
+                stroke-dasharray: 20;
+            }
+        </style>
+        <text id="sellStartLabel"></text>
+        <text id="sellEndLabel"></text>
+        <text id="buyStartLabel"></text>
+        <text id="buyEndLabel"></text>
+        <text id="meanLabel"></text>
         <polyline
             id="sellChartLine"
             class="chartLine"
-            fill="none"
             stroke="#0074d9"
-            stroke-width="5"
-            stroke-linejoin="round"
-            stroke-linecap="round"
             points="" >
         </polyline>
         <polyline
@@ -27,10 +47,8 @@
             class="chartLine"
             fill="none"
             stroke="#d97400"
-            stroke-width="5"
-            stroke-linejoin="round"
-            stroke-linecap="round"
             points="" />
+        <line id="meanChartLine" class="chartLine" x1="0" y1="250" x2="500" y2="250"/>
     </svg>
     <br>
     <input class="btn" id="btnStartRound" type="button" value="Begin Game" onclick="submitDeck()">
