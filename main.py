@@ -20,7 +20,7 @@ def file_get_contents(filename):
         return f.read()
 
 # Templating Values
-host_pages = {"deckSettings", "endGame", "round", "roundSettings"}
+host_pages = {"warning", "deckSettings", "endGame", "round", "roundSettings"}
 player_pages = {"endGame", "round", "lobby"}
 
 class MainHandler(RequestHandler):
