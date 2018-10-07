@@ -24,7 +24,7 @@ function submitRoundSettings() {
     state.websocket.send(JSON.stringify({
         type: "start round",
         length: parseInt(roundLength.options[roundLength.selectedIndex].value),
-        offerTimeLimit: parseInt(tradeLength.options[roundLength.selectedIndex].value),
+        offerTimeLimit: parseInt(tradeLength.options[tradeLength.selectedIndex].value),
         tax: parseInt(document.getElementById("taxInput").value),
         ceiling: parseInt(document.getElementById("floorInput").value),
         floor: parseInt(document.getElementById("ceilInput").value)
