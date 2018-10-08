@@ -38,41 +38,43 @@
   `
   <link rel="stylesheet" type="text/css" href="{{ static_url('styles/layout.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="layout.css">
   
   <title>Pit Market Game - Lobby</title>
 </head>
 
 <body>
   <!-- TODO: UNHIDE HEADER -->
-  <div id="header-container" hidden>
+  <!--div id="header-container" hidden>
     <p id="clientId">{{clientId}}</p>
     <p id="roundCounter">Time: 0:00</p>
     <p id="gameId">{{gameId}}</p>
     <p id="isHost" hidden>{{isHost}}</p>
     <p id="isSeller"></p>  
-  </div>
-   <!-- Left bar of lobby; details of play -->
-    <div class="left-container split">
-        <div>
-          <p class="offers-label">Your card:</p>
-          <div id="card"><p id="cardValue"></p></div>
-        </div>
-        <div>
-          <p class="info-label"><span>Round: </span>1</p>
-          <p class="info-label" id="info_roundCounter"><span>Time: </span>--:--</p>
-          <p class="info-label"><span>Profit: </span>$999</p>
-        </div>
+  </div-->
+  <!-- Left bar of lobby; details of play -->
+  <div class="split left-container">
+    <div>
+      <p class="offers-label">Your card:</p>
+      <div id="card"><p id="cardValue"></p></div>
     </div>
+    <div>
+      <p class="info-label"><span>Round: </span>1</p>
+      <p class="info-label" id="info_roundCounter"><span>Time: </span>--:--</p>
+      <p class="info-label"><span>Profit: </span>$999</p>
+    </div>
+  </div>
   <!-- Right bar of lobby; help -->
-  <div class="right-container split">
-      <div id="help_text" onload="defaultText()"></div>
-      <div id="help_buttons">
-        <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button><br />
-        <button class="lobby button" id="rules" onclick="rules()">Rules of the game</button><br />
-        <button class="lobby button" id="special" onclick="special()">Special Rules</button><br />
-        <button class="lobby button" id="howTo" onclick="how()">How to use this game</button><br />   
+  <div class="split right-container">
+    <div id="help_buttons">
+      <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button><br />
+      <button class="lobby button" id="rules" onclick="rules()">Rules of the game</button><br />
+      <button class="lobby button" id="special" onclick="special()">Special Rules</button><br />
+      <button class="lobby button" id="howTo" onclick="how()">How to use this game</button><br />   
     </div>
+    <div id="help_text" onload="defaultText()"></div>
   </div>
+  <!-- End of Page -->
 
 
   <script>
