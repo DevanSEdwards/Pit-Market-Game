@@ -1,27 +1,4 @@
-state = {
-    clientId: null,
-    gameId: null,
-    isHost: true,
-    currentPage: null,
-    deckSettings: {
-        domain: 7,
-        mean: 6,
-        lowerLimit: 2
-    },
-    offers: [],
-    rounds: [
-        // {
-        //     settings: {
-        //         length: 120,
-        //         offerTimeLimit: 10,
-        //         tax: null,
-        //         ceiling: null,
-        //         floor: null
-        //     },
-        //     trades: []
-        // }
-    ]
-}
+import State from './state';
 
 function loadpage(page)
 {
@@ -30,9 +7,39 @@ function loadpage(page)
     document.getElementById(`${page}Page`).hidden = false;
 }
 
+function getCookie(cname)
+{
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) 
+    {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') 
+        {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) 
+        {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
+function send_cookie_data(ws)
+{
+    ws.send(JSON.stringify({
+        "type": "id",
+        "gameId": getCookie(gameId),
+        "isHost": getCookie(isHost),
+        "clientId": getCookie(clientId)
+    }));
+}
 
 function main() {
+    State.WebSocket = new WebSocket(`wss://${window.location.host}/ws`);
+    send_cookie_data(State.WebSocket);
     loadpage(`deckSettings`);
 }
 

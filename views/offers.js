@@ -47,9 +47,10 @@ class Offer
 	// Create HTML element
 	var html = `
 		<div class='offer-shape ${this.buyer ? "buyer'": "seller'"}>
+			<div class='offer-internal'>${this.buyer ? "Buying at": "Selling at"}</div>
 			<div class='offer-internal' style='float: left;'>$ ${String(this.val)}</div>
 			<div class='offer-internal' style='float: right;'>
-				<button onclick='acceptOffer(${String(this.offer_id)})' ${_BUYER == this.buyer ? 'disabled' : ''}>Accept</button>
+				<button class='btn-offer' onclick='acceptOffer(${String(this.offer_id)})' ${_BUYER == this.buyer ? 'disabled' : ''}>Accept</button>
 			</div>
 		</div>
 		`;
