@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Prevents a 404 error from chrome requesting an icon. -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Fonts from Google Fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="../public/styles/style.css">
+
+  <!-- TODO: Make External -->
+  <style type="text/css">
+  
+  .button
+  {
+    border-radius: 15px;
+    width: 225px;
+    height: 50px;
+    font-size: 11pt;
+    border-style: outset;
+    border-width: 3px;
+    background: #A9BA9D
+  }
+  .button:hover{ border-style: inset; }
+
+  </style>
+  <!-- JavaScript -->
+  <script type="text/javascript" src="lobby.js"></script>
+  <!-- Game JS -->
+  <!-- END OF JS -->
+  `
+  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/layout.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
+  
+  <title>Pit Market Game - Lobby</title>
+</head>
+
+<body>
+  <!-- TODO: UNHIDE HEADER -->
+  <div id="header-container" hidden>
+    <p id="clientId">{{clientId}}</p>
+    <p id="roundCounter">Time: 0:00</p>
+    <p id="gameId">{{gameId}}</p>
+    <p id="isHost" hidden>{{isHost}}</p>
+    <p id="isSeller"></p>  
+  </div>
+   <!-- Left bar of lobby; details of play -->
+    <div class="left-container">
+        <div>
+          <p class="offers-label">Your card:</p>
+          <div id="card"><p id="cardValue"></p></div>
+        </div>
+        <div>
+          <p class="info-label"><span>Round: </span>1</p>
+          <p class="info-label" id="info_roundCounter"><span>Time: </span>--:--</p>
+          <p class="info-label"><span>Profit: </span>$999</p>
+        </div>
+    </div>
+  <!-- Right bar of lobby; help -->
+  <div class="right-container">
+      <div id="help_text" onload="defaultText()"></div>
+      <div id="help_buttons">
+        <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button><br />
+        <button class="lobby button" id="rules" onclick="rules()">Rules of the game</button><br />
+        <button class="lobby button" id="special" onclick="special()">Special Rules</button><br />
+        <button class="lobby button" id="howTo" onclick="how()">How to use this game</button><br />   
+    </div>
+  </div>
+
+
+  <script>
+    // Blocks
+    var lst_blocks = []; // Queue of blocked IDs  // { expire | id }
+    function shiftBlocks()
+    {
+      if(lst_blocks.length < 1) { return; }
+      var now = Date.now();
+      while(1)
+      {
+        if(lst_blocks[0][1] >= now)
+        {
+          var block = lst_blocks.shift();
+          unblockID (block);
+        } else { return; }
+      } return;
+    }
+    function unblockID(id) { document.getElementById(id).removeAttribute("disabled"); }
+    function blockID(id, time)
+    {
+      var t = Date.now();
+      var e = t + (time * 1000);
+
+      lst_blocks.push([time, id]);
+      document.getElementById(id).setAttribute("disabled", true);
+      // TODO: Fix this
+    }
+    // Timers
+    var timerLimit = 120; // In seconds
+    function s2m(t)
+    {
+      var m = parseInt(t / 60); var s = t % 60;
+      m = (m < 10) ? "0" + String(m) : String(m);
+      s = (s < 10) ? "0" + String(s) : String(s);
+      return (m + ":" + s);
+    }
+    function m2s(m,s) { return (m * 60) + s; }
+    function setTimer_s(t){timerLimit = t; timeDisplay(s2m(timerLimit));}
+    function setTimer_ms(m,s){timerLimit = m2s(m,s); timeDisplay(s2m(timerLimit));}
+    function timeDisplay(t) { document.getElementById("info_roundCounter").innerHTML = "<span>Time: </span>" + t;}
+    function incrementTimer()
+      {
+        // Increment timer
+        if(timerLimit == 0) { return; } 
+        timeDisplay(s2m(--timerLimit));
+      }
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+  </script>
+</body>
+
+</html>
