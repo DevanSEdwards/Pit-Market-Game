@@ -1,18 +1,23 @@
 <h1>Deck Settings</h1>
 <div>
-    <label>Domain</label>
-    <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck()">
-    <br>
     <label>Mean</label>
-    <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck()">
+    <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)">
+    <br>
+    <label>Domain</label>
+    <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
     <br>
     <label>Lower Limit</label>
-    <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck()">
+    <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck(false)"
+        onfocus="highlightOverlap()">
+    <br>
+    <label>Shape</label>
+    <input class="txt-field" id="overlapInput" type="number" value="0" step="0.1"
+        onchange="redrawDeck(true)" onfocus="highlightOverlap()">
     <br>
     <svg viewBox="0 0 500 500" id="deckChart" style="
         width: 300px;
         overflow: visible;
-        padding: 50px">
+        padding: 30px">
         <style>
             .chartLine {
                 fill: none;
@@ -28,7 +33,15 @@
             }
             #meanChartLine {
                 stroke: black; 
-                stroke-dasharray: 20;
+                stroke-dasharray: 15px;
+            }
+            .highlightLine {
+                fill: none;
+                stroke: rgba(255, 0, 0, 0.5);
+                stroke-width: 5;
+                stroke-linejoin: round;
+                stroke-linecap: round;
+                stroke-dasharray: 20px;
             }
         </style>
         <text id="sellStartLabel"></text>
@@ -49,7 +62,9 @@
             stroke="#d97400"
             points="" />
         <line id="meanChartLine" class="chartLine" x1="0" y1="250" x2="500" y2="250"/>
+        <line id="highlightOverlapLine" class="highlightLine" x1="300" y1="100" x2="300" y2="400"/>
     </svg>
     <br>
+    <input class="btn" id="btnStartRound" type="button" value="Reset" onclick="resetDeck()">
     <input class="btn" id="btnStartRound" type="button" value="Begin Game" onclick="submitDeck()">
 </div>

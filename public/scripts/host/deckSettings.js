@@ -1,22 +1,34 @@
+var _isOverlap = true;
+var _size = 500;
+
+
 function initDeckSettings() {
     document.getElementById(`meanInput`).value = state.deckSetting.mean;
     document.getElementById(`domainInput`).value = state.deckSetting.domain;
     document.getElementById(`lowerLimitInput`).value = state.deckSetting.lowerLimit;
-    redrawDeck();
+    redrawDeck(false);
+    redrawDeck(true);
 }
 
-function drawDeckChart(mean, domain, lowerLimit, size=500) {
+function drawDeckChart(mean, domain, lowerLimit, size = _size) {
     let sellStart = lowerLimit,
         sellEnd = lowerLimit + domain,
         buyStart = 2 * mean - lowerLimit - domain + 1,
         buyEnd = 2 * mean - lowerLimit + 1;
-    
+
     var yTrans = -Math.min(sellStart, buyStart);
     var yScale = size / (2 * Math.max(mean - lowerLimit, domain + lowerLimit - mean - 1));
     var xScale = size / domain;
 
+    if (yScale === Infinity) {
+        yScale = size / 2;
+        yTrans = - mean + 1;
+    }
+
     var point;
     var n = 0;
+
+
 
     var svg = document.getElementById(`deckChart`);
     var sellChartLine = document.getElementById(`sellChartLine`);
@@ -88,7 +100,7 @@ function drawDeckChart(mean, domain, lowerLimit, size=500) {
         buyStart,
         buyStart,
         `start`,
-        (domain / Math.abs(mean - buyStart)) > 10
+        (domain / Math.abs(sellEnd - buyStart)) > 10
     );
     setLabelAttributes(
         svg.getElementById(`sellEndLabel`),
@@ -96,27 +108,67 @@ function drawDeckChart(mean, domain, lowerLimit, size=500) {
         sellEnd - 1,
         sellEnd - 1,
         `start`,
-        (domain / Math.abs(mean - sellEnd + 1)) > 10
+        false
     );
-    console.log(meanLabel);
 }
 
+function highlightOverlap() {
+    overlapInput = document.getElementById(`overlapInput`);
+    overlap = parseFloat(overlapInput.value);
+    higlightOverlap = document.getElementById(`highlightOverlapLine`);
+    higlightOverlap.setAttribute(`x1`, overlap * _size);
+    higlightOverlap.setAttribute(`x2`, overlap * _size);
+    _isOverlap = (_isOverlap || document.activeElement === overlapInput) && document.activeElement !== document.getElementById(`lowerLimitInput`);
+    higlightOverlap.style.display = _isOverlap ? `block` : `none`;
+    document.getElementById(`sellStartLabel`).style.fill = _isOverlap ? `black` : `rgba(255,0,0,0.5)`;
+    overlapInput.style.color = _isOverlap ? `rgba(255,0,0,0.5)` : `black`;
+    document.getElementById(`lowerLimitInput`).style.color = _isOverlap ? `black` : `rgba(255,0,0,0.5)`;
+}
 
+function redrawDeck(isOverlap) {
+    let mean = parseInt(document.getElementById(`meanInput`).value);
+    let domain = parseInt(document.getElementById(`domainInput`).value);
+    let lowerLimit = parseInt(document.getElementById(`lowerLimitInput`).value);
+    let overlap = parseFloat(document.getElementById(`overlapInput`).value);
 
-function redrawDeck() {
-    drawDeckChart(
-        parseInt(document.getElementById(`meanInput`).value),
-        parseInt(document.getElementById(`domainInput`).value),
-        parseInt(document.getElementById(`lowerLimitInput`).value)
-    )
+    if (domain < 1) {
+        document.getElementById(`domainInput`).value = 1;
+        domain = 1;
+    }        
+
+    if (isOverlap !== null) {
+        _isOverlap = isOverlap;
+    }
+    if (_isOverlap) {
+        lowerLimit = Math.round(mean - overlap * domain + 0.5);
+        document.getElementById(`lowerLimitInput`).value = lowerLimit;
+    }
+    else {
+        overlap = Math.round(100 * (mean - lowerLimit + 0.5) / domain) / 100;
+        document.getElementById(`overlapInput`).value = overlap;
+    }
+
+    drawDeckChart(mean, domain, lowerLimit);
+    highlightOverlap();
+}
+
+function resetDeck() {
+    state.deckSetting = { mean: 6, domain: 7, lowerLimit: 2 };
+    initDeckSettings();
 }
 
 function submitDeck() {
+    let mean = parseInt(document.getElementById(`meanInput`).value);
+    let domain = parseInt(document.getElementById(`domainInput`).value);
+    let lowerLimit = parseInt(document.getElementById(`lowerLimitInput`).value);
+
+    state.deckSetting = { mean: mean, domain: domain, lowerLimit: lowerLimit };
+
     state.websocket.send(JSON.stringify({
         type: `card settings`,
-        mean: parseInt(document.getElementById(`meanInput`).value),
-        domain: parseInt(document.getElementById(`domainInput`).value),
-        lowerLimit: parseInt(document.getElementById(`lowerLimitInput`).value)
+        mean: mean,
+        domain: domain,
+        lowerLimit: lowerLimit
     }));
     loadpage(`roundSettings`);
 }
