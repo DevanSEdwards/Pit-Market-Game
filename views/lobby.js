@@ -68,11 +68,11 @@ function special()
 	html += "<p>Sale Value - Card Value - Tax = Profit<br />"
 	html += "$15 - $10 - $2 = $3<p>"
 	html += "<p>Tax is a real-world phenomenon that governments impose on the sale of goods and services in everyday life and this rule will demonstrait how tax may affect the free market."
-	// Price cieling/floor
-	html += "<h2>Price cieling/floor</h2>";
-	html += "<p>When there is either a price cieling or floor in place, there is a limit to how much a card can be brought or sold at. A price floor sets a minimum value that a card can be sold at and a price cielding reflects the maximum value. During any particular round, there will only be <emp>one</emp> of either option and never both.<p>"
+	// Price ceiling/floor
+	html += "<h2>Price ceiling/floor</h2>";
+	html += "<p>When there is either a price ceiling or floor in place, there is a limit to how much a card can be brought or sold at. A price floor sets a minimum value that a card can be sold at and a price cielding reflects the maximum value. During any particular round, there will only be <emp>one</emp> of either option and never both.<p>"
 	html += "<p>The <b>floor</b> may reprent a minimum cost of production of the goods or services for a company"
-	html += "<br />The <b>cieling</b> may reprent ???</p>"
+	html += "<br />The <b>ceiling</b> may reprent ???</p>"
 	html += "<p>Note that <b>it is possible</b> that you will no longer be able to make a trade when this rule is in place. In the real world, compainies could be forced out of a market because of various policies or costs introduced.<p>"
 
 	// Set the html

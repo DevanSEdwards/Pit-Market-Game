@@ -26,7 +26,7 @@
     font-size: 11pt;
     border-style: outset;
     border-width: 3px;
-    background: #A9BA9D
+    background: #A9BA9D;
   }
   .button:hover{ border-style: inset; }
 
@@ -52,7 +52,7 @@
     <p id="isSeller"></p>  
   </div>
    <!-- Left bar of lobby; details of play -->
-    <div class="left-container">
+    <div class="left-container split">
         <div>
           <p class="offers-label">Your card:</p>
           <div id="card"><p id="cardValue"></p></div>
@@ -64,7 +64,7 @@
         </div>
     </div>
   <!-- Right bar of lobby; help -->
-  <div class="right-container">
+  <div class="right-container split">
       <div id="help_text" onload="defaultText()"></div>
       <div id="help_buttons">
         <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button><br />
