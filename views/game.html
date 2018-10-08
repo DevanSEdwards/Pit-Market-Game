@@ -44,7 +44,7 @@
   <div id="top-container">
     <div>
       <p class="info-label"><span>Round: </span>1</p>
-      <p class="info-label"><span>Time: </span>1:59</p>
+      <p class="info-label" id="info_roundCounter"><span>Time: </span>--:--</p>
       <p class="info-label"><span>Profit: </span>$999</p>
     </div>
     <div>
@@ -100,6 +100,54 @@
   <!--script src="{{ static_url('scripts/script.js') }}"></script>
   <script src="{{ static_url('scripts/tools.js') }}"></script>
   <script src="{{ static_url('scripts/websockets.js') }}"></script-->
+  <!-- Remove this JS -->
+  <script>
+    // Blocks
+    var lst_blocks = []; // Queue of blocked IDs  // { expire | id }
+    function shiftBlocks()
+    {
+      if(lst_blocks.length < 1) { return; }
+      var now = Date.now();
+      while(1)
+      {
+        if(lst_blocks[0][1] >= now)
+        {
+          var block = lst_blocks.shift();
+          unblockID (block);
+        } else { return; }
+      } return;
+    }
+    function unblockID(id) { document.getElementById(id).removeAttribute("disabled"); }
+    function blockID(id, time)
+    {
+      var t = Date.now();
+      var e = t + (time * 1000);
+
+      lst_blocks.push([time, id]);
+      document.getElementById(id).setAttribute("disabled", true);
+      // TODO: Fix this
+    }
+    // Timers
+    var timerLimit = 120; // In seconds
+    function s2m(t)
+    {
+      var m = parseInt(t / 60); var s = t % 60;
+      m = (m < 10) ? "0" + String(m) : String(m);
+      s = (s < 10) ? "0" + String(s) : String(s);
+      return (m + ":" + s);
+    }
+    function m2s(m,s) { return (m * 60) + s; }
+    function setTimer_s(t){timerLimit = t; timeDisplay(s2m(timerLimit));}
+    function setTimer_ms(m,s){timerLimit = m2s(m,s); timeDisplay(s2m(timerLimit));}
+    function timeDisplay(t) { document.getElementById("info_roundCounter").innerHTML = "<span>Time: </span>" + t;}
+    function incrementTimer()
+      {
+        // Increment timer
+        if(timerLimit == 0) { return; } 
+        timeDisplay(s2m(--timerLimit));
+      }
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+  </script>
 </body>
 
 </html>

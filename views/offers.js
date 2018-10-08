@@ -88,11 +88,12 @@ function acceptOffer(offerID)
 
 function submitOffer()
 {
+	// TODO: Check if element is blocked
 	offerVal = document.getElementById("offerInput").value;
 	// Submit offer to web server
-
-	// If no errors; display new offer
 	// TODO: Recieve offerID from server
+	// If no errors; display new offer and block
+	blockID("offerInput");
 	recieveNewOffer('NULL', _BUYER, offerVal, Date.now());
 	drawOfferList();
 }

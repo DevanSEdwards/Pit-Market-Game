@@ -154,6 +154,12 @@ h2
     background:       #DEB887;
 }
 
+.trade
+{
+    float:  right;
+    background:       #B0E0E6;
+}
+
 .offer-shape-buyer
 {
     background-color: red;
