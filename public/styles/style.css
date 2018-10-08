@@ -160,12 +160,13 @@ h2
 
 .offer-shape
 {
-  border-style:     solid;
-  border-radius:    10px;
-  border-width:     2px;
-  width:            80%;
-  font-size:        15pt;
-  margin-top:       5px;
+  border: 0px solid rgb(192, 192, 192);
+  border-radius:    5px;
+  width:            75%;
+  font-size:        2vh;
+  margin: 5px 5px 0px;
+  height: 5vh;
+  /*box-shadow: 2px 4px rgb(192, 192, 192)*/
 }
 
 .offer-internal
@@ -174,16 +175,37 @@ h2
     margin: 5px;
 }
 
+.buyer-label
+{
+    transform: rotate(90deg);
+    width: 5vh;
+    transform-origin: left top 0;
+    background-color: coral;
+    color: white;
+    font-size: 1.5vh;
+    margin: 0px 30px;
+}
+
+.seller-label
+{
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+    background-color: darkcyan;
+    color: white;
+    font-size: 1.5vh;
+    margin: 0px 30px;
+}
+
 .buyer
 {
     float:  left;
-    background:     #8FBC8F;
+    background: white;
 }
 
 .seller
 {
     float:  right;
-    background:       #DEB887;
+    background: white;
 }
 
 .offer-shape-buyer

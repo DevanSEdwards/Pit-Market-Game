@@ -10,6 +10,7 @@ function drawOfferList() {
 	document.getElementById("offer-list").innerHTML = state.offers
 		.map(offer => `
 			<div class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
+				<div class='offer-internal buyer-label' style='float: left;'>Buyer</div>
 				<div class='offer-internal' style='float: left;'>$ ${String(offer.price)}</div>
 				<div class='offer-internal' style='float: right;'>
 					<button onclick='acceptOffer('${String(offer.offerId)}')'
