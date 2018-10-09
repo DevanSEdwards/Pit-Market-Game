@@ -1,14 +1,5 @@
-.left-container
-{
-    width: 50%;
-    float: left;
-}
-
-.right-container
-{
-    width: 50%;
-    float: right;
-}
+.left-container { left: 0; }
+.right-container { right: 0; }
 
 #help_text
 {
@@ -16,3 +7,17 @@
     text-align: left;
     float: left;
 }
+
+.split
+{
+  display: inline-block;
+  height: 100%;
+  width: 45%;
+  max-width: 100px; 
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+html{background: pink;}

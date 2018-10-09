@@ -64,7 +64,7 @@ function special()
 	// Tax
 	html += "<h2>Tax</h2>";
 	html += "<p><b>Tax</b> will be a flat cost that the <emp>seller</emp> must pay when they successfully sell a card."
-	html += " For example;</p><p>" + "If a card of value <u>$10</u> is sold for a value of <u>$15</u> and there is currently a <u>$2</u> in place, the seller will get the <u>$5</u> of Initial profit, then pay the tax to have a net gain of <u>$3</u> for the round</p>";
+	html += " For example;</p><p style='text-indent :1em;'>" + "If a card of value <u>$10</u> is sold for a value of <u>$15</u> and there is currently a <u>$2</u> in place, the seller will get the <u>$5</u> of Initial profit, then pay the tax to have a net gain of <u>$3</u> for the round</p>";
 	html += "<p>Sale Value - Card Value - Tax = Profit<br />"
 	html += "$15 - $10 - $2 = $3<p>"
 	html += "<p>Tax is a real-world phenomenon that governments impose on the sale of goods and services in everyday life and this rule will demonstrait how tax may affect the free market."

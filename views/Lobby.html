@@ -17,7 +17,12 @@
 
   <!-- TODO: Make External -->
   <style type="text/css">
-  
+  html, body
+  {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+  }
   .button
   {
     border-radius: 15px;
@@ -67,9 +72,9 @@
   <!-- Right bar of lobby; help -->
   <div class="split right-container">
     <div id="help_buttons">
-      <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button><br />
+      <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button>
       <button class="lobby button" id="rules" onclick="rules()">Rules of the game</button><br />
-      <button class="lobby button" id="special" onclick="special()">Special Rules</button><br />
+      <button class="lobby button" id="special" onclick="special()">Special Rules</button>
       <button class="lobby button" id="howTo" onclick="how()">How to use this game</button><br />   
     </div>
     <div id="help_text" onload="defaultText()"></div>
