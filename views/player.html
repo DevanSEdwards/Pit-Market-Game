@@ -5,18 +5,47 @@
     <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
     <title>Pit Market Game</title>
+
+    <script type="text/javascript">
+      /* Script for loading pages
+       *  ONLY used by this page
+       * feel free to move this script to an external file
+       * loadPage(page, div) loads selected HTML into the specified division
+       *
+       * create a function load_PAGENAME(){ loadPage('page.html', 'root'); }
+       *  as a clean wrapper of loadPage()
+       *  modify loadPage() to modify the method pages are loaded into the page
+       */
+      function loadPage(page, division)
+      {
+        // Load HTML from page into division
+        var innerHTML = '<object type="text/html" data="' + page + '"></object>';
+        // Set page divisionn
+        document.getElementById(div).innerHTML=inner;
+      }
+
+      function load_lobby() { loadPage('static_url("html/player/lobby.html")', 'root'); }
+      function load_round() { loadPage('static_url("html/player/round.html")', 'root'); }
+      function load_endGame() { loadPage('static_url("html/player/endGame.html")', 'root'); }
+
+    </script>
+
   </head>
   <body>
     {% autoescape None %}
     <div id=root>
-      <div id="endGamePage" hidden>{{ endGame }}</div>
-      <div id="roundPage" hidden>{{ round }}</div>
-      <div id="lobbyPage" hidden>{{ lobby }}</div>
+      <!-- DO NOT ADD INTERNAL HTML -->
+      <!-- Uses loadPage() JS above to set this division -->
+      <!--
+        <div id="endGamePage" hidden>{{ endGame }}</div>
+        <div id="roundPage" hidden>{{ round }}</div>
+        <div id="lobbyPage" hidden>{{ lobby }}</div>
+      -->
     </div>
-    <!--<script type="text/javascript" src="transactions.js"></script>-->
-    <script src="{{ static_url('scripts/player/state.js') }}"></script>
-    <script src="{{ static_url('scripts/player/main.js') }}"></script>
-    <script src="{{ static_url('scripts/offers.js') }}"></script>
-    <script src="{{ static_url('scripts/setup.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/player/state.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/player/main.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/offers.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/transactions.js') }}"></script>-->
+    <script type="text/javascript" src="{{ static_url('scripts/setup.js') }}"></script>
   </body>
 </html>
