@@ -1,13 +1,17 @@
+<!-- Top Container -->
 <div id="top-container">
+    <!-- Round Details -->
     <div>
         <p class="info-label"><span>Round: </span>1</p>
-        <p class="info-label"><span>Time: </span>1:59</p>
+        <p class="info-label" id=info_roundCounter><span>Time: </span>--:--</p>
         <p class="info-label"><span>Profit: </span>$999</p>
     </div>
+    <!-- Additional Rules of Play -->
     <div>
         <!--<p class="offers-label">Additional Rules</p>-->
         <p></p>
     </div>
+    <!-- Players Card and role -->
     <div>
         <p class="offers-label">Your card:</p>
         <div id="card">
@@ -16,6 +20,7 @@
     </div>
 </div>
 
+<!-- Post offers -->
 <div id="post-container">
     <p class="offers-label">Post an offer</p>
     <input class="txt-field" id="offerInput" type="number">
@@ -23,17 +28,28 @@
         onclick="submitOffer()">
 </div>
 
+
+<!-- Offer and transaction list -->
 <div id="offers-container">
-    <div><!-- Offer List -->
+    <div>
+        <!-- Offer List -->
         <p class="offers-label">Trade Offers</p>
         <div class="offer-container" id="offer-list">
             <!-- DO NOT ADD INTERNAL HTML -->
+            <!-- HTML added through Javascript functions -->
         </div>
     </div>
-    <div><!-- Trades List -->
+    <div>
+        <!-- Trades List -->
         <p class="offers-label">Successful Trades</p>
         <div class="offer-container" id="trade-list">
             <!-- DO NOT ADD INTERNAL HTML -->
+            <!-- HTML added through Javascript functions -->
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    // Uses the time.js script
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+</script>
