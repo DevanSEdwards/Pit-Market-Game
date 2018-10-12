@@ -12,4 +12,7 @@ function calculateScore()
 
 function displayScore() { document.getElementById("info_score").innerHTML = '$' + String(calculateScore()); }
 
+
+
+/* DEBUG FUNCTIONS */
 function setScoreDISPLAY(score) { document.getElementById("info_score").innerHTML = '$' + String(score); }
