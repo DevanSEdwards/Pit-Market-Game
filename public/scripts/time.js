@@ -35,6 +35,8 @@ function blockID(id, time)
 /* Timer Functions
  */
 
+function endOfTimer() { loadpage(`lobby`); }
+
 // Timer Constant
 var _currentTimer = 120; // In seconds
 
@@ -61,7 +63,7 @@ function setTimer_ms(m,s){_currentTimer = m2s(m,s); timeDisplay(s2m(_currentTime
 function setTimerDisplay(element, t) { document.getElementById(element).innerHTML = "<span>Time: </span>" + t;}
 function incrementTimer()
 { // Increment timer
-  if(_currentTimer >= 0) { return; } // Don't go negative
+  if(_currentTimer >= 0) { endOfTimer(); return; } // Don't go negative
   setTimerDisplay("info_roundCounter", secondsToString(--_currentTimer));
 }
 
