@@ -18,8 +18,7 @@ function drawTransactionList()
 				$ ${String(transaction.time)}
 				</div>
 			</div>
-			`);
-		.join(``);
+			`).join(``);
 }
 
 function recieveNewTransaction(transactionID, price, time) {
