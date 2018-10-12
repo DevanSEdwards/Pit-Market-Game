@@ -29,7 +29,7 @@ function blockID(id, time) {
 
 /* Timer Functions */
 
-function endOfTimer() { console.log("Timer ended!"); return; }
+function endOfTimer() { return; }
 
 // Timer Constant
 var _currentTimer = 120; // In seconds
