@@ -110,7 +110,7 @@ class Game():
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
-        self.io.cancel(self.force_end_round)
+        self.io.remove_timeout(self.force_end_round)
         self.end_round()
 
     def hc_end_game(self):
