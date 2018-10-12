@@ -37,7 +37,7 @@ var _currentTimer = 120; // In seconds
 // ToString() wrappers
 function secondsToString(s) { var ret = s2m(s); return String(ret[0]) + ":" + String(ret[1]); }
 
-function minutesToString(m, s) { return String(m2s(m, s)); }
+function minutesToString(m, s) { return (String(m) + ":" + String(s)); }
 
 // Conerts seconds to minutes
 function s2m(t) {
@@ -46,13 +46,11 @@ function s2m(t) {
   s = (s < 10) ? "0" + String(s) : String(s);
   return [m, s];
 }
-
 // Convert Minutes to seconds
 function m2s(m, s) { return (m * 60) + s; }
 
 // set timer constant to time (in seconds)
 function setTimer_s(t) { _currentTimer = t; setTimerDisplay("info_roundCounter", secondsToString(_currentTimer)); }
-
 // set timer constant to time (in minutes,seconds)
 function setTimer_ms(m, s) { _currentTimer = m2s(m, s); setTimerDisplay("info_roundCounter", secondsToString(_currentTimer)); }
 
