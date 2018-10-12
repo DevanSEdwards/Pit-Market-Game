@@ -62,6 +62,6 @@ function setTimerDisplay(element, t) { document.getElementById(element).innerHTM
 // 
 function incrementTimer() { // Increment timer
   if (/*round started*/0) { return; } // TODO: Check if round started
-  if (_currentTimer >= 0) { endOfTimer(); return; } // Don't go negative
+  if (_currentTimer < 0) { endOfTimer(); return; } // Don't go negative
   setTimerDisplay("info_roundCounter", secondsToString(--_currentTimer));
 }
