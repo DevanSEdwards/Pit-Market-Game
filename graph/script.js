@@ -62,24 +62,31 @@ function drawGraph(x, y) {
         }
     }
 
+    function drawDeck(cards)
+    {
+
+    }
+
     function drawPoints(points)
     {
         // draw connections between points
         for (i = 1; i < points.length; i++)
         {
-            __x = graphBtmLeftX + points[i-1].x * graphXAxisIncrementLen;
-            __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
+            if (points[i].p == points[i-1].p)
+            {
+                __x = graphBtmLeftX + points[i-1].x * graphXAxisIncrementLen;
+                __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
 
-            x_ = graphBtmLeftX + points[i].x * graphXAxisIncrementLen;
-            y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
+                x_ = graphBtmLeftX + points[i].x * graphXAxisIncrementLen;
+                y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
 
-            ctx.strokeStyle = graphPointConnectColor;
-            ctx.beginPath();
-            ctx.moveTo(__x, __y);
-            ctx.lineTo(x_, y_);
-            ctx.stroke();
+                ctx.strokeStyle = graphPointConnectColor;
+                ctx.beginPath();
+                ctx.moveTo(__x, __y);
+                ctx.lineTo(x_, y_);
+                ctx.stroke();
+            }
         }
-
         // draw points
         for (i = 0; i < points.length; i++)
             drawGraphPoint(points[i].x, points[i].y)   
@@ -123,6 +130,7 @@ function drawGraph(x, y) {
     // draw labels
     ctx.fillStyle = graphTextColor;
     ctx.font = graphFont;
+    ctx.fillText("Quantity", x + graphOffsetX + 40, y + graphPanelHeight - graphOffsetY + 20);
     ctx.fillText(graphTitle, x + graphPanelWidth / 2, y + 20);
     ctx.fillText(graphYAxisLabel, x + graphOffsetX - 50, y + graphPanelHeight / 2);
     ctx.fillText(graphXAxisLabel, x + graphPanelWidth / 2, graphBtmLeftY + 20);
@@ -136,7 +144,8 @@ function drawGraph(x, y) {
 
     // draw points
 
-    points = [{x:1, y:2}, {x:2, y:3}, {x:4, y:7}];
+    points = [  {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
+                {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}];
 
     drawPoints(points);
 }
