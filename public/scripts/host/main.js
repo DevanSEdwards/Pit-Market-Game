@@ -16,6 +16,7 @@ function handleMessage(event) {
             case `start round`:
                 loadpage(`round`);
                 state.inRound = true
+                startTimer_s(msg.length);
                 break;
             case `end round`:
                 loadpage(`roundSettings`);
