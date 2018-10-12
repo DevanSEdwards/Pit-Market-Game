@@ -13,8 +13,8 @@ function drawOfferList() {
 				<div class='offer-internal buyer-label' style='float: left;'>Buyer</div>
 				<div class='offer-internal' style='float: left;'>$ ${String(offer.price)}</div>
 				<div class='offer-internal' style='float: right;'>
-					<button onclick='acceptOffer('${String(offer.offerId)}')'
-						${state.isSeller === offer.isSeller ? `hidden` : ``}>Accept</button>
+					${state.isSeller === offer.isSeller ? 
+						`<button onclick='acceptOffer('${String(offer.offerId)}')'>Accept</button>` : ``}
 				</div>
 			</div>`)
 		.join(``);
