@@ -11,6 +11,7 @@ class State {
         this.offers = []; // List of Offer objects
         this.rounds = []; // List of Round objects
         this.inRound = false;
+        this.roundTimer = 0;
         this.currentRound = 0;
         this.isSeller = true;
         this.websocket = null;

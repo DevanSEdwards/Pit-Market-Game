@@ -51,10 +51,10 @@ function s2m(t) {
 function m2s(m, s) { return (m * 60) + s; }
 
 // set timer constant to time (in seconds)
-function setTimer_s(t) { _currentTimer = t; setTimeDisplay(s2m(_currentTimer)); }
+function setTimer_s(t) { _currentTimer = t; setTimerDisplay("info_roundCounter", s2m(_currentTimer)); }
 
 // set timer constant to time (in minutes,seconds)
-function setTimer_ms(m, s) { _currentTimer = m2s(m, s); setTimeDisplay(s2m(_currentTimer)); }
+function setTimer_ms(m, s) { _currentTimer = m2s(m, s); setTimerDisplay("info_roundCounter", s2m(_currentTimer)); }
 
 // Sets the element to the time
 function setTimerDisplay(element, t) { document.getElementById(element).innerHTML = "<span>Time: </span>" + t; }
