@@ -7,6 +7,8 @@ function main() {
     state.websocket.onmessage = handleMessage;
 }
 
+function setRound(round) { document.getElementById("info_round").innerHTML = String(round); }
+
 function handleMessage(event) {
     msg = JSON.parse(event.data);
     console.log(msg);
@@ -44,6 +46,7 @@ function handleMessage(event) {
         case `start round`:
             loadpage(`round`);
             state.inRound = true
+            setRound(state.rounds.length);
             setTimer_s(msg.length);
             break;
         case `end round`:

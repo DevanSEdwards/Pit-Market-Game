@@ -29,10 +29,12 @@ function blockID(id, time) {
 
 /* Timer Functions */
 
-function endOfTimer() { return; }
+function endOfTimer() { console.log("Timer ended!"); return; }
 
 // Timer Constant
 var _currentTimer = 120; // In seconds
+
+
 
 // ToString() wrappers
 function secondsToString(s) { var ret = s2m(s); return String(ret[0]) + ":" + String(ret[1]); }
