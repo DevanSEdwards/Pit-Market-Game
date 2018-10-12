@@ -102,7 +102,8 @@ class Game():
                 "isSeller": player.is_seller
             }
             message = json.dumps(response)
-            player.ws.write_message(message)
+            if player.ws is not None:
+                player.ws.write_message(message)
         self.start_time = datetime.now()
 
         self.in_round = True
