@@ -3,6 +3,8 @@ function main() {
     initDeckSettings();
     document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
     loadpage(state.inRound ? `round` : state.currentRound == 0 ? `warning` : `roundSettings`);
+    setTimer_s(state.roundTimer);
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
     state.websocket.onmessage = handleMessage;
 }
 

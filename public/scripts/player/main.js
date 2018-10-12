@@ -3,6 +3,7 @@ function main() {
     drawOfferList();
     loadpage(state.inRound ? `round` : `lobby`);
     setTimer_s(state.roundTimer);
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
     state.websocket.onmessage = handleMessage;
 }
 
