@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ static_url('styles/layout.css') }}">
     <title>Pit Market Game</title>
+    <style> .hidden{ display: none" } </style>
   </head>
   <body>
     {% autoescape None %}
@@ -21,5 +22,9 @@
     <script type="text/javascript" src="{{ static_url('scripts/player/main.js') }}"></script>
     <script type="text/javascript" src="{{ static_url('scripts/player/lobby.js') }}"></script>
     <script type="text/javascript" src="{{ static_url('scripts/setup.js') }}"></script>
+    <script type="text/javascript">
+    // Uses the time.js script
+    window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+    </script>
   </body>
 </html>
