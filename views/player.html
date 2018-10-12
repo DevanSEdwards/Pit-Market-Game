@@ -10,15 +10,16 @@
   <body>
     {% autoescape None %}
     <div id=root>
-        <div id="endGamePage" hidden>{{ endGame }}</div>
-        <div id="roundPage" hidden>{{ round }}</div>
-        <div id="lobbyPage" hidden>{{ lobby }}</div>
+        <div id="endGamePage" style="display: none">{{ endGame }}</div>
+        <div id="roundPage" style="display: none">{{ round }}</div>
+        <div id="lobbyPage" style="display: none">{{ lobby }}</div>
     </div>
     <script type="text/javascript" src="{{ static_url('scripts/player/state.js') }}"></script>
-    <script type="text/javascript" src="{{ static_url('scripts/player/main.js') }}"></script>
     <script type="text/javascript" src="{{ static_url('scripts/time.js') }}"></script>
     <script type="text/javascript" src="{{ static_url('scripts/offers.js') }}"></script>
-    <script type="text/javascript" src="{{ static_url('scripts/transactions.js') }}"></script>-->
+    <script type="text/javascript" src="{{ static_url('scripts/transactions.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/player/main.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('scripts/player/lobby.js') }}"></script>
     <script type="text/javascript" src="{{ static_url('scripts/setup.js') }}"></script>
   </body>
 </html>

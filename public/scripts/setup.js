@@ -11,9 +11,9 @@ function send(msg) {
 function loadpage(page) {
     pages = document.getElementById(`root`).children;
     for (let p = 0; p < pages.length; p++)
-        pages[p].hidden = true;
+        pages[p].style.display = `none`;
 
-    document.getElementById(`${page}Page`).hidden = false;
+    document.getElementById(`${page}Page`).style.display = `block`;
 }
 
 function getCookie(cname) {
