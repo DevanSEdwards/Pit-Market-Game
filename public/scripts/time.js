@@ -35,7 +35,7 @@ function endOfTimer() { loadpage(`lobby`); }
 var _currentTimer = 120; // In seconds
 
 // ToString() wrappers
-function secondsToString(s) { var ret = s2m(s); return String(ret[0] + ":" + ret[1]); }
+function secondsToString(s) { var ret = s2m(s); return String(ret[0]) + ":" + String(ret[1]); }
 
 function minutesToString(m, s) { return String(m2s(m, s)); }
 
