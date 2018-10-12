@@ -2,7 +2,7 @@
 function main() {
     initDeckSettings();
     document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
-    loadpage(state.inRound ? `round` : state.currentRound == 0 ? `warning` : `lobby`);
+    loadpage(state.inRound ? `round` : state.currentRound == 0 ? `warning` : `roundSettings`);
     state.websocket.onmessage = handleMessage;
 }
 
