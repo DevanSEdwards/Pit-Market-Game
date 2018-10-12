@@ -1,0 +1,1 @@
+function endRound() { send({ type: `end round` }); }
