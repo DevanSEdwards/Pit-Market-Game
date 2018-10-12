@@ -28,6 +28,8 @@ var graphHeight = graphPanelHeight - graphOffsetY * 2;
 var graphYAxisIncrementLen = graphHeight / graphYAxisBounds;
 var graphXAxisIncrementLen = graphWidth / graphXAxisBounds;
 var graphPointConnectColor = "#AAAAAA";
+var graphEquilibriumLineColor = "black";
+var graphDashSettings = [2, 5];
 
 init()
 
@@ -49,6 +51,8 @@ function draw() {
 function drawGraph(x, y) {
     var graphBtmLeftX = x + graphOffsetX;
     var graphBtmLeftY = y + graphOffsetY + graphHeight;
+
+    var equilibriumValue = 6;    
 
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph
@@ -142,8 +146,16 @@ function drawGraph(x, y) {
         ctx.stroke();
     }
 
-    // draw points
+    // draw equilibrium line
+    ctx.strokeStyle = graphEquilibriumLineColor;
+    ctx.setLineDash(graphDashSettings);
+    ctx.beginPath();
+    ctx.moveTo(graphBtmLeftX, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
+    ctx.lineTo(graphBtmLeftX + graphWidth, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
+    ctx.stroke();
+    ctx.setLineDash([0, 0]);
 
+    // draw points
     points = [  {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
                 {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}];
 
@@ -165,56 +177,3 @@ function drawOffer(time, offer, isSeller) {
     else { ctx.fillStyle = "blue"; }
     ctx.font = '25px Arial';
 }
-
-
-/* Button Controllers */
-var btn_offer = { x: 0, y: 0, w: 0, h: 0 };
-/**********************/
-
-/* Event Listeners */
-function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
-}
-canvas.addEventListener("click", function (evt) { _mousePos = getMousePos(canvas, evt); }, false);
-/*******************/
-
-// /* Web Sockets */
-// var hostId = document.getElementById("playerId").innerText;
-// var ws = new WebSocket("ws://localhost:5000/pws/" + hostId);
-// ws.onopen=function()
-// {
-//     ws.send(JSON.stringify({
-//         "type": "offer",
-//         "price": 5
-//     }));
-// };
-// ws.on_message=function(evt)
-// {
-//     var stream = evt.data;
-//     // Recieve Offer
-//     offer_lst.push(new Offer(stream));
-//     // Recieve Transaction
-//     transactions_lst.push(new Transaction(stream));
-//     // Recieve Offer Confirm
-// };
-// function sendDataToServer(message) { 
-//     console.log("#====== Sending data... ======#    ");
-//     console.log(message);
-//     if(!ws.write_message(message))
-//     {
-//         console.log("#====== Sending Failed! ======#");
-//     }
-// }
-// ws.on_close()=function() { window.location.href ="/index.html"; }
-// function sendOffer(player, time, value)
-// {
-//     var message = "{type: 'offer', playerID: " + player + ", time: " + time + ", offer: " + value + "};"
-//     sendDataToServer(message);
-// }
-// function sendTransation(time, offerID, playerID)
-// {
-//     var message = "{playerID: " + player + ", time: " + time + ", offer: " + value + "};"
-//     sendDataToServer(message);
-// }
-// /***************/
