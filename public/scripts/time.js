@@ -1,7 +1,6 @@
 // Blocks
 var lst_blocks = []; // Queue of blocked IDs  // { expire | id }
 
-
 function shiftBlocks()
 {
   // Checks if the front of the queue is expired
@@ -63,6 +62,7 @@ function setTimer_ms(m,s){_currentTimer = m2s(m,s); timeDisplay(s2m(_currentTime
 function setTimerDisplay(element, t) { document.getElementById(element).innerHTML = "<span>Time: </span>" + t;}
 function incrementTimer()
 { // Increment timer
+  if(/*round started*/0) { return; } // TODO: Check if round started
   if(_currentTimer >= 0) { endOfTimer(); return; } // Don't go negative
   setTimerDisplay("info_roundCounter", secondsToString(--_currentTimer));
 }
