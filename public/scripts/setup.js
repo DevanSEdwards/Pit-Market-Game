@@ -1,5 +1,13 @@
 // Send our identity to the server and setup a state object
 
+// Syntactic sugar for round properties
+for (var key in Object.keys(new Round())) {
+    Object.defineProperty(State, key, {
+        get: () => { return this.rounds[this.currentRound][key]; },
+        set: value => { this.rounds[this.currentRound][key] = value; }
+    })
+}
+
 var state = new State();
 
 function send(msg) {

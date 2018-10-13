@@ -31,11 +31,3 @@ class Round {
         this.trades = []; // List of integers (prices)
     }
 }
-
-// Lets you call state.card etc...
-for (var key in Object.keys(new Round())) {
-    Object.defineProperties(State, key, {
-        get: () => { return this.rounds[this.currentRound][key]; },
-        set: value => { this.rounds[this.currentRound][key] = value; }
-    })
-}
