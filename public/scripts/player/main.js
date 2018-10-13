@@ -32,10 +32,10 @@ function handleMessage(event) {
             recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
         case `trade`:
-            // if (msg.success) {
-            //     document.getElementById(`btnPostOffer`).disabled = true;
-            //     document.getElementById(`btnPostOffer`).value = `Traded at: ${msg.price.toString()}`;
-            // }
+            if (msg.success) {
+                state.tradePrice = msg.price;
+                setTrading(false);
+            }
             break;
         case `announce trade`:
             // var announce = document.createElement(`p`);
@@ -44,9 +44,8 @@ function handleMessage(event) {
             // tradeList.appendChild(announce);
             break;
         case `start round`:
-            loadpage(`round`);
             state.inRound = true
-            state.rounds.append(new Round(
+            state.rounds.push(new Round(
                 msg.length,
                 msg.offerTimeLimit,
                 msg.tax,
@@ -56,12 +55,13 @@ function handleMessage(event) {
                 msg.isSeller
             ));
             setRound(state.currentRound + 1);
-            setTimer_s(msg.length);
+            setTimer_s(state.length);
+            setTrading(true);
+            loadpage(`round`);
             break;
         case `end round`:
-            loadpage(`lobby`);
             state.inRound = false;
-            state.currentRound++;
+            loadpage(`lobby`);
             break;
         case `end game`:
             loadpage(`endGame`);
