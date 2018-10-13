@@ -105,6 +105,11 @@ class GameHandler:
                 return game
         # No host_id match
         return None
-   
+
+    def delete_game(self, game_id):
+        for g in self.games:
+            if g.game_id == game_id:
+                self.games.remove(g)
+                break
         
         

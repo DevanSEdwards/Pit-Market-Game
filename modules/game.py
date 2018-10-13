@@ -124,8 +124,7 @@ class Game():
         for player in self.players:
             player.ws.close()
         self.ws.close()
-        self.game_finished = True
-        del self
+        self.ws.game_handler.delete_game(self.game_id)
 
     def hc_card_settings(self, domain, mean, lowerLimit):
         """Initliaise the deck settings"""
