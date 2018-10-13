@@ -3,8 +3,8 @@
 // Syntactic sugar for round properties
 for (var key in Object.keys(new Round())) {
     Object.defineProperty(State, key, {
-        get: () => { return this.rounds[this.currentRound][key]; },
-        set: value => { this.rounds[this.currentRound][key] = value; }
+        get: () => this.rounds[this.currentRound][key],
+        set: value => this.rounds[this.currentRound][key] = value
     })
 }
 
