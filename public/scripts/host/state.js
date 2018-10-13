@@ -19,7 +19,7 @@ class State {
         this.websocket = null;
     }
 
-    get currentRound() { return this.rounds.length; }
+    get currentRound() { return this.rounds.length - 1; }
 }
 
 class Round {
