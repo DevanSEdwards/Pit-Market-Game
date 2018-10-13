@@ -14,20 +14,6 @@ function handleMessage(event) {
     console.log(msg);
 
     switch (msg.type) {
-        case `card`:
-            // document.getElementById(`isSeller`).innerText = msg.isSeller ? `Seller` : `Buyer`;
-            // document.getElementById(`cardValue`).innerText = `Card: ${msg.value}`;
-            // isSeller = msg.isSeller;
-            // if (isSeller) {
-            //     document.getElementById(`card`).innerText = `Selling`;
-            // }
-            // else {
-            //     document.getElementById(`card`).innerText = `Buying`;
-            // }
-
-            // cardValue = msg.value;
-            // draw();
-            break;
         case `offer`:
             recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
@@ -38,10 +24,8 @@ function handleMessage(event) {
             }
             break;
         case `announce trade`:
-            // var announce = document.createElement(`p`);
-            // announce.innerHTML = `Successful Trade: ${msg.price.toString()}`;
-            // var tradeList = document.getElementById(`tradeList`);
-            // tradeList.appendChild(announce);
+            state.trades.push(msg.price);
+            drawTransactionList();
             break;
         case `start round`:
             state.inRound = true
@@ -54,6 +38,7 @@ function handleMessage(event) {
                 msg.card,
                 msg.isSeller
             ));
+            console.log(state.currentRound);
             setRound(state.currentRound + 1);
             setTimer_s(state.length);
             setTrading(true);

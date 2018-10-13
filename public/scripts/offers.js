@@ -11,13 +11,13 @@ function drawOfferList() {
 		.map(offer => `
 			<div class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
 				<div class='offer-internal buyer-label' style='float: left;'>Buyer</div>
-				<div class='offer-internal' style='float: left;'>$ ${String(offer.price)}</div>
+				<div class='offer-internal' style='float: left;'>$ ${offer.price}</div>
 				<div class='offer-internal' style='float: right;'>
 					${
 						!state.isHost &&
-						(state.isSeller !== offer.isSeller) &&
+						(state.isSeller != offer.isSeller) &&
 						(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
-						`<button onclick='acceptOffer('${String(offer.offerId)}')'>Accept</button>` : ``
+						`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
 					}
 				</div>
 			</div>`)
@@ -47,27 +47,3 @@ function submitOffer() {
 		price: offerprice
 	});
 }
-
-// Methods
-// drawHTML() {
-// 	if (this.drawn) { return; } // Don't draw it again
-
-// 	// Get initial content
-// 	var old = document.getElementById("offer-list").innerHTML;
-
-// 	// Create HTML element
-// 	var html = `
-// 	<div class='offer-shape ${this.isSeller ? "seller" : "buyer"}'>
-// 		<div class='offer-internal' style='float: left;'>$ ${String(this.price)}</div>
-// 		<div class='offer-internal' style='float: right;'>
-// 			<button onclick='acceptOffer(${String(this.offerId)})'
-// 				${state.isSeller == this.isSeller ? 'hidden' : ''}>Accept</button>
-// 		</div>
-// 	</div>`;
-
-// 	// Draw to screen
-// 	document.getElementById("offer-list").innerHTML = html + old;
-
-// 	// Set as drawn
-// 	this.drawn = true;
-// }

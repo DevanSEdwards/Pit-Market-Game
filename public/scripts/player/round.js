@@ -1,6 +1,6 @@
 function setTrading(canTrade) {
     document.getElementById(`btnPostOffer`).disabled = !canTrade;
-    document.getElementById(`btnPostOffer`).value = canTrade ? `Post Offer` : `Traded at: ${state.tradePrice}`;
+    document.getElementById(`btnPostOffer`).value = canTrade ? `Post Offer` : `Traded at $${state.tradePrice}`;
 }
 
 function setCard(value, isSeller) {
