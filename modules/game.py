@@ -93,12 +93,14 @@ class Game():
             "length": length,
             "offer time limit": offerTimeLimit
         }
-        self.message_all(response)
+        self.ws.write_message(json.dumps(response))
         # Inform players of their card number and buyer/seller identity
         for player in self.players.values():
             response = {
-                "type": "card",
-                "value": player.card,
+                "type": "start round",
+                "length": length,
+                "offer time limit": offerTimeLimit,
+                "card": player.card,
                 "isSeller": player.is_seller
             }
             message = json.dumps(response)
