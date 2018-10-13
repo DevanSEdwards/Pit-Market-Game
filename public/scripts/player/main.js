@@ -46,20 +46,22 @@ function handleMessage(event) {
         case `start round`:
             loadpage(`round`);
             state.inRound = true
-            // TODO: Append round state to round
-            var len = msg.length;
-            var lim = msg.offerTimeLimit;
-            var tax = msg.tax;
-            var ceiling = msg.ceiling;
-            var floor = msg.floor;
-
-            state.rounds.Append(new Round(len, lim, tax, ceiling, floor, /*card*/null, state.isSeller));
-            setRound(state.rounds.length);
-            setTimer_s(len);
+            state.rounds.append(new Round(
+                msg.length,
+                msg.offerTimeLimit,
+                msg.tax,
+                msg.ceiling,
+                msg.floor,
+                msg.card,
+                msg.isSeller
+            ));
+            setRound(state.currentRound + 1);
+            setTimer_s(msg.length);
             break;
         case `end round`:
             loadpage(`lobby`);
             state.inRound = false;
+            state.currentRound++;
             break;
         case `end game`:
             loadpage(`endGame`);
