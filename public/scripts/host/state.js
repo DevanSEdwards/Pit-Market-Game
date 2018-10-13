@@ -22,7 +22,7 @@ class State {
 }
 
 class Round {
-    constructor(length, offerTimeLimit, tax, ceiling, floor) {
+    constructor(length = 120, offerTimeLimit = 10, tax = null, ceiling = null, floor = null) {
         this.length = length;
         this.offerTimeLimit = offerTimeLimit;
         this.tax = tax;
@@ -30,4 +30,12 @@ class Round {
         this.floor = floor;
         this.trades = []; // List of integers (prices)
     }
+}
+
+// Lets you call state.card etc...
+for (var key in Object.keys(new Round())) {
+    Object.defineProperties(State, key, {
+        get: () => { return this.rounds[this.currentRound][key]; },
+        set: value => { this.rounds[this.currentRound][key] = value; }
+    })
 }
