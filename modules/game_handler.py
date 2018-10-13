@@ -3,6 +3,8 @@ import random
 import string
 from uuid import uuid4
 from modules.game import Game
+from datetime import datetime
+from math import ceil
 
 
 class GameHandler:
@@ -51,7 +53,11 @@ class GameHandler:
                 "time": o.time
             } for o in game.offers],
             "inRound": game.in_round,
-            "currentRound": game.round_number
+            "currentRound": game.round_number,
+            "roundTimer": (
+                ceil((datetime.now() - game.start_time).total_seconds()) 
+                if game.start_time and game.in_round else None
+            )
         }
         response.update({
             "deckSetting": {
