@@ -87,22 +87,22 @@ class Game():
         # Setup function to end the round later
         self.force_end_round = self.io.call_later(length, self.end_round)
 
-        # Inform host and all players that round is starting
+        # Inform host that round is starting
         response = {
             "type": "start round",
             "length": length,
-            "offer time limit": offerTimeLimit
+            "offer time limit": offerTimeLimit,
+            "tax": tax,
+            "ceiling": ceiling,
+            "floor": floor
         }
         self.ws.write_message(json.dumps(response))
         # Inform players of their card number and buyer/seller identity
         for player in self.players.values():
-            response = {
-                "type": "start round",
-                "length": length,
-                "offer time limit": offerTimeLimit,
+            response.update({
                 "card": player.card,
                 "isSeller": player.is_seller
-            }
+            })
             message = json.dumps(response)
             if player.ws is not None:
                 player.ws.write_message(message)
