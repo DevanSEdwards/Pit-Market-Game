@@ -1,13 +1,10 @@
 // Called in setup.js
 function main() {
-    drawOfferList();
     loadpage(state.inRound ? `round` : `lobby`);
-    setTimer_s(state.roundTimer);
     window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+    refresh();
     state.websocket.onmessage = handleMessage;
 }
-
-function setRound(round) { document.getElementById("info_round").innerHTML = String(round); }
 
 function handleMessage(event) {
     msg = JSON.parse(event.data);
@@ -38,10 +35,7 @@ function handleMessage(event) {
                 msg.card,
                 msg.isSeller
             ));
-            console.log(state.currentRound);
-            setRound(state.currentRound + 1);
-            setTimer_s(state.length);
-            setTrading(true);
+            refresh();
             loadpage(`round`);
             break;
         case `end round`:
@@ -53,3 +47,12 @@ function handleMessage(event) {
             break;
     }
 };
+
+function refresh() {
+    setRound(state.currentRound + 1);
+    setTimer_s(state.roundTimer);
+    setTrading(state.tradePrice == null && state.isSeller != null);
+    setCard(state.card, state.isSeller);
+    drawTransactionList();
+    drawOfferList();
+}

@@ -47,3 +47,9 @@ function submitOffer() {
 		price: offerprice
 	});
 }
+
+function setRound(round) {
+	let elements = document.getElementsByClassName("info_round");
+	for (let i = 0; i < elements.length; i++)
+		elements[i].innerHTML = `<span>Round: </span>${round}`;
+}

@@ -55,7 +55,7 @@ class GameHandler:
             "inRound": game.in_round,
             "currentRound": game.round_number,
             "roundTimer": (
-                ceil((datetime.now() - game.start_time).total_seconds()) 
+                max(game.rounds[-1].length - ceil((datetime.now() - game.start_time).total_seconds()), 0)
                 if game.start_time and game.in_round else None
             )
         }

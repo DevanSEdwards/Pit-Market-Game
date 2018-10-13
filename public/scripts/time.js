@@ -31,37 +31,40 @@ function blockID(id, time) {
 
 function endOfTimer() { return; }
 
-// Timer Constant
-var _currentTimer = 120; // In seconds
-
-
-
 // ToString() wrappers
-function secondsToString(s) { var ret = s2m(s); return String(ret[0]) + ":" + String(ret[1]); }
+function secondsToString(s) {
+  var ret = s2m(s);
+  return String(ret[0]) + ":" + String(ret[1]);
+}
 
 function minutesToString(m, s) { return (String(m) + ":" + String(s)); }
 
 // Conerts seconds to minutes
 function s2m(t) {
   var m = parseInt(t / 60); var s = t % 60;
-  m = (m < 10) ? "0" + String(m) : String(m);
-  s = (s < 10) ? "0" + String(s) : String(s);
-  return [m, s];
+  min = `${m < 10 ? `0` : ``}${m}`;
+  sec = `${s < 10 ? `0` : ``}${s}`;
+  return [min, sec];
 }
 // Convert Minutes to seconds
 function m2s(m, s) { return (m * 60) + s; }
 
 // set timer constant to time (in seconds)
-function setTimer_s(t) { _currentTimer = t; setTimerDisplay("info_roundCounter", secondsToString(_currentTimer)); }
+function setTimer_s(t) {
+  state.roundTimer = t;
+  setTimerDisplay("info_roundCounter", secondsToString(state.roundTimer));
+}
 // set timer constant to time (in minutes,seconds)
-function setTimer_ms(m, s) { _currentTimer = m2s(m, s); setTimerDisplay("info_roundCounter", secondsToString(_currentTimer)); }
+function setTimer_ms(m, s) {
+  state.roundTimer = m2s(m, s);
+  setTimerDisplay("info_roundCounter", secondsToString(state.roundTimer));
+}
 
 // Sets the element to the time
-function setTimerDisplay(element, t) { document.getElementById(element).innerHTML = "<span>Time: </span>" + t; }
+function setTimerDisplay(element, t) { document.getElementById(element).innerHTML = `<span>Time: </span>${t}`; }
 
 // 
 function incrementTimer() { // Increment timer
-  if (/*round started*/0) { return; } // TODO: Check if round started
-  if (_currentTimer < 0) { endOfTimer(); return; } // Don't go negative
-  setTimerDisplay("info_roundCounter", secondsToString(--_currentTimer));
+  if (state.inRound && state.roundTimer > 0) // Don't go negative
+      setTimerDisplay("info_roundCounter", secondsToString(--state.roundTimer));
 }
