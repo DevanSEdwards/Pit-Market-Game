@@ -6,17 +6,18 @@ class State {
         this.clientId = null;
         this.gameId = null;
         this.isHost = null;
-        this.currentPage = null;
         this.profit = 0;
         this.offers = []; // List of Offer objects
         this.rounds = []; // List of Round objects
         this.inRound = false;
         this.roundTimer = 0;
-        this.currentRound = 0;
-        this.isSeller = true;
         this.websocket = null;
     }
+    
+    get currentRound() { return this.rounds.length; }
 }
+
+
 
 class Round {
     constructor(length, offerTimeLimit, tax, ceiling, floor, card, isSeller) {

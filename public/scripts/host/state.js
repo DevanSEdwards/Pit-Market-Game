@@ -16,9 +16,10 @@ class State {
         this.rounds = []; // List of Round objects
         this.inRound = false;
         this.roundTimer = 0;
-        this.currentRound = 0;
         this.websocket = null;
     }
+
+    get currentRound() { return this.rounds.length; }
 }
 
 class Round {
