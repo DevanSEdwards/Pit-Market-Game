@@ -83,7 +83,7 @@ class Game():
                     player.give_card(sell_deck.pop())
         # Record the player stats for later
         for player in self.players.values():
-            player.stats = PlayerStat(player.card, player.is_seller, None)
+            player.stats.append(PlayerStat(player.card, player.is_seller, None))
         # Setup function to end the round later
         self.force_end_round = self.io.call_later(length, self.end_round)
 
@@ -122,7 +122,8 @@ class Game():
         }
         self.message_all(response)
         for player in self.players:
-            player.ws.close()
+            if type(player) == Player: # BUG player becomes a string after websocket closes??
+                player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
 
@@ -226,6 +227,10 @@ class Game():
     # - Utilities -----------------------------------------------------
 
     def delete_offer(self, offer_id):
+        self.message_all({
+            "type": "remove offer",
+            "offerId": offer_id
+        })
         del self.offers[offer_id]
 
     def end_round(self):
