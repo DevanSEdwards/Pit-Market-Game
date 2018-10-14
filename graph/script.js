@@ -79,19 +79,26 @@ function drawGraph(x, y) {
         // draw connections between points
         for (i = 1; i < points.length; i++)
         {
+            __x = graphBtmLeftX + graphTradesOffset + points[i-1].x * graphXAxisIncrementLen;
+            __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
+
+            x_ = graphBtmLeftX + graphTradesOffset + points[i].x * graphXAxisIncrementLen;
+            y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
+
             if (points[i].p == points[i-1].p)
             {
-                __x = graphBtmLeftX + graphTradesOffset + points[i-1].x * graphXAxisIncrementLen;
-                __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
-
-                x_ = graphBtmLeftX + graphTradesOffset + points[i].x * graphXAxisIncrementLen;
-                y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
-
                 ctx.strokeStyle = graphPointConnectColor;
                 ctx.beginPath();
                 ctx.moveTo(__x, __y);
                 ctx.lineTo(x_, y_);
                 ctx.stroke();
+            }
+
+            if (points[i-1].p != points[i].p || i == 1)
+            {
+                console.log("test");
+                ctx.fillStyle = "black";
+                ctx.fillText(points[i].p, x_, graphBtmLeftY - equilibriumValue * graphYAxisIncrementLen * 2);
             }
         }
         // draw points
