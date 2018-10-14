@@ -1,6 +1,17 @@
 // Send our identity to the server and setup a state object
 
+
+
 var state = new State();
+
+// Syntactic sugar for round properties
+let keys = Object.keys(new Round());
+for (let i = 0; i < keys.length; i++) {
+    Object.defineProperty(state, keys[i], {
+        get: () => state.currentRound >= 0 ? state.rounds[state.currentRound][keys[i]] : null,
+        set: value => state.currentRound >= 0 ? state.rounds[state.currentRound][keys[i]] = value : null
+    });
+}
 
 function send(msg) {
     console.log(msg);
@@ -11,9 +22,9 @@ function send(msg) {
 function loadpage(page) {
     pages = document.getElementById(`root`).children;
     for (let p = 0; p < pages.length; p++)
-        pages[p].hidden = true;
+        pages[p].style.display = `none`;
 
-    document.getElementById(`${page}Page`).hidden = false;
+    document.getElementById(`${page}Page`).style.display = `block`;
 }
 
 function getCookie(cname) {

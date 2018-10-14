@@ -9,17 +9,20 @@
   <body>
     {% autoescape None %}
     <div id=root>
-      <div id="warningPage" hidden>{{ warning }}</div>
-      <div id="deckSettingsPage" hidden>{{ deckSettings }}</div>
-      <div id="endGamePage" hidden>{{ endGame }}</div>
-      <div id="roundPage" hidden>{{ round }}</div>
-      <div id="roundSettingsPage" hidden>{{ roundSettings }}</div>
+      <div id="warningPage" style="display: none">{{ warning }}</div>
+      <div id="deckSettingsPage" style="display: none">{{ deckSettings }}</div>
+      <div id="endGamePage" style="display: none">{{ endGame }}</div>
+      <div id="roundPage" style="display: none">{{ round }}</div>
+      <div id="roundSettingsPage" style="display: none">{{ roundSettings }}</div>
     </div>
     <script src="{{ static_url('scripts/host/state.js') }}"></script>
     <script src="{{ static_url('scripts/host/deckSettings.js') }}"></script>
     <script src="{{ static_url('scripts/host/roundSettings.js') }}"></script>
+    <script src="{{ static_url('scripts/host/round.js') }}"></script>
     <script src="{{ static_url('scripts/host/main.js') }}"></script>
     <script src="{{ static_url('scripts/offers.js') }}"></script>
+    <script src="{{ static_url('scripts/transactions.js') }}"></script>
+    <script src="{{ static_url('scripts/time.js') }}"></script>
     <script src="{{ static_url('scripts/setup.js') }}"></script>
   </body>
 </html>

@@ -3,6 +3,8 @@ import random
 import string
 from uuid import uuid4
 from modules.game import Game
+from datetime import datetime
+from math import ceil
 
 
 class GameHandler:
@@ -78,7 +80,11 @@ class GameHandler:
                 "time": o.time
             } for o in game.offers],
             "inRound": game.in_round,
-            "currentRound": game.round_number
+            "currentRound": game.round_number,
+            "roundTimer": (
+                max(game.rounds[-1].length - ceil((datetime.now() - game.start_time).total_seconds()), 0)
+                if game.start_time and game.in_round else None
+            )
         }
         # Add host specific parameters if client is the game's host.
         response.update({
@@ -147,6 +153,11 @@ class GameHandler:
                 return game
         # No host_id match
         return None
-   
+
+    def delete_game(self, game_id):
+        for g in self.games:
+            if g.game_id == game_id:
+                self.games.remove(g)
+                break
         
         

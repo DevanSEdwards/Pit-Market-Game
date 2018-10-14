@@ -15,13 +15,15 @@ class State {
         this.offers = []; // List of Offer objects
         this.rounds = []; // List of Round objects
         this.inRound = false;
-        this.currentRound = 0;
+        this.roundTimer = 0;
         this.websocket = null;
     }
+
+    get currentRound() { return this.rounds.length - 1; }
 }
 
 class Round {
-    constructor(length, offerTimeLimit, tax, ceiling, floor) {
+    constructor(length = 120, offerTimeLimit = 10, tax = null, ceiling = null, floor = null) {
         this.length = length;
         this.offerTimeLimit = offerTimeLimit;
         this.tax = tax;

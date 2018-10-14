@@ -1,28 +1,14 @@
 <div id="top-container">
   <div>
-    <p class="info-label"><span>Round: </span>1</p>
-    <p class="info-label"><span>Time: </span>1:59</p>
-    <p class="info-label"><span>Profit: </span>$999</p>
+    <p class="info-label info-round"><span>Round: </span>1</p>
+    <p id="info_roundCounter" class="info-label"><span>Time: </span>0:00</p>
   </div>
   <div>
     <!--<p class="offers-label">Additional Rules</p>-->
     <p></p>
-  </div>
-  <div>
-    <p class="offers-label">Your card:</p>
-    <div id="card">
-      <p id="cardValue"></p>
-    </div>
+    <input class="btn" id="btnEndRound" type="button" value="End Round" onclick="endRound()">
   </div>
 </div>
-
-<div id="post-container">
-  <p class="offers-label">Post an offer</p>
-  <input class="txt-field" id="offerInput" type="number">
-  <input class="btn" id="btnPostOffer" type="button" value="Post Offer"
-    onclick="submitOffer()">
-</div>
-
 <div id="offers-container">
   <div><!-- Offer List -->
     <p class="offers-label">Trade Offers</p>

@@ -1,5 +1,37 @@
-<div>
-    <div>
-        <p class="big-text centred-text">Waiting for host to start game...</p>
-    </div>   
+
+<style type="text/css">
+html, body
+{
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.button
+{
+  border-radius: 15px;
+  width: 225px;
+  height: 50px;
+  font-size: 11pt;
+  border-style: outset;
+  border-width: 3px;
+  background: #A9BA9D;
+}
+.button:hover{ border-style: inset; }
+
+</style>
+<div class="split left-container">
+  <div>
+    <p class="info-label info_round"><span>Round: </span>0</p>
+    <p class="info-label" id="info_profit"><span>Profit: </span>$0</p>
+  </div>
+</div>
+<!-- Right bar of lobby; help -->
+<div class="split right-container">
+  <div id="help_buttons">
+    <button class="lobby button" id="about" onclick="about()">About the Pit Market Game</button>
+    <button class="lobby button" id="rules" onclick="rules()">Rules of the game</button><br />
+    <button class="lobby button" id="special" onclick="special()">Special Rules</button>
+    <button class="lobby button" id="howTo" onclick="how()">How to use this game</button><br />
+  </div>
+  <div id="help_text" onload="defaultText()"></div>
 </div>
