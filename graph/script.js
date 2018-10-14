@@ -22,7 +22,7 @@ var graphYAxisMarkerLen = 10;
 var graphOffsetX = 100;
 var graphOffsetY = 75;
 var graphYAxisBounds = 16;
-var graphXAxisBounds = 12;
+var graphXAxisBounds = 32;
 var graphWidth = graphPanelWidth - graphOffsetX * 2;
 var graphHeight = graphPanelHeight - graphOffsetY * 2;
 var graphYAxisIncrementLen = graphHeight / graphYAxisBounds;
@@ -30,6 +30,9 @@ var graphXAxisIncrementLen = graphWidth / graphXAxisBounds;
 var graphPointConnectColor = "#AAAAAA";
 var graphEquilibriumLineColor = "black";
 var graphDashSettings = [2, 5];
+var graphTradesOffset = graphXAxisIncrementLen * 8;
+var graphSLineColor = "blue";
+var graphDLineColor = "red";
 
 init()
 
@@ -57,7 +60,7 @@ function drawGraph(x, y) {
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph
         if (x <= graphXAxisBounds && x >= 0 && y <= graphYAxisBounds && y >= 0) {
-            var _x = graphBtmLeftX + x * graphXAxisIncrementLen;
+            var _x = graphBtmLeftX + graphTradesOffset + x * graphXAxisIncrementLen;
             var _y = graphBtmLeftY - y * graphYAxisIncrementLen;
             ctx.beginPath();
             ctx.arc(_x, _y, graphPointSize, 0, 2 * Math.PI, false);
@@ -78,10 +81,10 @@ function drawGraph(x, y) {
         {
             if (points[i].p == points[i-1].p)
             {
-                __x = graphBtmLeftX + points[i-1].x * graphXAxisIncrementLen;
+                __x = graphBtmLeftX + graphTradesOffset + points[i-1].x * graphXAxisIncrementLen;
                 __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
 
-                x_ = graphBtmLeftX + points[i].x * graphXAxisIncrementLen;
+                x_ = graphBtmLeftX + graphTradesOffset + points[i].x * graphXAxisIncrementLen;
                 y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
 
                 ctx.strokeStyle = graphPointConnectColor;
@@ -94,6 +97,41 @@ function drawGraph(x, y) {
         // draw points
         for (i = 0; i < points.length; i++)
             drawGraphPoint(points[i].x, points[i].y)   
+    }
+
+    function drawSD(s, d)
+    {
+        for (i = 1; i < s.length; i++)
+        {
+            __x = graphBtmLeftX + (i-1)*graphXAxisIncrementLen;
+            __y = graphBtmLeftY - s[i-1]*graphYAxisIncrementLen;
+
+            x_ = graphBtmLeftX + i*graphXAxisIncrementLen;
+            y_ = graphBtmLeftY - s[i]*graphYAxisIncrementLen;
+
+            ctx.strokeStyle = graphSLineColor;
+            ctx.beginPath();
+            ctx.moveTo(__x, __y);
+            ctx.lineTo(x_, __y);
+            ctx.lineTo(x_, y_);
+            ctx.stroke();
+        }
+
+        for (i = 1; i < d.length; i++)
+        {
+            __x = graphBtmLeftX + (i-1)*graphXAxisIncrementLen;
+            __y = graphBtmLeftY - d[i-1]*graphYAxisIncrementLen;
+
+            x_ = graphBtmLeftX + i*graphXAxisIncrementLen;
+            y_ = graphBtmLeftY - d[i]*graphYAxisIncrementLen;
+
+            ctx.strokeStyle = graphDLineColor;
+            ctx.beginPath();
+            ctx.moveTo(__x, __y);
+            ctx.lineTo(x_, __y);
+            ctx.lineTo(x_, y_);
+            ctx.stroke();
+        }
     }
 
     // draw background and border
@@ -150,7 +188,7 @@ function drawGraph(x, y) {
     ctx.strokeStyle = graphEquilibriumLineColor;
     ctx.setLineDash(graphDashSettings);
     ctx.beginPath();
-    ctx.moveTo(graphBtmLeftX, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
+    ctx.moveTo(graphBtmLeftX + graphTradesOffset + graphXAxisIncrementLen, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
     ctx.lineTo(graphBtmLeftX + graphWidth, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
     ctx.stroke();
     ctx.setLineDash([0, 0]);
@@ -159,7 +197,11 @@ function drawGraph(x, y) {
     points = [  {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
                 {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}];
 
+    sCards = [2, 2, 3, 4, 5, 6, 6, 7, 8];
+    dCards = [10, 10, 9, 8, 7, 6, 6, 5, 4]; 
+
     drawPoints(points);
+    drawSD(sCards, dCards);
 }
 
 function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
