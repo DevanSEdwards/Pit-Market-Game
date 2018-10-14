@@ -1,38 +1,38 @@
 var canvas = document.getElementById("display");
 var ctx = canvas.getContext("2d");
 
-// graph appearance
-var graphBGColor = "white";
-var graphBorderColor = "#AAAAAA";
-var graphPointColor = "#333333";
-var graphPointSize = 4;
-var graphAxesColor = "#AAAAAA";
-var graphTextColor = "#666666";
-var graphGridColor = "#CCCCCC";
-var graphFont = "16px Cabin"
-var graphAxesWidth = 2;
-var graphBorderWidth = 1;
-var graphYAxisLabel = "Price";
-var graphXAxisLabel = "Trading Periods";
-var graphTitle = "Pitmarket Game Results";
-var graphDrawGrid = true;
-var graphPanelWidth = 800;
-var graphPanelHeight = 600;
-var graphYAxisMarkerLen = 10;
-var graphOffsetX = 100;
-var graphOffsetY = 75;
-var graphYAxisBounds = 16;
-var graphXAxisBounds = 32;
-var graphWidth = graphPanelWidth - graphOffsetX * 2;
-var graphHeight = graphPanelHeight - graphOffsetY * 2;
-var graphYAxisIncrementLen = graphHeight / graphYAxisBounds;
-var graphXAxisIncrementLen = graphWidth / graphXAxisBounds;
-var graphPointConnectColor = "#AAAAAA";
-var graphEquilibriumLineColor = "black";
-var graphDashSettings = [2, 5];
-var graphTradesOffset = graphXAxisIncrementLen * 8;
-var graphSLineColor = "blue";
-var graphDLineColor = "red";
+// graph appearance variables
+var gBGColor = "white";
+var gBorderColor = "#AAAAAA";
+var gPointColor = "#333333";
+var gPointSize = 4;
+var gAxesColor = "#AAAAAA";
+var gTextColor = "#666666";
+var gGridColor = "#CCCCCC";
+var gFont = "16px Cabin"
+var gAxesWidth = 2;
+var gBorderWidth = 1;
+var gYAxisLabel = "Price";
+var gXAxisLabel = "Trading Periods";
+var gTitle = "Pitmarket Game Results";
+var gDrawGrid = true;
+var gPanelWidth = 800;
+var gPanelHeight = 600;
+var gYAxisMarkerLen = 10;
+var gOffsetX = 100;
+var gOffsetY = 75;
+var gYAxisBounds = 16;
+var gXAxisBounds = 32;
+var gWidth = gPanelWidth - gOffsetX * 2;
+var gHeight = gPanelHeight - gOffsetY * 2;
+var gYAxisIncrementLen = gHeight / gYAxisBounds;
+var gXAxisIncrementLen = gWidth / gXAxisBounds;
+var gPointConnectColor = "#AAAAAA";
+var gEquilibriumLineColor = "black";
+var gDashSettings = [2, 5];
+var gTradesOffset = gXAxisIncrementLen * 8;
+var gSLineColor = "blue";
+var gDLineColor = "red";
 
 init()
 
@@ -46,32 +46,27 @@ function init() {
 function draw() {
     clearCanvas();
     ctx.textAlign = "center";
-    drawGraph(canvas.width/2 - graphPanelWidth/2, canvas.height/2 - graphPanelHeight/2);
+    drawGraph(canvas.width/2 - gPanelWidth/2, canvas.height/2 - gPanelHeight/2);
 
     window.requestAnimationFrame(draw);
 }
 
 function drawGraph(x, y) {
-    var graphBtmLeftX = x + graphOffsetX;
-    var graphBtmLeftY = y + graphOffsetY + graphHeight;
+    var graphBtmLeftX = x + gOffsetX;
+    var graphBtmLeftY = y + gOffsetY + gHeight;
 
     var equilibriumValue = 6;    
 
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph
-        if (x <= graphXAxisBounds && x >= 0 && y <= graphYAxisBounds && y >= 0) {
-            var _x = graphBtmLeftX + graphTradesOffset + x * graphXAxisIncrementLen;
-            var _y = graphBtmLeftY - y * graphYAxisIncrementLen;
+        if (x <= gXAxisBounds && x >= 0 && y <= gYAxisBounds && y >= 0) {
+            var _x = graphBtmLeftX + gTradesOffset + x * gXAxisIncrementLen;
+            var _y = graphBtmLeftY - y * gYAxisIncrementLen;
             ctx.beginPath();
-            ctx.arc(_x, _y, graphPointSize, 0, 2 * Math.PI, false);
-            ctx.fillStyle = graphPointColor;
+            ctx.arc(_x, _y, gPointSize, 0, 2 * Math.PI, false);
+            ctx.fillStyle = gPointColor;
             ctx.fill();
         }
-    }
-
-    function drawDeck(cards)
-    {
-
     }
 
     function drawPoints(points)
@@ -79,15 +74,15 @@ function drawGraph(x, y) {
         // draw connections between points
         for (i = 1; i < points.length; i++)
         {
-            __x = graphBtmLeftX + graphTradesOffset + (i-1+1)*graphXAxisIncrementLen;
-            __y = graphBtmLeftY - points[i-1].price*graphYAxisIncrementLen;
+            __x = graphBtmLeftX + gTradesOffset + (i-1+1)*gXAxisIncrementLen;
+            __y = graphBtmLeftY - points[i-1].price*gYAxisIncrementLen;
 
-            x_ = graphBtmLeftX + graphTradesOffset + (i+1) * graphXAxisIncrementLen;
-            y_ = graphBtmLeftY - points[i].price * graphYAxisIncrementLen;
+            x_ = graphBtmLeftX + gTradesOffset + (i+1) * gXAxisIncrementLen;
+            y_ = graphBtmLeftY - points[i].price * gYAxisIncrementLen;
 
             if (points[i].p == points[i-1].p)
             {
-                ctx.strokeStyle = graphPointConnectColor;
+                ctx.strokeStyle = gPointConnectColor;
                 ctx.beginPath();
                 ctx.moveTo(__x, __y);
                 ctx.lineTo(x_, y_);
@@ -98,7 +93,7 @@ function drawGraph(x, y) {
             {
                 console.log("test");
                 ctx.fillStyle = "black";
-                ctx.fillText(points[i].p, x_, graphBtmLeftY - equilibriumValue * graphYAxisIncrementLen * 2);
+                ctx.fillText(points[i].p, x_, graphBtmLeftY - equilibriumValue * gYAxisIncrementLen * 2);
             }
         }
         // draw points
@@ -110,107 +105,109 @@ function drawGraph(x, y) {
     {
         for (i = 1; i < s.length; i++)
         {
-            __x = graphBtmLeftX + (i-1)*graphXAxisIncrementLen;
-            __y = graphBtmLeftY - s[i-1]*graphYAxisIncrementLen;
+            __x = graphBtmLeftX + (i-1)*gXAxisIncrementLen;
+            __y = graphBtmLeftY - s[i-1]*gYAxisIncrementLen;
 
-            x_ = graphBtmLeftX + i*graphXAxisIncrementLen;
-            y_ = graphBtmLeftY - s[i]*graphYAxisIncrementLen;
+            x_ = graphBtmLeftX + i*gXAxisIncrementLen;
+            y_ = graphBtmLeftY - s[i]*gYAxisIncrementLen;
 
-            ctx.strokeStyle = graphSLineColor;
+            ctx.strokeStyle = gSLineColor;
             ctx.beginPath();
             ctx.moveTo(__x, __y);
             ctx.lineTo(x_, __y);
             ctx.lineTo(x_, y_);
             ctx.stroke();
 
-            ctx.fillStyle = graphSLineColor;
+            ctx.fillStyle = gSLineColor;
             if (i == s.length - 1)
-                ctx.fillText("S", x_, y_ - graphYAxisIncrementLen/2,);
+                ctx.fillText("S", x_, y_ - gYAxisIncrementLen/2,);
         }
 
         for (i = 1; i < d.length; i++)
         {
-            __x = graphBtmLeftX + (i-1)*graphXAxisIncrementLen;
-            __y = graphBtmLeftY - d[i-1]*graphYAxisIncrementLen;
+            __x = graphBtmLeftX + (i-1)*gXAxisIncrementLen;
+            __y = graphBtmLeftY - d[i-1]*gYAxisIncrementLen;
 
-            x_ = graphBtmLeftX + i*graphXAxisIncrementLen;
-            y_ = graphBtmLeftY - d[i]*graphYAxisIncrementLen;
+            x_ = graphBtmLeftX + i*gXAxisIncrementLen;
+            y_ = graphBtmLeftY - d[i]*gYAxisIncrementLen;
 
-            ctx.strokeStyle = graphDLineColor;
+            ctx.strokeStyle = gDLineColor;
             ctx.beginPath();
             ctx.moveTo(__x, __y);
             ctx.lineTo(x_, __y);
             ctx.lineTo(x_, y_);
             ctx.stroke();
 
-            ctx.fillStyle = graphDLineColor;
+            ctx.fillStyle = gDLineColor;
             if (i == d.length - 1)
-                ctx.fillText("D", x_, y_ + graphYAxisIncrementLen/2,);
+                ctx.fillText("D", x_, y_ + gYAxisIncrementLen/2,);
         }
     }
 
     // draw background and border
-    ctx.lineWidth = graphBorderWidth;
-    ctx.strokeStyle = graphBorderColor;
-    ctx.fillStyle = graphBGColor;
-    ctx.fillRect(x, y, graphPanelWidth, graphPanelHeight);
-    ctx.strokeRect(x, y, graphPanelWidth, graphPanelHeight);
+    ctx.lineWidth = gBorderWidth;
+    ctx.strokeStyle = gBorderColor;
+    ctx.fillStyle = gBGColor;
+    ctx.fillRect(x, y, gPanelWidth, gPanelHeight);
+    ctx.strokeRect(x, y, gPanelWidth, gPanelHeight);
 
     // draw grid
-    if (graphDrawGrid) {
-        ctx.strokeStyle = graphGridColor;
+    if (gDrawGrid) {
+        ctx.strokeStyle = gGridColor;
         // vertical lines
-        for (i = 0; i < graphXAxisBounds + 1; i++) {
+        for (i = 0; i < gXAxisBounds + 1; i++) {
             ctx.beginPath()
-            ctx.moveTo(x + graphOffsetX + (graphXAxisIncrementLen * i), y + graphOffsetY);
-            ctx.lineTo(x + graphOffsetX + (graphXAxisIncrementLen * i), y + graphOffsetY + graphHeight);
+            ctx.moveTo(x + gOffsetX + (gXAxisIncrementLen * i), y + gOffsetY);
+            ctx.lineTo(x + gOffsetX + (gXAxisIncrementLen * i), y + gOffsetY + gHeight);
             ctx.stroke();
         }
         // horizontal lines
-        for (i = 0; i < graphYAxisBounds; i++) {
+        for (i = 0; i < gYAxisBounds; i++) {
             ctx.beginPath()
-            ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i * graphYAxisIncrementLen));
-            ctx.lineTo(x + graphOffsetX + graphWidth, y + graphOffsetY + (i * graphYAxisIncrementLen));
+            ctx.moveTo(x + gOffsetX, y + gOffsetY + (i * gYAxisIncrementLen));
+            ctx.lineTo(x + gOffsetX + gWidth, y + gOffsetY + (i * gYAxisIncrementLen));
             ctx.stroke();
         }
     }
 
     // draw axes
-    ctx.lineWidth = graphAxesWidth;
-    ctx.strokeStyle = graphAxesColor;
+    ctx.lineWidth = gAxesWidth;
+    ctx.strokeStyle = gAxesColor;
     ctx.beginPath();
-    ctx.moveTo(x + graphOffsetX, y + graphOffsetY);
-    ctx.lineTo(x + graphOffsetX, y + graphPanelHeight - graphOffsetY);
-    ctx.lineTo(x + graphPanelWidth - graphOffsetX, y + graphPanelHeight - graphOffsetY);
+    ctx.moveTo(x + gOffsetX, y + gOffsetY);
+    ctx.lineTo(x + gOffsetX, y + gPanelHeight - gOffsetY);
+    ctx.lineTo(x + gPanelWidth - gOffsetX, y + gPanelHeight - gOffsetY);
     ctx.stroke();
 
     // draw labels
-    ctx.fillStyle = graphTextColor;
-    ctx.font = graphFont;
-    ctx.fillText("Quantity", x + graphOffsetX + 40, y + graphPanelHeight - graphOffsetY + 20);
-    ctx.fillText(graphTitle, x + graphPanelWidth / 2, y + 20);
-    ctx.fillText(graphYAxisLabel, x + graphOffsetX - 50, y + graphPanelHeight / 2);
-    ctx.fillText(graphXAxisLabel, x + graphPanelWidth / 2, graphBtmLeftY + 20);
-    for (i = 0; i < graphYAxisBounds; i++) {
-        ctx.fillText((graphYAxisBounds - i).toString(), x + graphOffsetX - 20, y + graphOffsetY + (i * graphYAxisIncrementLen));
+    ctx.fillStyle = gTextColor;
+    ctx.font = gFont;
+    ctx.fillText("Quantity", x + gOffsetX + 40, y + gPanelHeight - gOffsetY + 20);
+    ctx.fillText(gTitle, x + gPanelWidth / 2, y + 20);
+    ctx.fillText(gYAxisLabel, x + gOffsetX - 50, y + gPanelHeight / 2);
+    ctx.fillText(gXAxisLabel, x + gPanelWidth / 2, graphBtmLeftY + 20);
+    for (i = 0; i < gYAxisBounds; i++) {
+        ctx.fillText((gYAxisBounds - i).toString(), x + gOffsetX - 20, y + gOffsetY + (i * gYAxisIncrementLen));
         ctx.beginPath();
-        ctx.moveTo(x + graphOffsetX, y + graphOffsetY + (i * ((graphHeight) / graphYAxisBounds)));
-        ctx.lineTo(x + graphOffsetX + graphYAxisMarkerLen, y + graphOffsetY + (i * ((graphHeight) / graphYAxisBounds)));
+        ctx.moveTo(x + gOffsetX, y + gOffsetY + (i * ((gHeight) / gYAxisBounds)));
+        ctx.lineTo(x + gOffsetX + gYAxisMarkerLen, y + gOffsetY + (i * ((gHeight) / gYAxisBounds)));
         ctx.stroke();
     }
 
     // draw equilibrium line
-    ctx.strokeStyle = graphEquilibriumLineColor;
-    ctx.setLineDash(graphDashSettings);
+    ctx.strokeStyle = gEquilibriumLineColor;
+    ctx.setLineDash(gDashSettings);
     ctx.beginPath();
-    ctx.moveTo(graphBtmLeftX + graphTradesOffset + graphXAxisIncrementLen, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
-    ctx.lineTo(graphBtmLeftX + graphWidth, y + graphBtmLeftY - equilibriumValue*graphYAxisIncrementLen);
+    ctx.moveTo(graphBtmLeftX + gTradesOffset + gXAxisIncrementLen, y + graphBtmLeftY - equilibriumValue*gYAxisIncrementLen);
+    ctx.lineTo(graphBtmLeftX + gWidth, y + graphBtmLeftY - equilibriumValue*gYAxisIncrementLen);
     ctx.stroke();
     ctx.setLineDash([0, 0]);
 
     // draw points
-    points = [  {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
-                {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}];
+    points = [  
+        {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
+        {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}
+    ];
 
     trades = [
         {price:1, p:1}, {price:2, p:1}, {price:2, p:1}, {price:5, p:1},
@@ -226,18 +223,17 @@ function drawGraph(x, y) {
     drawSD(sCards, dCards);
 }
 
-function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+function clearCanvas() 
+{ 
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+}
 
-function drawButton(x, y, width, height, colour, text) {
+function drawButton(x, y, width, height, colour, text) 
+{
     var pad = 15
     ctx.fillStyle = colour;
     ctx.fillRect(x, y, width, height);
     ctx.fillStyle = 'black';
     ctx.font = '30px Arial';
     ctx.fillText(text, x + pad, y + height - pad);
-}
-function drawOffer(time, offer, isSeller) {
-    if (isSeller) { ctx.fillStyle = "green"; }
-    else { ctx.fillStyle = "blue"; }
-    ctx.font = '25px Arial';
 }
