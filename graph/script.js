@@ -115,6 +115,10 @@ function drawGraph(x, y) {
             ctx.lineTo(x_, __y);
             ctx.lineTo(x_, y_);
             ctx.stroke();
+
+            ctx.fillStyle = graphSLineColor;
+            if (i == s.length - 1)
+                ctx.fillText("S", x_, y_ - graphYAxisIncrementLen/2,);
         }
 
         for (i = 1; i < d.length; i++)
@@ -131,6 +135,10 @@ function drawGraph(x, y) {
             ctx.lineTo(x_, __y);
             ctx.lineTo(x_, y_);
             ctx.stroke();
+
+            ctx.fillStyle = graphDLineColor;
+            if (i == d.length - 1)
+                ctx.fillText("D", x_, y_ + graphYAxisIncrementLen/2,);
         }
     }
 
