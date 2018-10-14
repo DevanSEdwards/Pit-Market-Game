@@ -3,19 +3,22 @@ var ctx = canvas.getContext("2d");
 
 // graph appearance variables
 var gBGColor = "white";
-var gBorderColor = "#AAAAAA";
-var gPointColor = "#333333";
+var gBorderColor = "rgb(192, 192, 192)";
+var gPointColor = "black";
+var gPointConnectColor = "rgb(192, 192, 192)";
 var gPointSize = 4;
-var gAxesColor = "#AAAAAA";
-var gTextColor = "#666666";
-var gGridColor = "#CCCCCC";
-var gFont = "16px Cabin"
-var gAxesWidth = 2;
-var gBorderWidth = 1;
+var gPointConnectWidth = 2;
+var gAxesColor = "rgb(192, 192, 192)";
+var gTextColor = "black";
+var gGridColor = "rgb(230, 230, 230)";
+var gFont = "16px Arial";
+var gAxesWidth = 3;
+var gBorderWidth = 3;
 var gYAxisLabel = "Price";
 var gXAxisLabel = "Trading Periods";
 var gTitle = "Pitmarket Game Results";
 var gDrawGrid = true;
+var gGridLineWidth = 1;
 var gPanelWidth = 800;
 var gPanelHeight = 600;
 var gYAxisMarkerLen = 10;
@@ -27,12 +30,13 @@ var gWidth = gPanelWidth - gOffsetX * 2;
 var gHeight = gPanelHeight - gOffsetY * 2;
 var gYAxisIncrementLen = gHeight / gYAxisBounds;
 var gXAxisIncrementLen = gWidth / gXAxisBounds;
-var gPointConnectColor = "#AAAAAA";
 var gEquilibriumLineColor = "black";
-var gDashSettings = [2, 5];
+var gEquilibriumLineWidth = 3;
+var gDashSettings = [4, 6];
 var gTradesOffset = gXAxisIncrementLen * 8;
-var gSLineColor = "blue";
-var gDLineColor = "red";
+var gSLineColor = "mediumturquoise";
+var gDLineColor = "lightcoral";
+var gSDLineWidth = 3;
 
 init()
 
@@ -83,6 +87,7 @@ function drawGraph(x, y) {
             if (points[i].p == points[i-1].p)
             {
                 ctx.strokeStyle = gPointConnectColor;
+                ctx.lineWidth = gPointConnectWidth;
                 ctx.beginPath();
                 ctx.moveTo(__x, __y);
                 ctx.lineTo(x_, y_);
@@ -103,6 +108,7 @@ function drawGraph(x, y) {
 
     function drawSD(s, d)
     {
+        ctx.lineWidth = gSDLineWidth;
         for (i = 1; i < s.length; i++)
         {
             __x = graphBtmLeftX + (i-1)*gXAxisIncrementLen;
@@ -154,6 +160,7 @@ function drawGraph(x, y) {
     // draw grid
     if (gDrawGrid) {
         ctx.strokeStyle = gGridColor;
+        ctx.lineWidth = gGridLineWidth;
         // vertical lines
         for (i = 0; i < gXAxisBounds + 1; i++) {
             ctx.beginPath()
@@ -196,6 +203,7 @@ function drawGraph(x, y) {
 
     // draw equilibrium line
     ctx.strokeStyle = gEquilibriumLineColor;
+    ctx.lineWidth = gEquilibriumLineWidth;
     ctx.setLineDash(gDashSettings);
     ctx.beginPath();
     ctx.moveTo(graphBtmLeftX + gTradesOffset + gXAxisIncrementLen, y + graphBtmLeftY - equilibriumValue*gYAxisIncrementLen);
