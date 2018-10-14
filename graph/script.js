@@ -19,8 +19,8 @@ var gXAxisLabel = "Trading Periods";
 var gTitle = "Pitmarket Game Results";
 var gDrawGrid = true;
 var gGridLineWidth = 1;
-var gPanelWidth = 800;
-var gPanelHeight = 600;
+var gPanelWidth = canvas.width;
+var gPanelHeight = canvas.height;
 var gYAxisMarkerLen = 10;
 var gOffsetX = 100;
 var gOffsetY = 75;
@@ -212,11 +212,6 @@ function drawGraph(x, y) {
     ctx.setLineDash([0, 0]);
 
     // draw points
-    points = [  
-        {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
-        {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}
-    ];
-
     trades = [
         {price:1, p:1}, {price:2, p:1}, {price:2, p:1}, {price:5, p:1},
         {price:4, p:2}, {price:5, p:2}, {price:2, p:2}, {price:5, p:2},
@@ -225,7 +220,7 @@ function drawGraph(x, y) {
     ]
 
     sCards = [2, 2, 3, 4, 5, 6, 6, 7, 8];
-    dCards = [10, 10, 9, 8, 7, 6, 6, 5, 4]; 
+    dCards = [10, 10, 9, 8, 7, 6, 6, 5, 4];
 
     drawPoints(trades);
     drawSD(sCards, dCards);
