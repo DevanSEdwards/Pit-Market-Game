@@ -34,3 +34,10 @@ function submitRoundSettings() {
 function submitEndGame() {
     state.websocket.send(JSON.stringify({ type: "end game" }));
 }
+
+function submitSendEmail() {
+    state.websocket.send(JSON.stringify({ 
+        type: "send email",
+        address: document.getElementById("emailAddress").value
+ }));
+}

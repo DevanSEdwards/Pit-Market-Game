@@ -1,12 +1,15 @@
 import json
 import tornado.ioloop
 import math
+import csv
+import os
 from datetime import datetime, timedelta
 from uuid import uuid4
 from modules.player import Player
 from modules.offer import Offer
 from modules.trade import Trade
 from modules.create_deck import create_deck
+from modules.send_email import send
 from modules.trade_exception import TradeError
 from modules.round import Round
 from modules.player_stat import PlayerStat
@@ -31,12 +34,15 @@ class Game():
             'lower_limit': 2,
         }
         self.in_round = False
+        self.game_data = []
 
         # Store a reference to the IO loop, to be used for calling:
         # self.io.call_later(...)
         self.io = tornado.ioloop.IOLoop.current()
         self.start_time = None
         self.force_end_round = None
+        # Remove previous games CSV data
+        self.remove_csv()
 
     def add_player(self):
         player_id = uuid4().hex
@@ -112,13 +118,14 @@ class Game():
 
     def hc_end_round(self):
         """Bring the current round to a premature end"""
+        self.generate_round_data()
         self.io.remove_timeout(self.force_end_round)
         self.end_round()
 
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
         response = {
-            "type": "end game"
+            "type": "end game",
         }
         self.message_all(response)
         for player in self.players:
@@ -132,6 +139,13 @@ class Game():
         self.deck_settings["domain"] = domain
         self.deck_settings["mean"] = mean
         self.deck_settings["lower_limit"] = lowerLimit
+
+
+    def hc_send_email(self,address):
+        """Export end email game data CSV"""
+        self.export_csv()
+        send(self.game_id,str(address))
+        
 
     # - Player Commands -----------------------------------------------
     #   These methods should only be called inside WebsocketHandler
@@ -252,3 +266,41 @@ class Game():
                 player.ws.write_message(message)
             else:
                 print(player.player_id + " Disconnected")
+
+    def generate_round_data(self):
+        """Generate game data for CSV"""
+        # To get the current Round
+        roundNumber = self.round_number
+        # To get the data for each round: tax,floor and ceiling
+        roundInfo = list(vars(self.rounds[roundNumber]).values())
+        taxValue,floorValue,ceilingValue = roundInfo[2],roundInfo[3],roundInfo[4]
+        # Get a list of trades in the round
+        trades = self.rounds[roundNumber].trades
+        # Extract the game ID
+        gameID = self.game_id
+        # Extract info about each trade in the round
+        for trade in trades:
+            price = trade.price
+            buyerID = trade.buyer_id
+            sellerID = trade.seller_id
+            buyerCard = str(self.players[buyerID].stats[0].card)
+            sellerCard = str(self.players[sellerID].stats[0].card)
+            roundData = [gameID,roundNumber,price,buyerCard,sellerCard,buyerID,sellerID,taxValue,ceilingValue,floorValue]
+            # game_data contains a list of lists to be exported as a csv for each round.
+            self.game_data.append(roundData)
+
+    def export_csv(self):
+        """Export The game data to a CSV"""
+        # Headers for the CSV file in order of output
+        headers = ["Game ID","Round Number","Trade Price","Buyer Card","Seller Card","BuyerID","SellerID","Tax Value","Ceiling Value","Floor Value"]
+
+        with open("gameData.csv","w") as file:
+            writer = csv.writer(file)
+            writer.writerow(headers)
+            writer.writerows(self.game_data)
+
+    def remove_csv(self):
+        """To be called when the game is started to remove previous game data CSV"""
+        filename = 'gameData.csv'
+        if os.path.isfile(filename):
+            os.remove(filename)

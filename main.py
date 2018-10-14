@@ -88,7 +88,8 @@ class WebsocketHandler(websocket.WebSocketHandler):
         "card settings": "hc_card_settings",
         "start round": "hc_start_round",
         "end round": "hc_end_round",
-        "end game": "hc_end_game"
+        "end game": "hc_end_game",
+        "send email": "hc_send_email"
     }
     player_commands = {
         "offer": "pc_offer",
