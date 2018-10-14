@@ -79,11 +79,11 @@ function drawGraph(x, y) {
         // draw connections between points
         for (i = 1; i < points.length; i++)
         {
-            __x = graphBtmLeftX + graphTradesOffset + points[i-1].x * graphXAxisIncrementLen;
-            __y = graphBtmLeftY - points[i-1].y * graphYAxisIncrementLen;
+            __x = graphBtmLeftX + graphTradesOffset + (i-1+1)*graphXAxisIncrementLen;
+            __y = graphBtmLeftY - points[i-1].price*graphYAxisIncrementLen;
 
-            x_ = graphBtmLeftX + graphTradesOffset + points[i].x * graphXAxisIncrementLen;
-            y_ = graphBtmLeftY - points[i].y * graphYAxisIncrementLen;
+            x_ = graphBtmLeftX + graphTradesOffset + (i+1) * graphXAxisIncrementLen;
+            y_ = graphBtmLeftY - points[i].price * graphYAxisIncrementLen;
 
             if (points[i].p == points[i-1].p)
             {
@@ -103,7 +103,7 @@ function drawGraph(x, y) {
         }
         // draw points
         for (i = 0; i < points.length; i++)
-            drawGraphPoint(points[i].x, points[i].y)   
+            drawGraphPoint(i+1, points[i].price)   
     }
 
     function drawSD(s, d)
@@ -212,10 +212,17 @@ function drawGraph(x, y) {
     points = [  {x:1, y:2, p:1}, {x:2, y:3, p:1}, {x:4, y:7, p:1},
                 {x:5, y:2, p:2}, {x:6, y:3, p:2}, {x:7, y:7, p:2}];
 
+    trades = [
+        {price:1, p:1}, {price:2, p:1}, {price:2, p:1}, {price:5, p:1},
+        {price:4, p:2}, {price:5, p:2}, {price:2, p:2}, {price:5, p:2},
+        {price:4, p:3}, {price:2, p:3}, {price:3, p:3}, {price:5, p:3},
+        {price:4, p:4}, {price:7, p:4}, {price:2, p:4}, {price:2, p:4},
+    ]
+
     sCards = [2, 2, 3, 4, 5, 6, 6, 7, 8];
     dCards = [10, 10, 9, 8, 7, 6, 6, 5, 4]; 
 
-    drawPoints(points);
+    drawPoints(trades);
     drawSD(sCards, dCards);
 }
 
