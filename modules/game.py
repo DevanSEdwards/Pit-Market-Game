@@ -153,9 +153,9 @@ class Game():
             raise TradeError("Already traded this round")
         if price is None:
             raise TradeError("No price specified")
-        if player.is_seller and (player.card < price + (0 if tax is None else tax)):
+        if player.is_seller and (player.card > price + (0 if tax is None else tax)):
             raise TradeError("Price out of range")
-        if (not player.is_seller and (player.card > price)):
+        if (not player.is_seller and (player.card < price)):
             raise TradeError("Price out of range")
 
         # Add offer to the dictionary
