@@ -22,7 +22,7 @@ function drawQrCode() {
         text: `${window.location.href}/?game=${state.gameId}`,
         width: 114,
         height: 114,
-        colorDark : `#48d1cc`,
+        colorDark : `#000000`,
         colorLight : `#ffffff`,
         correctLevel : QRCode.CorrectLevel.L
     });

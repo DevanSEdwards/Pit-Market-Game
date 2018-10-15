@@ -111,8 +111,17 @@ h2
     display: inline-block;
     width: 120px;
     height: 160px;
-    border: 1px solid black;
+    border: 2px solid rgb(192, 192, 192);
+    border-radius: 5px;
     box-shadow: 5px 5px 1px rgb(192, 192, 192);
+    font-size: 16pt;
+}
+
+#cardValue
+{
+    font-size: 24pt;
+    border: 2px solid rgb(192, 192, 192);
+    border-width: 2px 0px;
 }
 
 .offers-label
@@ -173,12 +182,11 @@ h2
 .offer-shape
 {
   border: 0px solid rgb(192, 192, 192);
-  border-radius:    5px;
-  width:            75%;
-  font-size:        2vh;
+  border-radius: 5px;
+  width: 60%;
+  font-size: 2vh;
   margin: 5px 5px 0px;
   height: 5vh;
-  /*box-shadow: 2px 4px rgb(192, 192, 192)*/
 }
 
 .offer-internal
@@ -187,34 +195,16 @@ h2
     margin: 5px;
 }
 
-.buyer-label
-{
-    width: 5vh;
-    background-color: coral;
-    color: white;
-    font-size: 1.5vh;
-    margin: 0px 30px;
-}
-
-.seller-label
-{
-    width: 5vh;
-    background-color: darkcyan;
-    color: white;
-    font-size: 1.5vh;
-    margin: 0px 30px;
-}
-
 .buyer
 {
     float:  left;
-    background: white;
+    background: coral;
 }
 
 .seller
 {
     float:  right;
-    background: white;
+    background: darkcyan;
 }
 
 .offer-shape-buyer
@@ -288,6 +278,7 @@ h2
 .hidden{display: none; opacity: 0; }
 
 #qrcode {
+    color: black;
     width: 114px;
     margin: auto;
 }

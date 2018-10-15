@@ -10,10 +10,7 @@ function drawOfferList() {
 	document.getElementById("offer-list").innerHTML = state.offers
 		.map(offer => `
 			<div id='${offer.offerId}' class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
-
-				<div style ='float: left'>${offer.isSeller ? 'Selling at' : 'Buying at'}</div>
-
-				<div class='offer-internal' style='float: left;'>$ ${offer.price}</div>
+				<div class='offer-internal' style='float: left;'>${offer.isSeller ? 'Selling at' : 'Buying at'} $${offer.price}</div>
 				<div class='offer-internal' style='float: right;'>
 					${
 						!state.isHost &&
