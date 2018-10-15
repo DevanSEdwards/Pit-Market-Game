@@ -49,7 +49,7 @@ function handleMessage(event) {
 };
 
 function refresh() {
-    setRound(state.currentRound + 1);
+    setRound(state.currentRound + 2);
     setTimer_s(state.roundTimer);
     setTrading(state.tradePrice == null && state.isSeller != null);
     setCard(state.card, state.isSeller);
