@@ -34,6 +34,7 @@ function handleMessage(event) {
         case `start round`:
             document.getElementById(`btnPostOffer`).classList.remove('btnTraded');
             state.inRound = true
+            state.roundTimer = msg.length
             state.rounds.push(new Round(
                 msg.length,
                 msg.offerTimeLimit,
