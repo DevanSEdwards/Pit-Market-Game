@@ -78,7 +78,7 @@ class GameHandler:
                 "isSeller": o.is_seller,
                 "price": o.price,
                 "time": o.time
-            } for o in game.offers],
+            } for o in game.offers.values()],
             "inRound": game.in_round,
             "currentRound": game.round_number,
             "roundTimer": (
