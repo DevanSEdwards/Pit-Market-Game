@@ -3,6 +3,7 @@ function main() {
     document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
     loadpage(state.inRound ? `round` : state.currentRound == -1 ? `warning` : `roundSettings`);
     window.setInterval(() => { incrementTimer(); shiftBlocks(); }, 1000);
+    drawQrCode();
     refresh();
     state.websocket.onmessage = handleMessage;
 }

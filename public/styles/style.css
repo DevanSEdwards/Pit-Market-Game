@@ -289,4 +289,9 @@ h2
     opacity: 1;
 }
 .hidden{display: none; opacity: 0; }
+
+#qrcode {
+    width: 128px;
+    margin: auto;
+}
 /* -------------------*/
