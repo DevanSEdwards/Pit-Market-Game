@@ -116,7 +116,9 @@ class Game():
     def hc_end_game(self):
         """Delete the game and disconnect all clients"""
         response = {
-            "type": "end game"
+            "type": "end game",
+            "sellDeck": [p.card for p in self.players if p.is_seller],
+            "buyDeck": [p.card for p in self.players if not p.is_seller]
         }
         self.message_all(response)
         for player in self.players:

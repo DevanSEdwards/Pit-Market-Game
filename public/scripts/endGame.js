@@ -1,4 +1,4 @@
-var canvas = document.getElementById("display");
+var canvas = document.getElementById("graph_display");
 var ctx = canvas.getContext("2d");
 
 // graph appearance variables

@@ -25,7 +25,7 @@ function handleMessage(event) {
                 state.inRound = false;
                 break;
             case `end game`:
-                window.location.replace(`/`);
+                loadpage(`endGame`);
                 break;
         }
 }
