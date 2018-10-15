@@ -147,16 +147,31 @@ class Game():
         time = math.ceil((datetime.now() - self.start_time).total_seconds() * 1000)
         player = self.players[player_id]
         tax = self.rounds[self.round_number].tax
+        ceiling = self.rounds[self.round_number].ceiling
+        floor = self.rounds[self.round_number].floor
 
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
         if price is None:
             raise TradeError("No price specified")
-        if player.is_seller and (player.card > price + (0 if tax is None else tax)):
-            raise TradeError("Price out of range")
-        if (not player.is_seller and (player.card < price)):
-            raise TradeError("Price out of range")
+        if player.is_seller:
+            if price < player.card + tax:
+                raise TradeError("Price out of range (below seller card + tax)")
+        else:
+            if price > player.card:
+                raise TradeError("Price out of range (above buyer card)")
+        if ceiling is not None:
+            if ceiling < price:
+                raise TradeError("Price out of range (ceiling)")
+        elif floor is not None:
+            if floor > price:
+                raise TradeError("Price out of range (floor)")
+
+        # Remove Existing offers
+        for key, offer in self.offers:
+            if offer.player_id == player_id:
+                self.delete_offer(key)
 
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
