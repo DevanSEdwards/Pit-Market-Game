@@ -12,12 +12,13 @@
         <p></p>
     </div>
     <!-- Players Card and role -->
-    <div>
+    <div style="position=relative;">
         <p class="offers-label">Your card:</p>
         <div id="card">
             <p id="cardValue"></p>
             <p id="cardIsSeller"></p>
         </div>
+        <div class="helpBubble" onmouseover="drawHelp('help_cardBuyer');" onmouseout="hideHelp();" unselectable="on">?</div>
     </div>
 </div>
 
@@ -32,16 +33,18 @@
 
 <!-- Offer and transaction list -->
 <div id="offers-container">
-    <div>
+    <div style="position=relative;">
         <!-- Offer List -->
+        <div class="helpBubble" onmouseover="drawHelp('help_offerList');" onmouseout="hideHelp();" unselectable="on">?</div>
         <p class="offers-label">Trade Offers</p>
         <div class="offer-container" id="offer-list">
             <!-- DO NOT ADD INTERNAL HTML -->
             <!-- HTML added through Javascript functions -->
         </div>
     </div>
-    <div>
+    <div style="position=relative;">
         <!-- Trades List -->
+        <div class="helpBubble" onmouseover="drawHelp('help_transactionList');" onmouseout="hideHelp();" unselectable="on">?</div>
         <p class="offers-label">Successful Trades</p>
         <div class="offer-container" id="trade-list">
             <!-- DO NOT ADD INTERNAL HTML -->
