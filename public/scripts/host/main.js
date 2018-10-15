@@ -32,6 +32,7 @@ function handleMessage(event) {
             state.inRound = false;
             break;
         case `end game`:
+            draw(msg.sellDeck, msg.buyDeck);
             loadpage(`endGame`);
             break;
     }

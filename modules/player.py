@@ -7,6 +7,7 @@ class Player():
         self.is_seller = is_seller
         self.has_traded = False
         self.stats = []
+        self.card = None
 
     def give_card(self, card):
         self.card = card
