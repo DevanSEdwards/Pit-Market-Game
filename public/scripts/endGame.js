@@ -47,19 +47,31 @@ function init() {
     // window.requestAnimationFrame(draw);
 }
 
-function draw() {
+function draw(sellDeck, buyDeck) {
     clearCanvas();
     ctx.textAlign = "center";
-    drawGraph(canvas.width / 2 - gPanelWidth / 2, canvas.height / 2 - gPanelHeight / 2);
+    drawGraph(
+        sellDeck,
+        buyDeck,
+        canvas.width / 2 - gPanelWidth / 2,
+        canvas.height / 2 - gPanelHeight / 2
+    );
 
     // window.requestAnimationFrame(draw);
 }
 
-function drawGraph(x, y) {
+function drawGraph(sellDeck, buyDeck, x, y) {
+    gYAxisBounds = Math.max(sellDeck + buyDeck);
+    gXAxisBounds = state.rounds.map(r => r.trades.length + 1).reduce((a, b) => a + b, 0) +
+        Math.max(sellDeck.length, buyDeck.length) + 1;
+
+    gXAxisIncrementLen = gWidth / gXAxisBounds;
+    gYAxisIncrementLen = gHeight / gYAxisBounds;
+
     var graphBtmLeftX = x + gOffsetX;
     var graphBtmLeftY = y + gOffsetY + gHeight;
 
-    var equilibriumValue = 6;
+    var equilibriumValue = state.deckSetting.mean;
 
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph
@@ -204,18 +216,8 @@ function drawGraph(x, y) {
     ctx.setLineDash([0, 0]);
 
     // draw points
-    trades = [
-        { price: 2, p: 1 }, { price: 2, p: 1 }, { price: 5, p: 1 },
-        { price: 4, p: 2 }, { price: 5, p: 2 }, { price: 2, p: 2 }, { price: 5, p: 2 },
-        { price: 4, p: 3 }, { price: 2, p: 3 }, { price: 3, p: 3 }, { price: 5, p: 3 },
-        { price: 4, p: 4 }, { price: 7, p: 4 }, { price: 2, p: 4 }, { price: 2, p: 4 },
-    ]
-
-    sCards = [2, 2, 3, 4, 5, 6, 6, 7, 8];
-    dCards = [10, 9, 8, 7, 6, 6, 5, 4];
-
-    drawPoints(trades);
-    drawSD(sCards, dCards);
+    drawPoints(state.rounds.map(r => r.trades.map((t, i) => ({ price: t, p: i }))));
+    drawSD(sellDeck, buyDeck);
 }
 
 function clearCanvas() {
