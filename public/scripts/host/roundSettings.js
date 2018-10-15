@@ -17,6 +17,10 @@ function resetEmptyValue(arg) {
     }
 }
 
+function drawQrCode() {
+    new QRCode(document.getElementById(`qrcode`), `${window.location.href}/?game=${state.gameId}`);
+}
+
 function submitRoundSettings() {
     var roundLength = document.getElementById("roundLength");
     var tradeLength = document.getElementById("tradeLength");
@@ -26,8 +30,8 @@ function submitRoundSettings() {
         length: parseInt(roundLength.options[roundLength.selectedIndex].value),
         offerTimeLimit: parseInt(tradeLength.options[tradeLength.selectedIndex].value),
         tax: parseInt(document.getElementById("taxInput").value),
-        ceiling: parseInt(document.getElementById("floorInput").value),
-        floor: parseInt(document.getElementById("ceilInput").value)
+        ceiling: parseInt(document.getElementById("ceilInput").value),
+        floor: parseInt(document.getElementById("floorInput").value)
     }));
 }
 
