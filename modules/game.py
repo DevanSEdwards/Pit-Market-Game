@@ -140,12 +140,13 @@ class Game():
         Delete the game and disconnect all clients
         """
         response = {
-            "type": "end game"
+            "type": "end game",
+            "sellDeck": [p.card for p in self.players.values() if p.is_seller],
+            "buyDeck": [p.card for p in self.players.values() if not p.is_seller]
         }
         self.message_all(response)
-        for player in self.players:
-            if type(player) == Player: # BUG player becomes a string after websocket closes??
-                player.ws.close()
+        for player in self.players.values():
+            player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
 

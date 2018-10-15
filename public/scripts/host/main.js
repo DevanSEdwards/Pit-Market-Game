@@ -32,7 +32,8 @@ function handleMessage(event) {
             state.inRound = false;
             break;
         case `end game`:
-            window.location.replace(`/`);
+            draw(msg.sellDeck, msg.buyDeck);
+            loadpage(`endGame`);
             break;
     }
 }

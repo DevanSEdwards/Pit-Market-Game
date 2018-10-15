@@ -43,6 +43,7 @@ function handleMessage(event) {
             loadpage(`lobby`);
             break;
         case `end game`:
+            draw(msg.sellDeck, msg.buyDeck);
             loadpage(`endGame`);
             break;
     }

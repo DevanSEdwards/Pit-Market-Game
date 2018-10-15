@@ -84,7 +84,6 @@ state.websocket.onmessage = event => {
 // If the websocket is closed redirect to index
 state.websocket.onclose = () => {
     console.log("websocket closed");
-    window.location.replace(`/`);
 };
 
 // --------------------------------------------------------------------
