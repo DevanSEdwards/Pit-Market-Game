@@ -16,12 +16,12 @@ if __debug__:
 
 
 def file_get_contents(filename):
-	"""
-	Read the contents of a file.
-	
-	@param filename: the name of the file to be read.
-	@return: the contents of the file.
-	"""
+    """
+    Read the contents of a file.
+    
+    @param filename: the name of the file to be read.
+    @return: the contents of the file.
+    """
     with open(filename) as f:
         return f.read()
 
@@ -43,9 +43,9 @@ class MainHandler(RequestHandler):
         self.game_handler = game_handler
 
     def get(self):
-		"""
-		Process a get request.
-		"""
+        """
+        Process a get request.
+        """
         arg = self.get_argument("game", default="")
 
         host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
@@ -126,9 +126,9 @@ class WebsocketHandler(websocket.WebSocketHandler):
         self.set_nodelay(True)
 	
     def on_close(self):
-		"""
-		Close the connections to the host and players. 
-		"""
+        """
+        Close the connections to the host and players. 
+        """
         if self.is_host is None:
             return
         elif self.is_host:
@@ -193,9 +193,9 @@ class WebsocketHandler(websocket.WebSocketHandler):
             print(error.message)
 
 def main():
-	"""
-	Main method to be called once at the beginning of the program. 
-	"""
+    """
+    Main method to be called once at the beginning of the program. 
+    """
     if __debug__:
         # Log all GET, POST... requests
         enable_pretty_logging()
