@@ -124,7 +124,8 @@ class Game():
         }
         self.message_all(response)
         for player in self.players.values():
-            player.ws.close()
+            if player is not None:
+                player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
 
