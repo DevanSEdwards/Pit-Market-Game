@@ -3,18 +3,12 @@
 
 #help_text
 {
-    overflow: scroll;
+    overflow: auto;
     text-align: left;
     float: left;
-    height:70%;
-    width: 95%;
-    margin-left: 2%;
-    margin-right: 2%;
-    padding-left: 2%;
-    padding-right: 10px;
-    padding-right: -10%;
-    border-style: groove;
-    border-width: 3px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
     text-align: justify;
     text-justify: inter-character;
 }
