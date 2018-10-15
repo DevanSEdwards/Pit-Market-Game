@@ -124,7 +124,7 @@ class Game():
         }
         self.message_all(response)
         for player in self.players.values():
-            if player is not None:
+            if player.ws is not None:
                 player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
@@ -171,13 +171,15 @@ class Game():
         # Remove Existing offers
         for key, offer in self.offers.items():
             if offer.player_id == player_id:
+                # Only let better offers through
+                if offer.price <= price if player.is_seller else offer.price >= price:
+                    raise TradeError("Newer offer not better")
                 self.delete_offer(key)
+                break
 
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
-            offer_id, True, price, time, player_id)
-
-        self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id)
+            offer_id, True, price, time, player_id, self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id))
         # Announce the offer to all clients
         self.message_all(
             {
@@ -248,6 +250,7 @@ class Game():
             "type": "remove offer",
             "offerId": offer_id
         })
+        self.io.remove_timeout(self.offers[offer_id]._delete_event)
         del self.offers[offer_id]
 
     def end_round(self):

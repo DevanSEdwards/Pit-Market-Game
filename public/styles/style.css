@@ -275,11 +275,19 @@ h2
     line-height: 1;
     opacity: 1;
 }
+
 .hidden{display: none; opacity: 0; }
 
 #qrcode {
     color: black;
     width: 114px;
     margin: auto;
+}
+
+input[type=checkbox] {
+}
+
+input[type=checkbox]:not(:checked) ~ input[type=number] {
+    color: rgba(0, 0, 0, 0);
 }
 /* -------------------*/

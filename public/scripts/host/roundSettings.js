@@ -37,11 +37,20 @@ function submitRoundSettings() {
         length: parseInt(roundLength.options[roundLength.selectedIndex].value),
         offerTimeLimit: parseInt(tradeLength.options[tradeLength.selectedIndex].value),
         tax: parseInt(document.getElementById("taxInput").value),
-        ceiling: parseInt(document.getElementById("ceilInput").value),
-        floor: parseInt(document.getElementById("floorInput").value)
+        ceiling: document.getElementById(`chkCeil`).checked ? parseInt(document.getElementById("ceilInput").value) : null,
+        floor: document.getElementById(`chkFloor`).checked ? parseInt(document.getElementById("floorInput").value) : null
     }));
 }
 
 function submitEndGame() {
     state.websocket.send(JSON.stringify({ type: "end game" }));
+}
+
+function priceLimitChk(isCeiling) {
+    if (isCeiling) {
+        document.getElementById(`chkFloor`).checked = false;
+    }
+    else {
+        document.getElementById(`chkCeil`).checked = false;
+    }
 }
