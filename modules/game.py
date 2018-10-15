@@ -169,7 +169,7 @@ class Game():
                 raise TradeError("Price out of range (floor)")
 
         # Remove Existing offers
-        for key, offer in self.offers:
+        for key, offer in self.offers.items():
             if offer.player_id == player_id:
                 self.delete_offer(key)
 
