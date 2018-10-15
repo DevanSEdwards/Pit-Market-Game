@@ -14,6 +14,12 @@ function handleMessage(event) {
         case `offer`:
             recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
+        case `remove offer`:
+            for (let i = 0; i < state.offers.length; i++)
+                if (state.offers[i].offerId == msg.offerId)
+                    state.offers.splice(i, 1);
+            drawOfferList();
+            break;
         case `trade`:
             if (msg.success) {
                 state.tradePrice = msg.price;
