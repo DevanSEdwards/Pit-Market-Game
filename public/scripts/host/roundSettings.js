@@ -20,8 +20,8 @@ function resetEmptyValue(arg) {
 function drawQrCode() {
     new QRCode(document.getElementById(`qrcode`), {
         text: `${window.location.href}/?game=${state.gameId}`,
-        width: 128,
-        height: 128,
+        width: 114,
+        height: 114,
         colorDark : `#48d1cc`,
         colorLight : `#ffffff`,
         correctLevel : QRCode.CorrectLevel.L
