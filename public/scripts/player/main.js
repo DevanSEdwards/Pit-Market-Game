@@ -24,6 +24,7 @@ function handleMessage(event) {
             if (msg.success) {
                 state.tradePrice = msg.price;
                 setTrading(false);
+                document.getElementById(`btnPostOffer`).classList.add('btnTraded');
             }
             break;
         case `announce trade`:
@@ -31,6 +32,7 @@ function handleMessage(event) {
             drawTransactionList();
             break;
         case `start round`:
+            document.getElementById(`btnPostOffer`).classList.remove('btnTraded');
             state.inRound = true
             state.rounds.push(new Round(
                 msg.length,
