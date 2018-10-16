@@ -247,6 +247,8 @@ class Game():
         )
 
         # Check trade is valid
+        if player_id == offer.player_id:
+            raise TradeError("Trading with yourself??")
         if player.has_traded:
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
