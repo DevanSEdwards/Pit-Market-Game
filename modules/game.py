@@ -222,7 +222,7 @@ class Game():
             {
                 "type": "offer",
                 "offerId": offer_id,
-                "isSeller": True,
+                "isSeller": player.is_seller,
                 "price": price,
                 "time": str(time)
             })
