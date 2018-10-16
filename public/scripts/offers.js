@@ -6,21 +6,26 @@ function Offer(offerId, isSeller, price, time) {
 }
 
 function drawOfferList() {
+	var st = offer.isSeller;
+	var id = offer.offerId;
+
+	// Rearranged; should fix the bug but I can't join a game to test it x.x
+	var html = "";
+	html += "<div id='" + String(id) + "' class='offer-shape "
+	if(st) { html += "seller"; } else { html += "buyer"; }
+	html += "'><div class='offer-internal' style='float: left;'>";
+	if(st) { html += "Selling at"; } else { html += "Buying at"; }
+	html += String(offer.price) + "</div><div class='offer-internal' style='float: right;'>"
+	html += `${
+				!state.isHost &&
+				(state.isSeller != offer.isSeller) &&
+				(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
+				`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
+			}`;
+	html += "</div></div>"
 	// TODO: Don't redraw every element everytime
 	document.getElementById("offer-list").innerHTML = state.offers
-		.map(offer => `
-			<div id='${offer.offerId}' class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
-				<div class='offer-internal' style='float: left;'>${offer.isSeller ? 'Selling at' : 'Buying at'} $${offer.price}</div>
-				<div class='offer-internal' style='float: right;'>
-					${
-						!state.isHost &&
-						(state.isSeller != offer.isSeller) &&
-						(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
-						`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
-					}
-				</div>
-			</div>`)
-		.join(``);
+		.map(offer => html).join('');
 }
 
 function recieveNewOffer(offerId, isSeller, price, time) {
