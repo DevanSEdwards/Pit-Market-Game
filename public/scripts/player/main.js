@@ -14,10 +14,17 @@ function handleMessage(event) {
         case `offer`:
             recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
+        case `remove offer`:
+            for (let i = 0; i < state.offers.length; i++)
+                if (state.offers[i].offerId == msg.offerId)
+                    state.offers.splice(i, 1);
+            drawOfferList();
+            break;
         case `trade`:
             if (msg.success) {
                 state.tradePrice = msg.price;
                 setTrading(false);
+                document.getElementById(`btnPostOffer`).classList.add('btnTraded');
             }
             break;
         case `announce trade`:
@@ -25,7 +32,9 @@ function handleMessage(event) {
             drawTransactionList();
             break;
         case `start round`:
+            document.getElementById(`btnPostOffer`).classList.remove('btnTraded');
             state.inRound = true
+            state.roundTimer = msg.length
             state.rounds.push(new Round(
                 msg.length,
                 msg.offerTimeLimit,
