@@ -191,6 +191,10 @@ class WebsocketHandler(websocket.WebSocketHandler):
             method(**arguments)
         except TradeError as error:
             print(error.message)
+            self.write_message(json.dumps({
+                "type": "error",
+                "message": error.message
+            }))
 
 def main():
     """

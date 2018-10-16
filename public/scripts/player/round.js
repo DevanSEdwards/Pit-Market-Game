@@ -5,5 +5,5 @@ function setTrading(canTrade) {
 
 function setCard(value, isSeller) {
     document.getElementById(`cardValue`).innerText = value;
-    document.getElementById(`cardIsSeller`).innerText = isSeller === null ? `Spectating` : isSeller ? `Seller` : `Buyer`;
+    document.getElementById(`cardIsSeller`).innerText = isSeller === null ? `Spectating` : isSeller ? `Selling` : `Buying`;
 }

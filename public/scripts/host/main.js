@@ -3,6 +3,7 @@ function main() {
     document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
     loadpage(state.inRound ? `round` : state.currentRound == -1 ? `warning` : `roundSettings`);
     window.setInterval(() => { incrementTimer(); shiftBlocks(); }, 1000);
+    drawQrCode();
     refresh();
     state.websocket.onmessage = handleMessage;
 }
@@ -13,6 +14,13 @@ function handleMessage(event) {
 
     switch (msg.type) {
         case `offer`:
+            recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
+            break;
+        case `remove offer`:
+            for (let i = 0; i < state.offers.length; i++)
+                if (state.offers[i].offerId == msg.offerId)
+                    state.offers.splice(i, 1);
+            drawOfferList();
             break;
         case `start round`:
             state.inRound = true;
@@ -34,6 +42,8 @@ function handleMessage(event) {
         case `end game`:
             draw(msg.sellDeck, msg.buyDeck);
             loadpage(`endGame`);
+            break;
+        case `remove offer`:
             break;
     }
 }
