@@ -13,7 +13,7 @@ function drawOfferList() {
 	var html = "";
 	html += "<div id='" + String(id) + "' class='offer-shape "
 	if(st) { html += "seller"; } else { html += "buyer"; }
-	html += "'><div class='offer-internal' style='float: left;'>";
+	html += `' onclick="acceptOffer('${offer.offerId}')"><div class='offer-internal' style='float: left;'>`;
 	if(st) { html += "Selling at"; } else { html += "Buying at"; }
 	html += String(offer.price) + "</div><div class='offer-internal' style='float: right;'>"
 	html += `${
