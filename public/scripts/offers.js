@@ -6,21 +6,24 @@ function Offer(offerId, isSeller, price, time) {
 }
 
 function drawOfferList() {
+	var html = `<div id='${offer.offerId}' class='offer-shape `;
+
+	if(offer.isSeller) { html += "seller"; } else { html + "buyer"; }
+	
+	html +=`'><div class='offer-internal' style='float: left;'>${offer.isSeller ? 'Selling at' : 'Buying at'} $${offer.price}</div>
+			<div class='offer-internal' style='float: right;'>
+				${
+					!state.isHost &&
+					(state.isSeller != offer.isSeller) &&
+					(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
+					`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
+				}
+			</div>
+		</div>
+	`;
 	// TODO: Don't redraw every element everytime
 	document.getElementById("offer-list").innerHTML = state.offers
-		.map(offer => `
-			<div id='${offer.offerId}' class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
-				<div class='offer-internal' style='float: left;'>${offer.isSeller ? 'Selling at' : 'Buying at'} $${offer.price}</div>
-				<div class='offer-internal' style='float: right;'>
-					${
-						!state.isHost &&
-						(state.isSeller != offer.isSeller) &&
-						(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
-						`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
-					}
-				</div>
-			</div>`)
-		.join(``);
+		.map(offer => html).join(``);
 }
 
 function recieveNewOffer(offerId, isSeller, price, time) {
