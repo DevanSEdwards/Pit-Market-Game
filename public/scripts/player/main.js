@@ -2,6 +2,7 @@
 function main() {
     loadpage(state.inRound ? `round` : `lobby`);
     window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+    document.getElementById("gameIdDisplay").innerText = state.gameId.toUpperCase();
     refresh();
     state.websocket.onmessage = handleMessage;
 }
@@ -26,6 +27,7 @@ function handleMessage(event) {
                 setTrading(false);
                 document.getElementById(`btnPostOffer`).classList.add('btnTraded');
             }
+            displayScore()
             break;
         case `announce trade`:
             state.trades.push(msg.price);
@@ -49,7 +51,7 @@ function handleMessage(event) {
             break;
         case `end round`:
             state.inRound = false;
-            loadpage(`lobby`);
+            loadpage(`lobby`);      
             break;
         case `end game`:
             draw(msg.sellDeck, msg.buyDeck);
@@ -59,7 +61,7 @@ function handleMessage(event) {
 };
 
 function refresh() {
-    setRound(state.currentRound + 2);
+    setRound(state.currentRound + 1);
     setTimer_s(state.roundTimer);
     setTrading(state.tradePrice == null && state.isSeller != null);
     setCard(state.card, state.isSeller);

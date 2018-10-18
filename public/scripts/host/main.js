@@ -1,6 +1,6 @@
 // Called in setup.js
 function main() {
-    document.getElementById("gameIdDisplay").innerText = state.gameId.toLowerCase();
+    document.getElementById("gameIdDisplay").innerText = state.gameId.toUpperCase();
     loadpage(state.inRound ? `round` : state.currentRound == -1 ? `warning` : `roundSettings`);
     window.setInterval(() => { incrementTimer(); shiftBlocks(); }, 1000);
     drawQrCode();
