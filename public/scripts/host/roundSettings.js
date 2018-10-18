@@ -50,7 +50,8 @@ function submitSendEmail() {
     state.websocket.send(JSON.stringify({ 
         type: "send email",
         address: document.getElementById("emailAddress").value
- }));
+    }));
+}
 
 function priceLimitChk(isCeiling) {
     if (isCeiling) {
