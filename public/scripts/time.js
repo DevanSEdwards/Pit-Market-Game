@@ -15,7 +15,10 @@ function shiftBlocks() {
 }
 
 // Removes disabled attribute from ID
-function unblockID(id) { document.getElementById(id).removeAttribute("disabled"); }
+function unblockID(id) {
+  document.getElementById(id).removeAttribute("disabled");
+  document.getElementById(id).classList.remove("disabled");
+}
 
 // Add's disabled attribute to ID and adds to queue
 function blockID(id, time) {
@@ -24,6 +27,7 @@ function blockID(id, time) {
 
   lst_blocks.push([time, id]);
   document.getElementById(id).setAttribute("disabled", true);
+  document.getElementById(id).classList.remove("disabled");
   // TODO: Fix this
 }
 
