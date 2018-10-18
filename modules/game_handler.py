@@ -155,6 +155,11 @@ class GameHandler:
         return None
 
     def delete_game(self, game_id):
+        """
+        Delete a game.
+
+        @param game_id: The ID of the game to be deleted.
+        """
         for g in self.games:
             if g.game_id == game_id:
                 self.games.remove(g)

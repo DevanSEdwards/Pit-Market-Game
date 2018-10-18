@@ -131,7 +131,9 @@ class Game():
         self.in_round = True
 
     def hc_end_round(self):
-        """Bring the current round to a premature end"""
+        """
+        Bring the current round to a premature end
+        """
         self.io.remove_timeout(self.force_end_round)
         self.end_round()
 
