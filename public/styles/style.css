@@ -291,3 +291,12 @@ input[type=checkbox]:not(:checked) ~ input[type=number] {
     color: rgba(0, 0, 0, 0);
 }
 /* -------------------*/
+
+
+/* Disable Button CSS */
+.disabled
+{
+    background: #848482; /* Battleship grey */
+    opacity: 0.75;
+}
+/* ------------------ */
