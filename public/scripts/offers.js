@@ -22,6 +22,12 @@ function drawOfferList() {
 		.join(``);
 }
 
+function clearOfferList() {
+	// Called after EndRound
+	for (let i = 0; i < state.offers.length; i++)
+            state.offers.splice(i, 1);
+}
+
 function recieveNewOffer(offerId, isSeller, price, time) {
 	// Called in main.js when a message of type 'offer' is received
 	state.offers.unshift(new Offer(offerId, isSeller, price, time));

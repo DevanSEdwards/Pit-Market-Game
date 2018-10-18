@@ -51,7 +51,8 @@ function handleMessage(event) {
             break;
         case `end round`:
             state.inRound = false;
-            loadpage(`lobby`);      
+            loadpage(`lobby`);   
+            clearOfferList();   
             break;
         case `end game`:
             draw(msg.sellDeck, msg.buyDeck);

@@ -25,8 +25,9 @@ function calculateScore()
 }
 
 function displayScore() { 
-	document.getElementById("info_profit_lobby").innerHTML = '$' + String(calculateScore()); 
-	document.getElementById("info_profit_round").innerHTML = '$' + String(calculateScore());
+	var elems = document.getElementsByClassName("info_profit"); 
+	for (var i = 0; i < elems.length; i++)
+		elems[i].innerHTML = '$' + String(calculateScore()); 
 }
 
 /* DEBUG FUNCTIONS */
