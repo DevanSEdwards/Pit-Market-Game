@@ -41,8 +41,7 @@ class Game():
         self.io = tornado.ioloop.IOLoop.current()
         self.start_time = None
         self.force_end_round = None
-        # Remove previous games CSV data
-        self.remove_csv()
+        # Remove previous games CSV data   
 
     def add_player(self):
         player_id = uuid4().hex
@@ -133,6 +132,7 @@ class Game():
                 player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
+        self.remove_csv()
 
     def hc_card_settings(self, domain, mean, lowerLimit):
         """Initliaise the deck settings"""
@@ -294,13 +294,13 @@ class Game():
         # Headers for the CSV file in order of output
         headers = ["Game ID","Round Number","Trade Price","Buyer Card","Seller Card","BuyerID","SellerID","Tax Value","Ceiling Value","Floor Value"]
 
-        with open("gameData.csv","w") as file:
+        with open('gameData_'+self.game_id+'.csv','w',newline='') as file:
             writer = csv.writer(file)
             writer.writerow(headers)
             writer.writerows(self.game_data)
 
     def remove_csv(self):
         """To be called when the game is started to remove previous game data CSV"""
-        filename = 'gameData.csv'
+        filename = 'gameData_'+self.game_id+'.csv'
         if os.path.isfile(filename):
             os.remove(filename)

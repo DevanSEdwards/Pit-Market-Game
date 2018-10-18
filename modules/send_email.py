@@ -9,7 +9,7 @@ def send(gameID,email):
     """Send GameData CSV in an email to the recipient"""
 
     # Filename will always be the same.
-    filename = 'gameData.csv'
+    filename = 'gameData_'+gameID+'.csv'
     # Gmail account created for the project
     email_user = 'pitmarketgame@gmail.com'
     #TODO Password field to be kept in a local config file (not to be uploaded to Git)
