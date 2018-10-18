@@ -28,6 +28,14 @@ def file_get_contents(filename):
 # Templating Values
 host_pages = {"warning", "deckSettings", "endGame", "round", "roundSettings"}
 player_pages = {"endGame", "round", "lobby"}
+credit_names = {
+    'Wesley': 'Billingham',
+    'Alfred': 'Burgess',
+    'Devan': 'Edwards',
+    'Jayden': 'Kur',
+    'Timothy': 'Wise',
+    'Brave': 'Ziazan'
+}
 
 class MainHandler(RequestHandler):
     """
@@ -85,7 +93,7 @@ class MainHandler(RequestHandler):
             self.render("views/player.html", **player_template)
         # Render main page (/)
         else:
-            self.render("views/index.html")
+            self.render("views/index.html", credits=credit_names)
 
 
 class WebsocketHandler(websocket.WebSocketHandler):

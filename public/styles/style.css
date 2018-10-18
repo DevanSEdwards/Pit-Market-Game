@@ -22,10 +22,36 @@ body
     font-size: 64px;
 }
 
-#credits-string
+.credits
 {
-    margin-top: 50vh;
-    color: rgb(192, 192, 192);
+    color: rgb(210, 210, 210);
+}
+
+.credits-container {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto min-content min-content auto;
+    column-gap: 6px;
+    row-gap: 1px;
+}
+
+.credits-title {
+    grid-column: 1 / span 4;
+    padding: 6px;
+}
+
+.just-right {
+    text-align: right;
+    padding-left: 10px; 
+}
+
+.just-left {
+    text-align: left;
+    padding-right: 10px;
 }
 
 #host-link
@@ -33,7 +59,7 @@ body
     position: fixed;
     bottom: 10px;
     left: 10px;
-    color: rgb(192, 192, 192);
+    color: rgb(210, 210, 210);
     text-decoration: none;
 }
 
@@ -284,7 +310,10 @@ h2
     margin: auto;
 }
 
-input[type=checkbox] {
+#hidden-submit {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
 }
 
 input[type=checkbox]:not(:checked) ~ input[type=number] {
