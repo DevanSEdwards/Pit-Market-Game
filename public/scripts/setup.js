@@ -7,7 +7,6 @@ var state = new State();
 // Syntactic sugar for round properties
 let keys = Object.keys(new Round());
 for (let i = 0; i < keys.length; i++) {
-    console.log(keys[i]);
     Object.defineProperty(state, keys[i], {
         get: () => state.currentRound >= 0 ? state.rounds[state.currentRound][keys[i]] : null,
         set: value => state.currentRound >= 0 ? state.rounds[state.currentRound][keys[i]] = value : null
@@ -85,7 +84,6 @@ state.websocket.onmessage = event => {
 // If the websocket is closed redirect to index
 state.websocket.onclose = () => {
     console.log("websocket closed");
-    window.location.replace(`/`);
 };
 
 // --------------------------------------------------------------------

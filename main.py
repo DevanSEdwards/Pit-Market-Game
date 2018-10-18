@@ -16,6 +16,12 @@ if __debug__:
 
 
 def file_get_contents(filename):
+    """
+    Read the contents of a file.
+    
+    @param filename: the name of the file to be read.
+    @return: the contents of the file.
+    """
     with open(filename) as f:
         return f.read()
 
@@ -24,13 +30,22 @@ host_pages = {"warning", "deckSettings", "endGame", "round", "roundSettings"}
 player_pages = {"endGame", "round", "lobby"}
 
 class MainHandler(RequestHandler):
-    """Handle GET requests"""
+    """
+    Class to handle GET requests.    
+    """
 
     def initialize(self, game_handler):
-        """Store a reference to the game handler instance"""
+        """
+        Store a reference to a game handler instance.
+        
+        @param: game_handler: the game handler to be referenced. 
+        """
         self.game_handler = game_handler
 
     def get(self):
+        """
+        Process a get request.
+        """
         arg = self.get_argument("game", default="")
 
         host_template = {page: file_get_contents("./public/html/host/" + page + ".html") for page in host_pages}
@@ -74,7 +89,8 @@ class MainHandler(RequestHandler):
 
 
 class WebsocketHandler(websocket.WebSocketHandler):
-    """Handle incoming messages during a game
+    """
+    Class to handle incoming messages during a game.
 
     It is expected that each type of message will be passed to a 
     corresponding method in a Game instance, and that the host_commands
@@ -97,8 +113,11 @@ class WebsocketHandler(websocket.WebSocketHandler):
     }
 
     def initialize(self, game_handler):
-        """Store a reference to the game_handler instance and whether
+        """
+        Store a reference to the game_handler instance and whether
         the client is a host.
+        
+        @param game_handler: the game handler to be referenced. 
         """
         self.game_handler = game_handler
         self.is_host = None
@@ -106,8 +125,11 @@ class WebsocketHandler(websocket.WebSocketHandler):
 
     def open(self):
         self.set_nodelay(True)
-
+	
     def on_close(self):
+        """
+        Close the connections to the host and players. 
+        """
         if self.is_host is None:
             return
         elif self.is_host:
@@ -116,7 +138,9 @@ class WebsocketHandler(websocket.WebSocketHandler):
             self.game.players[self.client_id].ws = None
 
     def on_message(self, message):
-        """Call the appropriate Game method, based on the message type"""
+        """
+        Process a message, and execute the corresponding method in Game. 
+        """
         msg = json.loads(message)
         cprint(msg, 'grey' if self.is_host is None else 'yellow' if self.is_host else 'red', 'on_white')
         # Check msg contains a type attribute
@@ -168,8 +192,15 @@ class WebsocketHandler(websocket.WebSocketHandler):
             method(**arguments)
         except TradeError as error:
             print(error.message)
+            self.write_message(json.dumps({
+                "type": "error",
+                "message": error.message
+            }))
 
 def main():
+    """
+    Main method to be called once at the beginning of the program. 
+    """
     if __debug__:
         # Log all GET, POST... requests
         enable_pretty_logging()

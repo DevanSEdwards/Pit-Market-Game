@@ -125,10 +125,12 @@ class Game():
         """Delete the game and disconnect all clients"""
         response = {
             "type": "end game",
+            "sellDeck": [p.card for p in self.players.values() if p.is_seller],
+            "buyDeck": [p.card for p in self.players.values() if not p.is_seller]
         }
         self.message_all(response)
-        for player in self.players:
-            if type(player) == Player: # BUG player becomes a string after websocket closes??
+        for player in self.players.values():
+            if player.ws is not None:
                 player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
@@ -159,22 +161,39 @@ class Game():
         time = math.ceil((datetime.now() - self.start_time).total_seconds() * 1000)
         player = self.players[player_id]
         tax = self.rounds[self.round_number].tax
+        ceiling = self.rounds[self.round_number].ceiling
+        floor = self.rounds[self.round_number].floor
 
         # Check offer is valid
         if player.has_traded:
             raise TradeError("Already traded this round")
         if price is None:
             raise TradeError("No price specified")
-        if player.is_seller and (player.card < price + (0 if tax is None else tax)):
-            raise TradeError("Price out of range")
-        if (not player.is_seller and (player.card > price)):
-            raise TradeError("Price out of range")
+        if player.is_seller:
+            if price < player.card + tax:
+                raise TradeError("Price out of range (below seller card + tax)")
+        else:
+            if price > player.card:
+                raise TradeError("Price out of range (above buyer card)")
+        if ceiling is not None:
+            if ceiling < price:
+                raise TradeError("Price out of range (ceiling)")
+        elif floor is not None:
+            if floor > price:
+                raise TradeError("Price out of range (floor)")
+
+        # Remove Existing offers
+        for key, offer in self.offers.items():
+            if offer.player_id == player_id:
+                # Only let better offers through
+                if offer.price <= price if player.is_seller else offer.price >= price:
+                    raise TradeError("Newer offer not better")
+                self.delete_offer(key)
+                break
 
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
-            offer_id, True, price, time, player_id)
-
-        self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id)
+            offer_id, True, price, time, player_id, self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id))
         # Announce the offer to all clients
         self.message_all(
             {
@@ -245,6 +264,7 @@ class Game():
             "type": "remove offer",
             "offerId": offer_id
         })
+        self.io.remove_timeout(self.offers[offer_id]._delete_event)
         del self.offers[offer_id]
 
     def end_round(self):

@@ -17,6 +17,17 @@ function resetEmptyValue(arg) {
     }
 }
 
+function drawQrCode() {
+    new QRCode(document.getElementById(`qrcode`), {
+        text: `${window.location.href}/?game=${state.gameId}`,
+        width: 114,
+        height: 114,
+        colorDark : `#000000`,
+        colorLight : `#ffffff`,
+        correctLevel : QRCode.CorrectLevel.L
+    });
+}
+
 function submitRoundSettings() {
     var roundLength = document.getElementById("roundLength");
     var tradeLength = document.getElementById("tradeLength");
@@ -26,8 +37,8 @@ function submitRoundSettings() {
         length: parseInt(roundLength.options[roundLength.selectedIndex].value),
         offerTimeLimit: parseInt(tradeLength.options[tradeLength.selectedIndex].value),
         tax: parseInt(document.getElementById("taxInput").value),
-        ceiling: parseInt(document.getElementById("floorInput").value),
-        floor: parseInt(document.getElementById("ceilInput").value)
+        ceiling: document.getElementById(`chkCeil`).checked ? parseInt(document.getElementById("ceilInput").value) : null,
+        floor: document.getElementById(`chkFloor`).checked ? parseInt(document.getElementById("floorInput").value) : null
     }));
 }
 
@@ -40,4 +51,12 @@ function submitSendEmail() {
         type: "send email",
         address: document.getElementById("emailAddress").value
  }));
+
+function priceLimitChk(isCeiling) {
+    if (isCeiling) {
+        document.getElementById(`chkFloor`).checked = false;
+    }
+    else {
+        document.getElementById(`chkCeil`).checked = false;
+    }
 }

@@ -1,13 +1,10 @@
 // Called in setup.js
 function main() {
-    drawOfferList();
     loadpage(state.inRound ? `round` : `lobby`);
-    setTimer_s(state.roundTimer);
     window.setInterval( function() { incrementTimer(); shiftBlocks(); }, 1000 );
+    refresh();
     state.websocket.onmessage = handleMessage;
 }
-
-function setRound(round) { document.getElementById("info_round").innerHTML = String(round); }
 
 function handleMessage(event) {
     msg = JSON.parse(event.data);
@@ -17,10 +14,17 @@ function handleMessage(event) {
         case `offer`:
             recieveNewOffer(msg.offerId, msg.isSeller, msg.price, msg.time);
             break;
+        case `remove offer`:
+            for (let i = 0; i < state.offers.length; i++)
+                if (state.offers[i].offerId == msg.offerId)
+                    state.offers.splice(i, 1);
+            drawOfferList();
+            break;
         case `trade`:
             if (msg.success) {
                 state.tradePrice = msg.price;
                 setTrading(false);
+                document.getElementById(`btnPostOffer`).classList.add('btnTraded');
             }
             break;
         case `announce trade`:
@@ -28,7 +32,9 @@ function handleMessage(event) {
             drawTransactionList();
             break;
         case `start round`:
+            document.getElementById(`btnPostOffer`).classList.remove('btnTraded');
             state.inRound = true
+            state.roundTimer = msg.length
             state.rounds.push(new Round(
                 msg.length,
                 msg.offerTimeLimit,
@@ -38,10 +44,7 @@ function handleMessage(event) {
                 msg.card,
                 msg.isSeller
             ));
-            console.log(state.currentRound);
-            setRound(state.currentRound + 1);
-            setTimer_s(state.length);
-            setTrading(true);
+            refresh();
             loadpage(`round`);
             break;
         case `end round`:
@@ -49,7 +52,17 @@ function handleMessage(event) {
             loadpage(`lobby`);
             break;
         case `end game`:
+            draw(msg.sellDeck, msg.buyDeck);
             loadpage(`endGame`);
             break;
     }
 };
+
+function refresh() {
+    setRound(state.currentRound + 2);
+    setTimer_s(state.roundTimer);
+    setTrading(state.tradePrice == null && state.isSeller != null);
+    setCard(state.card, state.isSeller);
+    drawTransactionList();
+    drawOfferList();
+}

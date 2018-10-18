@@ -83,6 +83,16 @@ h2
     color: black;
 }
 
+.btnTraded
+{
+    background-color: lightcoral;
+}
+
+.btnTraded:hover
+{
+    background-color: #ec5f5f;
+}
+
 .txt-field
 {
     height: 45px;
@@ -101,8 +111,17 @@ h2
     display: inline-block;
     width: 120px;
     height: 160px;
-    border: 1px solid black;
+    border: 2px solid rgb(192, 192, 192);
+    border-radius: 5px;
     box-shadow: 5px 5px 1px rgb(192, 192, 192);
+    font-size: 16pt;
+}
+
+#cardValue
+{
+    font-size: 24pt;
+    border: 2px solid rgb(192, 192, 192);
+    border-width: 2px 0px;
 }
 
 .offers-label
@@ -136,6 +155,8 @@ h2
     width: 45vw;
     min-height: 300px;
     margin: 20px;
+    max-height: 300px;
+    overflow-y: scroll;
 }
 
 #offers-container
@@ -161,12 +182,11 @@ h2
 .offer-shape
 {
   border: 0px solid rgb(192, 192, 192);
-  border-radius:    5px;
-  width:            75%;
-  font-size:        2vh;
+  border-radius: 5px;
+  width: 60%;
+  font-size: 2vh;
   margin: 5px 5px 0px;
   height: 5vh;
-  /*box-shadow: 2px 4px rgb(192, 192, 192)*/
 }
 
 .offer-internal
@@ -175,37 +195,16 @@ h2
     margin: 5px;
 }
 
-.buyer-label
-{
-    transform: rotate(90deg);
-    width: 5vh;
-    transform-origin: left top 0;
-    background-color: coral;
-    color: white;
-    font-size: 1.5vh;
-    margin: 0px 30px;
-}
-
-.seller-label
-{
-    transform: rotate(90deg);
-    transform-origin: left top 0;
-    background-color: darkcyan;
-    color: white;
-    font-size: 1.5vh;
-    margin: 0px 30px;
-}
-
 .buyer
 {
     float:  left;
-    background: white;
+    background: coral;
 }
 
 .seller
 {
     float:  right;
-    background: white;
+    background: darkcyan;
 }
 
 .offer-shape-buyer
@@ -228,3 +227,67 @@ h2
     justify-content: space-around;
     align-items: center;
 }
+
+/* Tool-tip help text */
+.helpBubble
+{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 15px;
+    height: 15px;
+    background: #B0E0E6;
+    color:      #4E5180;
+    font-family: "Verdana", "Arial", Sans-serif;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-align: center;
+    border-radius: 15px;
+    border: 1px solid #4E5180;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+.helpBubble:hover
+{
+    background: #4E5180;
+    color:      #B0E0E6;
+    border:     1px solid #B0E0E6;
+}
+.helpText
+{
+    position: fixed;
+    z-index: -1;
+    left: 50%; bottom:25px;
+    width: 400px;
+    margin-left: -200px;
+    background: #FCE883;
+    color:      #E86100;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 0.8em;
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid #E86100;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1;
+    opacity: 1;
+}
+
+.hidden{display: none; opacity: 0; }
+
+#qrcode {
+    color: black;
+    width: 114px;
+    margin: auto;
+}
+
+input[type=checkbox] {
+}
+
+input[type=checkbox]:not(:checked) ~ input[type=number] {
+    color: rgba(0, 0, 0, 0);
+}
+/* -------------------*/

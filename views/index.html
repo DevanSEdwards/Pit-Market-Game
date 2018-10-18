@@ -12,19 +12,21 @@
       }
     </script>
 
-    <title>Pitmarket Game</title>
+    <title>Pit Market Game</title>
   </head>
   <body>
     <h1 id="home-title">Pit Market Game</h1>
-    <div>
+    <div style="position=relative;">
       <form id="form" method="method" name="form">
         <input class="txt-field" id="room" name="room" type="text" placeholder="Game Code">
-        <input class="btn" onclick="join()" type="button" value="Join">
+        <input class="btn" onclick="join()" type="submit" value="Join">
+        <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
       </form>
       <a id="host-link" href="/?game=host">Host a game</a>
     </div>
     <div>
       <p id="credits-string">Developed by: Wesley Billingham, Alfred Burgess, Devan Edwards, Jayden Kur, Timothy Wise, Brave Ziazan</p>
     </div>
+    <div class="helpText hidden" id="help_displayText"></div>
   </body>
 </html>
