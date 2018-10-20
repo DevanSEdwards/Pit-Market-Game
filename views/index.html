@@ -13,17 +13,17 @@
     <div style="position: relative;">
       <form>
         <input class="txt-field" id="room" name="game" type="text" placeholder="Game Code">
-        <input id="hidden-submit" type="submit">
-        <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
+        <input class="btn" type="submit">
       </form>
     </div>
     <div>
         <div class="credits credits-container">
           <div class="credits-title">Developed by</div>
           {{''.join('<div class="just-right">{0}</div><div class="just-left">{1}</div>'.format(k, v) for k, v in credits.items())}}
+          <div class="credits-title just-left"><a id="host-link" href="/?game=host">Host a game</a></div>
         </div>
     </div>
-    <a id="host-link" href="/?game=host">Host a game</a>
+    <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
     <div class="helpText hidden" id="help_displayText"></div>
   </body>
 </html>

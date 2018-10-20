@@ -29,7 +29,7 @@ body
 
 .credits-container {
     position: fixed;
-    bottom: 10px;
+    bottom: 6px;
     left: 0;
     right: 0;
     margin: auto;
@@ -41,7 +41,7 @@ body
 
 .credits-title {
     grid-column: 1 / span 4;
-    padding: 6px;
+    padding: 6px 6px 0 6px;
 }
 
 .just-right {
@@ -56,10 +56,7 @@ body
 
 #host-link
 {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    color: rgb(210, 210, 210);
+    color: rgb(230, 230, 230);
     text-decoration: none;
 }
 
