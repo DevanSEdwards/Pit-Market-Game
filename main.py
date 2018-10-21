@@ -76,14 +76,11 @@ class MainHandler(RequestHandler):
             arg = str.upper(arg)
             # Check for valid gameId
             if not any(arg == game.game_id for game in self.game_handler.games):
-                print(arg)
-                print(game.game_id for game in self.game_handler.games)
                 self.clear_all_cookies()
                 self.redirect("/")
                 return
             if client_id == "" or not any(client_id in game.players.keys() for game in self.game_handler.games):
                 player_id = self.game_handler.add_player(arg)
-                # print(player_id)
                 if player_id == None:
                     self.render("views/index.html")
                     return

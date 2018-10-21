@@ -1,6 +1,8 @@
 # Pit-Market-Game
 UWA CITS3200 Project
 
+See the project in action on heroku: https://pit-market-game.herokuapp.com/
+
 The purpose of this project is to bring the Pit Market Game to the web. Pit Market Game is currently played in economics classrooms with playing cards and face-to-face interaction. As universities move more towards online teaching, an online format is derisable.
 
 The rules of the game are simple and can be found here: http://www.people.virginia.edu/~cah2k/pitmkttr.pdf

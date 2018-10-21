@@ -20,6 +20,12 @@ class Game():
     """Store and manage data about a single game"""
 
     def __init__(self, host_id, game_id):
+        """
+        Initialize an instance of Game.
+
+        @param host_id: the unique ID of this game's host.
+        @param game_id: the unique ID of this game.
+        """
         self.host_id = host_id
         self.game_id = game_id
         self.ws = None
@@ -29,8 +35,8 @@ class Game():
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round settings
         self.deck_settings = {  # Shouldn't be changed after the first round
-            'domain': 7,
-            'mean': 6,
+            'domain': 17,
+            'mean': 13,
             'lower_limit': 2,
         }
         self.in_round = False
@@ -44,6 +50,11 @@ class Game():
         # Remove previous games CSV data   
 
     def add_player(self):
+        """
+        Add a new player to the game.
+
+        @return player_id: the unique ID to be associated with the added player.
+        """
         player_id = uuid4().hex
         self.players[player_id] = Player(player_id, self.is_next_seller)
         # TODO give player a card if they join halfway through?
@@ -59,7 +70,16 @@ class Game():
     #   Should start with 'hc'
 
     def hc_start_round(self, length, offerTimeLimit, tax, ceiling, floor):
-        """"""
+        """
+        Starts a single round within this game with the given specifications.
+
+        @param length: the duration (in seconds) of the round.
+        @param offerTimeLimit: the duration (in seconds) that any single offer is available.
+        @param tax: the tax to be applied to seller players.
+        @param ceiling: the maximum value that an offer may take. (must be =0 if floor =/= 0)
+        @param floor: the minimum value that an offer may take. (must be =0 if ceiling =/= 0)
+        """
+
         # Delete all offers
         self.offers = {}
         # Create a new round object to store round data
@@ -122,7 +142,9 @@ class Game():
         self.end_round()
 
     def hc_end_game(self):
-        """Delete the game and disconnect all clients"""
+        """
+        Delete the game and disconnect all clients
+        """
         response = {
             "type": "end game",
             "sellDeck": [p.card for p in self.players.values() if p.is_seller],
@@ -137,7 +159,14 @@ class Game():
         self.remove_csv()
 
     def hc_card_settings(self, domain, mean, lowerLimit):
-        """Initliaise the deck settings"""
+        """
+        Initialize the deck settings. These settings will be used to create a deck
+        at the start of each round. 
+
+        @param domain: the range of values that cards may take.
+        @param mean: the average value of all distributed cards.
+        @param lowerLimit: the minimum value that any card may take.
+        """
         self.deck_settings["domain"] = domain
         self.deck_settings["mean"] = mean
         self.deck_settings["lower_limit"] = lowerLimit
@@ -154,7 +183,14 @@ class Game():
     #   Should start with 'pc' and have player_id as an argument
 
     def pc_offer(self, player_id, price):
-        """Verify and post a new offer to the game"""
+        """
+        Verify and post a new offer to the game.
+
+        @param player_id: the ID of the player posting the offer.
+        @param price: the offered price.
+        @raise TradeError: occurs if the offer is not valid.
+        """
+
         # Generate offer_id
         offer_id = uuid4().hex
         # milliseconds since the start of the round
@@ -199,13 +235,19 @@ class Game():
             {
                 "type": "offer",
                 "offerId": offer_id,
-                "isSeller": True,
+                "isSeller": player.is_seller,
                 "price": price,
                 "time": str(time)
             })
 
     def pc_accept(self, player_id, offerId):
-        """Verify and complete a trade"""
+        """
+        Verify and complete a trade.
+
+        @param player_id: the id of the player accepting the offer.
+        @param offerID: the id of the offer being accepted. 
+        @raise TradeError: occurs if the trade is not valid/legal. 
+        """
         offer_id = offerId
         time = datetime.now()
         if offer_id not in self.offers:
@@ -218,6 +260,8 @@ class Game():
         )
 
         # Check trade is valid
+        if player_id == offer.player_id:
+            raise TradeError("Trading with yourself??")
         if player.has_traded:
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
@@ -268,6 +312,9 @@ class Game():
         del self.offers[offer_id]
 
     def end_round(self):
+        """
+        End the current round and inform all participants.
+        """
         response = {
             "type": "end round"
         }
@@ -275,6 +322,11 @@ class Game():
         self.in_round = False
 
     def message_all(self, response):
+        """
+        Send a JSON message to all game participants. 
+
+        @param response: a dictionary to be converted to JSON format and broadcast.
+        """
         message = json.dumps(response)
         if self.ws is not None:
             self.ws.write_message(message)

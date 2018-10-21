@@ -3,16 +3,19 @@ from random import shuffle
 
 
 def create_deck(players, domain=7, mean=6, lower_limit=2):
-    """Return a pair of value decks (lists) for sellers and buyers
-
-    players -- Number of players (buyers + sellers). (>= 0)
-    domain -- Number of unique cards to be distributed in each deck.
-        (> 0, default 7)
-    mean -- Number that the sellers deck will reflected around to
-        generate the buyer's deck. (default 5)
-    lower_limit -- Lowest value card allowed. (default 2)
-
+    """
+    Return a pair of value decks (lists) for sellers and buyers
     If the number of players is odd, give buyers one less card.
+
+    @param players: Number of players (buyers + sellers). (>= 0)
+    @param domain: Number of unique cards to be distributed in each deck.
+        (> 0, default 7)
+    @param mean: Number that the sellers deck will reflected around to
+        generate the buyer's deck. (default 5)
+    @param lower_limit: Lowest value card allowed. (default 2)
+
+    @return sell_deck: A list of all seller cards.
+    @return buy_deck: A list of all buyer cards.
     """
     sellers = (players + 1) // 2
 
