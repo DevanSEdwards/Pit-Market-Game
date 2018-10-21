@@ -2,7 +2,9 @@
 <h1 id="gameIdDisplay">000000</h1>
 <div id="qrcode"></div>
 <br>
+<div style="position: relative;">
 <label>Round Length</label>
+<div class="helpBubble" onmouseover="drawHelp('help_settingsTime');" onmouseout="hideHelp();" unselectable="on">?</div>
 <select class="txt-field" id="roundLength" type="number">
     <option value="60">1:00</option>
     <option value="90">1:30</option>
@@ -11,8 +13,11 @@
     <option value="180">3:00</option>
 </select>
 <br>
+</div>
+<div style="position: relative;">
 <br>
 <label>Offer Timeout</label>
+<div class="helpBubble" onmouseover="drawHelp('help_settingsTimeout');" onmouseout="hideHelp();" unselectable="on">?</div>
 <select class="txt-field" id="tradeLength" type="number">
     <option value="5">5 Seconds</option>
     <option value="10" selected>10 Seconds</option>
@@ -22,21 +27,27 @@
     <option value="30">30 Seconds</option>
 </select>
 <br>
+</div>
 <br>
+<div style="position: relative;">
     <label>Tax</label>
+    <div class="helpBubble" onmouseover="drawHelp('help_settingsTax');" onmouseout="hideHelp();" unselectable="on">?</div>
     <input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
 <br>
+</div>
 <br>
 <div>
     <label>Floor</label>
     <input id="chkFloor" type="checkbox" onchange="priceLimitChk(false)">
     <input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+    <div class="helpBubble" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();" unselectable="on">?</div>
 </div>
 <br>
 <div>
     <label for="chkCeil">Ceiling</label>
     <input id="chkCeil" type="checkbox" name="chkCeil" onchange="priceLimitChk(true)">
     <input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+    <div class="helpBubble" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();" unselectable="on">?</div>
 </div>
 <br>
 <br>
@@ -44,6 +55,9 @@
 <input class="btn" id="btnEndGame" type="button" value="End Game" onclick="submitEndGame()">
 <br><br><br><br>
 <br><br><br><br>
-<input class="txt-field" id="emailAddress" type="text" value="example@example.com">
-<br>
-<input class="btn" id="btnSendEmail" type="button" value="Email Game Data" onclick="submitSendEmail()"><br>
+<div style="position: relative;">
+    <input class="txt-field" id="emailAddress" type="text" value="example@example.com">
+    <br>
+    <input class="btn" id="btnSendEmail" type="button" value="Email Game Data" onclick="submitSendEmail()"><br>
+    <div class="helpBubble" onmouseover="drawHelp('help_settingsEmail');" onmouseout="hideHelp();" unselectable="on">?</div>
+</div>

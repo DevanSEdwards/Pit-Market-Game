@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-
+    <script type="text/javascript" src="{{ static_url('scripts/help.js') }}"></script>
     <title>Pit Market Game</title>
   </head>
   <body>
@@ -13,8 +13,9 @@
     <div style="position: relative;">
       <form>
         <input class="txt-field" id="room" name="game" type="text" placeholder="Game Code">
-        <input class="btn" type="submit">
+        <input class="btn" type="submit" text="Join Game">
       </form>
+      <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
     </div>
     <div>
         <div class="credits credits-container">
@@ -23,7 +24,59 @@
           <div class="credits-title just-left"><a id="host-link" href="/?game=host">Host a game</a></div>
         </div>
     </div>
-    <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
     <div class="helpText hidden" id="help_displayText"></div>
   </body>
+  <script>
+    /*
+ * HOW TO USE THIS FILE
+ *
+ * Insert
+ <div class="helpBubble" onmouseover="drawHelp(help_id);" onmouseout="hideHelp();" unselectable="on">?</div>
+ * into a relative division of on the page
+ * change the help_id to the appropriate id
+ *
+ ** LIST OF IDs
+ * 
+ */ 
+
+
+
+/* Script for drawing help text division */
+function drawHelp(id)
+{
+  document.getElementById("help_displayText").classList.remove("hidden");
+  document.getElementById("help_displayText").innerHTML = helphtml(id);
+  return;
+}
+function hideHelp()
+{
+  document.getElementById("help_displayText").classList.add("hidden");
+  document.getElementById("help_displayText").innerHTML = "";
+  return;
+}
+
+
+
+/* Helper functions to clean up HTML pages and 
+ *  keep duplicate code together 
+ */
+
+function helphtml(id)
+{
+  var data = helpText(id);
+  var html = "";
+
+  html += "<h4>" + data[0] + "</h4>";
+  html += "<p>"  + data[1] + "</p>";
+
+  return html;
+}
+function helpText(id)
+{
+  var head = "Join Game";
+  var p = "Enter your room code here then press join. Don't have a room code? Ask your lecturer or tutor for the code to join the game.<br/ >Are you trying to host a game? Please refer to the external documentation.";
+  /* END OF SWITCH */
+  return [head, p];
+}
+  </script>
 </html>

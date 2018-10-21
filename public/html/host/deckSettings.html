@@ -1,19 +1,30 @@
 <h1>Deck Settings</h1>
 <div>
-    <label>Mean</label>
-    <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)">
-    <br>
-    <label>Domain</label>
-    <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
-    <br>
-    <label>Lower Limit</label>
-    <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck(false)"
-        onfocus="highlightOverlap()">
-    <br>
-    <label>Shape</label>
-    <input class="txt-field" id="overlapInput" type="number" value="0" step="0.1"
-        onchange="redrawDeck(true)" onfocus="highlightOverlap()">
-    <br>
+    <div style="position: relative;">
+        <label>Mean</label>
+        <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)">
+        <div class="helpBubble" onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" unselectable="on">?</div>
+        <br>
+    </div>
+    <div style="position: relative;">
+        <label>Domain</label>
+        <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
+        <div class="helpBubble" onmouseover="drawHelp('help_setupDomain');" onmouseout="hideHelp();" unselectable="on">?</div>
+        <br>
+    </div>
+    <div style="position: relative;">
+        <label>Lower Limit</label>
+        <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck(false)" onfocus="highlightOverlap()">
+        <div class="helpBubble" onmouseover="drawHelp('help_setupLowerLimit');" onmouseout="hideHelp();" unselectable="on">?</div>
+        <br>
+    </div>
+    <div style="position: relative;">
+        <label>Shape</label>
+        <input class="txt-field" id="overlapInput" type="number" value="0" step="0.1" onchange="redrawDeck(true)" onfocus="highlightOverlap()">
+        <div class="helpBubble" onmouseover="drawHelp('help_setupShape');" onmouseout="hideHelp();" unselectable="on">?</div>
+        <br>
+    </div>
+    <!--- Graph --->
     <svg viewBox="0 0 500 500" id="deckChart" style="
         width: 300px;
         overflow: visible;
@@ -65,6 +76,7 @@
         <line id="highlightOverlapLine" class="highlightLine" x1="300" y1="100" x2="300" y2="400"/>
     </svg>
     <br>
+    <!--- End of Graph --->
     <input class="btn" id="btnStartRound" type="button" value="Reset" onclick="resetDeck()">
     <input class="btn" id="btnStartRound" type="button" value="Begin Game" onclick="submitDeck()">
 </div>
