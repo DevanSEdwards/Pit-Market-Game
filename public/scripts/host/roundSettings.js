@@ -1,3 +1,7 @@
+function initGameUrl() {
+    document.getElementById(`gameUrl`).innerText = `${window.location.host}`;
+}
+
 function inputFilter(arg) {
 
     var max = parseInt(arg.max);
@@ -18,8 +22,9 @@ function resetEmptyValue(arg) {
 }
 
 function drawQrCode() {
+    let wl = window.location
     new QRCode(document.getElementById(`qrcode`), {
-        text: `${window.location.href}/?game=${state.gameId}`,
+        text: `${wl.protocol}//${wl.host}/?game=${state.gameId}`,
         width: 114,
         height: 114,
         colorDark : `#000000`,
@@ -54,10 +59,15 @@ function submitSendEmail() {
 }
 
 function priceLimitChk(isCeiling) {
+    // BUG doesn't disable the inputs but also doesn't really matter
     if (isCeiling) {
         document.getElementById(`chkFloor`).checked = false;
+        document.getElementById(`ceilInput`).disabled = !document.getElementById(`chkFloor`).checked;
+        document.getElementById(`floorInput`).disabled = true;
     }
     else {
         document.getElementById(`chkCeil`).checked = false;
+        document.getElementById(`floorInput`).disabled = !document.getElementById(`chkCeil`).checked;
+        document.getElementById(`ceilInput`).disabled = true;
     }
 }

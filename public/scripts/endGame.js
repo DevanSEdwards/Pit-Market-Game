@@ -38,7 +38,7 @@ var gSLineColor = "mediumturquoise";
 var gDLineColor = "lightcoral";
 var gSDLineWidth = 3;
 
-var equilibriumValue = state.deckSetting.mean;
+var equilibriumValue = 0;
 
 init()
 
@@ -50,6 +50,7 @@ function init() {
 }
 
 function draw(sellDeck, buyDeck) {
+    equilibriumValue = state.deckSetting.mean;
     clearCanvas();
     ctx.textAlign = "center";
     drawGraph(

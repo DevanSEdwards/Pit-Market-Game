@@ -29,8 +29,8 @@ class Game():
         self.round_number = 0  # Initialise round number
         self.rounds = []  # List of Round settings
         self.deck_settings = {  # Shouldn't be changed after the first round
-            'domain': 7,
-            'mean': 6,
+            'domain': 17,
+            'mean': 13,
             'lower_limit': 2,
         }
         self.in_round = False

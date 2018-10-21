@@ -4,6 +4,7 @@ function main() {
     loadpage(state.inRound ? `round` : state.currentRound == -1 ? `warning` : `roundSettings`);
     window.setInterval(() => { incrementTimer(); shiftBlocks(); }, 1000);
     drawQrCode();
+    initGameUrl();
     refresh();
     state.websocket.onmessage = handleMessage;
 }

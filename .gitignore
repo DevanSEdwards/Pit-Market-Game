@@ -6,3 +6,4 @@
 .pytest_cache/v/cache/nodeids
 *.pyc
 test.py
+*.csv

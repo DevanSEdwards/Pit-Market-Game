@@ -1,3 +1,4 @@
+import os
 import smtplib
 import csv
 from email.mime.text import MIMEText
@@ -13,7 +14,10 @@ def send(gameID,email):
     # Gmail account created for the project
     email_user = 'pitmarketgame@gmail.com'
     #TODO Password field to be kept in a local config file (not to be uploaded to Git)
-    email_password = 'PASSWORD'
+    email_password = os.environ.get('gmail_password')
+    print(email_password)
+    if email_password is None:
+        return
     email_send = email
 
     subject = 'Pit Market Game Data for Game: ' + str(gameID)
@@ -44,6 +48,6 @@ def send(gameID,email):
         server.sendmail(email_user,email_send,text)
         print("Sent email to:",email_send)
         server.quit()     
-    except(Exception):
-        print(Exception)
+    except Exception as e:
+        print(e)
     attachment.close()
