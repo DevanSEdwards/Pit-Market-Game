@@ -38,6 +38,8 @@ var gSLineColor = "mediumturquoise";
 var gDLineColor = "lightcoral";
 var gSDLineWidth = 3;
 
+var equilibriumValue = 0;
+
 init()
 
 function init() {
@@ -48,6 +50,7 @@ function init() {
 }
 
 function draw(sellDeck, buyDeck) {
+    equilibriumValue = state.deckSetting.mean;
     clearCanvas();
     ctx.textAlign = "center";
     drawGraph(
@@ -71,7 +74,7 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     var graphBtmLeftX = x + gOffsetX;
     var graphBtmLeftY = y + gOffsetY + gHeight;
 
-    var equilibriumValue = state.deckSetting.mean;
+    
 
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph

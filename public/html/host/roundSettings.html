@@ -1,45 +1,62 @@
-<p>Game Code:</p>
+<p id="gameUrl">Game Code:</p>
 <h1 id="gameIdDisplay">000000</h1>
 <div id="qrcode"></div>
 <br>
-<label>Round Length</label>
-<select class="txt-field" id="roundLength" type="number">
-    <option value="60">1:00</option>
-    <option value="90">1:30</option>
-    <option value="120" selected>2:00</option>
-    <option value="150">2:30</option>
-    <option value="180">3:00</option>
-</select>
-<br>
-<br>
-<label>Offer Timeout</label>
-<select class="txt-field" id="tradeLength" type="number">
-    <option value="5">5 Seconds</option>
-    <option value="10" selected>10 Seconds</option>
-    <option value="15">15 Seconds</option>
-    <option value="20">20 Seconds</option>
-    <option value="25">25 Seconds</option>
-    <option value="30">30 Seconds</option>
-</select>
-<br>
-<br>
-    <label>Tax</label>
-    <input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
-<br>
-<br>
-<div>
-    <label>Floor</label>
-    <input id="chkFloor" type="checkbox" onchange="priceLimitChk(false)">
-    <input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+<div class="round-settings-container">
+    <div class="just-right">
+        <label>Round Length</label>
+    </div>
+    <div class="just-left">
+        <select class="txt-field" id="roundLength" type="number">
+            <option value="60">1:00</option>
+            <option value="90">1:30</option>
+            <option value="120" selected>2:00</option>
+            <option value="150">2:30</option>
+            <option value="180">3:00</option>
+        </select>
+    </div>
+    <div class="just-right">
+        <label>Offer Timeout</label>
+    </div>
+    <div class="just-left">
+        <select class="txt-field" id="tradeLength" type="number">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+        </select>
+    </div>
+    <div class="just-right">
+        <label>Tax</label>
+    </div>
+    <div class="just-left">
+        <input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+    </div>
+    <div class="just-right">
+        <div>
+            <label>Floor</label>
+            <input id="chkFloor" type="checkbox" onchange="priceLimitChk(false)">
+        </div>
+    </div>
+    <div class="just-left">
+        <input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+    </div>
+    <div class="just-right">
+        <div>
+            <label for="chkCeil">Ceiling</label>
+            <input id="chkCeil" type="checkbox" name="chkCeil" onchange="priceLimitChk(true)">
+        </div>
+    </div>
+    <div class="just-left">
+        <input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
+    </div>
 </div>
-<br>
-<br>
-<div>
-    <label for="chkCeil">Ceiling</label>
-    <input id="chkCeil" type="checkbox" name="chkCeil" onchange="priceLimitChk(true)">
-    <input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
-</div>
-<br>
 <br>
 <input class="btn" id="btnStartRound" type="button" value="Start Round" onclick="submitRoundSettings()">
-<input class="btn" id="btnEndGame" type="button" value="End Game" onclick="submitEndGame()"><br>
+<input class="btn" id="btnEndGame" type="button" value="End Game" onclick="submitEndGame()">
+<br>
+<input class="txt-field" id="emailAddress" type="text" value="example@example.com">
+<br>
+<input class="btn" id="btnSendEmail" type="button" value="Email Game Data" onclick="submitSendEmail()"><br>

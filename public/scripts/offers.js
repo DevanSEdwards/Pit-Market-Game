@@ -8,25 +8,29 @@ function Offer(offerId, isSeller, price, time) {
 function drawOfferList() {
 	// TODO: Don't redraw every element everytime
 	document.getElementById("offer-list").innerHTML = state.offers
-		.map(offer => `
-			<div id='${offer.offerId}' class='offer-shape ${offer.isSeller ? `seller` : `buyer`}'>
-				<div class='offer-internal' style='float: left;'>${offer.isSeller ? 'Selling at' : 'Buying at'} $${offer.price}</div>
-				<div class='offer-internal' style='float: right;'>
-					${
-						!state.isHost &&
-						(state.isSeller != offer.isSeller) &&
-						(state.isSeller ? offer.price >= state.card + state.tax : offer.price <= state.card) ? 
-						`<button onclick="acceptOffer('${offer.offerId}')">Accept</button>` : ``
-					}
-				</div>
+		//.sort((a, b) => a.time - b.time) // Not needed because of unshift in receiveNewOffer()
+		.map(({ offerId, isSeller, price }) => `
+			<div id="${offerId}" class="offer-shape ${isSeller ? `seller` : `buyer`}"
+				${
+					!state.isHost &&
+					(state.isSeller != isSeller) &&
+					(state.isSeller ? price >= state.card + state.tax : price <= state.card) ?
+					`onclick="acceptOffer('${offerId}')"` : ``
+				}>
+				${isSeller ? `Selling` : `Buying`} at ${price}
 			</div>`)
 		.join(``);
 }
 
+function clearOfferList() {
+	// Called after EndRound
+	for (let i = 0; i < state.offers.length; i++)
+            state.offers.splice(i, 1);
+}
+
 function recieveNewOffer(offerId, isSeller, price, time) {
 	// Called in main.js when a message of type 'offer' is received
-	// isSeller is whether the offer is to sell or not
-	state.offers.push(new Offer(offerId, isSeller, price, time));
+	state.offers.unshift(new Offer(offerId, isSeller, price, time));
 	drawOfferList();
 }
 

@@ -22,18 +22,59 @@ body
     font-size: 64px;
 }
 
-#credits-string
+.credits
 {
-    margin-top: 50vh;
-    color: rgb(192, 192, 192);
+    color: rgb(210, 210, 210);
+}
+
+.credits-container {
+    position: fixed;
+    bottom: 6px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto min-content min-content auto;
+    column-gap: 6px;
+    row-gap: 1px;
+}
+
+.credits-title {
+    grid-column: 1 / span 4;
+    padding: 6px 6px 0 6px;
+}
+
+.settings-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.round-settings-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.just-right {
+    text-align: right;
+    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.just-left {
+    text-align: left;
+    padding-right: 10px;
 }
 
 #host-link
 {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    color: rgb(192, 192, 192);
+    color: rgb(230, 230, 230);
     text-decoration: none;
 }
 
@@ -96,14 +137,19 @@ h2
 .txt-field
 {
     height: 45px;
-    width: 160px;
-    padding: 0px 10px;
+    width: 120px;
+    padding: 0px 15px;
     background-color: rgb(230, 230, 230);
     color: black;
     border: 0px solid rgb(192, 192, 192);
     border-radius: 5px;
+    box-sizing: border-box;
     text-align: center;
     font-size: 16px;
+}
+
+.hide {
+    display: none;
 }
 
 #card
@@ -284,7 +330,10 @@ h2
     margin: auto;
 }
 
-input[type=checkbox] {
+#hidden-submit {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
 }
 
 input[type=checkbox]:not(:checked) ~ input[type=number] {

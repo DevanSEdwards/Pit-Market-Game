@@ -1,3 +1,7 @@
+function initGameUrl() {
+    document.getElementById(`gameUrl`).innerText = `${window.location.host}`;
+}
+
 function inputFilter(arg) {
 
     var max = parseInt(arg.max);
@@ -18,8 +22,9 @@ function resetEmptyValue(arg) {
 }
 
 function drawQrCode() {
+    let wl = window.location
     new QRCode(document.getElementById(`qrcode`), {
-        text: `https://pit-market-game.herokuapp.com/?game=${state.gameId}`,
+        text: `${wl.protocol}//${wl.host}/?game=${state.gameId}`,
         width: 114,
         height: 114,
         colorDark : `#000000`,
@@ -46,11 +51,23 @@ function submitEndGame() {
     state.websocket.send(JSON.stringify({ type: "end game" }));
 }
 
+function submitSendEmail() {
+    state.websocket.send(JSON.stringify({ 
+        type: "send email",
+        address: document.getElementById("emailAddress").value
+    }));
+}
+
 function priceLimitChk(isCeiling) {
+    // BUG doesn't disable the inputs but also doesn't really matter
     if (isCeiling) {
         document.getElementById(`chkFloor`).checked = false;
+        document.getElementById(`ceilInput`).disabled = !document.getElementById(`chkFloor`).checked;
+        document.getElementById(`floorInput`).disabled = true;
     }
     else {
         document.getElementById(`chkCeil`).checked = false;
+        document.getElementById(`floorInput`).disabled = !document.getElementById(`chkCeil`).checked;
+        document.getElementById(`ceilInput`).disabled = true;
     }
 }

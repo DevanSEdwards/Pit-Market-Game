@@ -4,29 +4,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{{ static_url('images/favicon.ico') }}" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="{{ static_url('styles/style.css') }}">
-    
-    <script>
-      function join() {
-        var room = document.getElementById("room").value;
-        window.location.replace("/?game=" + room)
-      }
-    </script>
 
     <title>Pit Market Game</title>
   </head>
   <body>
+    {% autoescape None %}
     <h1 id="home-title">Pit Market Game</h1>
-    <div style="position=relative;">
-      <form id="form" method="method" name="form">
-        <input class="txt-field" id="room" name="room" type="text" placeholder="Game Code">
-        <input class="btn" onclick="join()" type="button" value="Join">
-        <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
+    <div style="position: relative;">
+      <form>
+        <input class="txt-field" id="room" name="game" type="text" placeholder="Game Code">
+        <input class="btn" type="submit" value="Join">
       </form>
-      <a id="host-link" href="/?game=host">Host a game</a>
     </div>
     <div>
-      <p id="credits-string">Developed by: Wesley Billingham, Alfred Burgess, Devan Edwards, Jayden Kur, Timothy Wise, Brave Ziazan</p>
+        <div class="credits credits-container">
+          <div class="credits-title">Developed by</div>
+          {{''.join('<div class="just-right">{0}</div><div class="just-left">{1}</div>'.format(k, v) for k, v in credits.items())}}
+          <div class="credits-title just-left"><a id="host-link" href="/?game=host">Host a game</a></div>
+        </div>
     </div>
+    <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
     <div class="helpText hidden" id="help_displayText"></div>
   </body>
 </html>

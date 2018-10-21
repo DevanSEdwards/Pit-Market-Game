@@ -28,6 +28,14 @@ def file_get_contents(filename):
 # Templating Values
 host_pages = {"warning", "deckSettings", "endGame", "round", "roundSettings"}
 player_pages = {"endGame", "round", "lobby"}
+credit_names = {
+    'Wesley': 'Billingham',
+    'Alfred': 'Burgess',
+    'Devan': 'Edwards',
+    'Jayden': 'Kur',
+    'Timothy': 'Wise',
+    'Brave': 'Ziazan'
+}
 
 class MainHandler(RequestHandler):
     """
@@ -68,14 +76,11 @@ class MainHandler(RequestHandler):
             arg = str.upper(arg)
             # Check for valid gameId
             if not any(arg == game.game_id for game in self.game_handler.games):
-                print(arg)
-                print(game.game_id for game in self.game_handler.games)
                 self.clear_all_cookies()
                 self.redirect("/")
                 return
             if client_id == "" or not any(client_id in game.players.keys() for game in self.game_handler.games):
                 player_id = self.game_handler.add_player(arg)
-                # print(player_id)
                 if player_id == None:
                     self.render("views/index.html")
                     return
@@ -85,7 +90,7 @@ class MainHandler(RequestHandler):
             self.render("views/player.html", **player_template)
         # Render main page (/)
         else:
-            self.render("views/index.html")
+            self.render("views/index.html", credits=credit_names)
 
 
 class WebsocketHandler(websocket.WebSocketHandler):
@@ -104,7 +109,8 @@ class WebsocketHandler(websocket.WebSocketHandler):
         "card settings": "hc_card_settings",
         "start round": "hc_start_round",
         "end round": "hc_end_round",
-        "end game": "hc_end_game"
+        "end game": "hc_end_game",
+        "send email": "hc_send_email"
     }
     player_commands = {
         "offer": "pc_offer",
