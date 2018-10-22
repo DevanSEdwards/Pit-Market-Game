@@ -78,19 +78,19 @@ function helpText(id)
 			break;
 		case 'help_cardMisc':
 			head = "Your player card";
-			p = "This is your card. It will indicade if you are selling or buying, as well as the limit to your transactions."
+			p = "This is your card. It will indicate if you are selling or buying, as well as the limit to your transactions."
 			break;
 		case 'help_postOffer':
 			head = 'Post an offer here!';
 			p = 'Your offer will appear in the offers list below for other people to accept. If accepted; you will earn the difference between your card and your offer.';
 			break;
 		case 'help_offerList':
-			head = 'List of availiable offers';
-			p = 'This is a list of offers that are currently availiable for you to accept. Offers for buyers will appear on the right, whereas offers for sellers will appear on the left. You only see the offer, not the value of the card. You will earn the difference between your car and the accepted offer.';
+			head = 'List of available offers';
+			p = 'This is a list of offers that are currently available for you to accept. Offers for buyers will appear on the right, whereas offers for sellers will appear on the left. You only see the offer, not the value of the card. You will earn the difference between your car and the accepted offer.';
 			break;
 		case 'help_transactionList':
 			head = 'List of past transactions';
-			p = 'This is a list transactions that have breakeen successfully made during the course of the game. You can not see which pair made the trade nor how much they earned.';
+			p = 'This is a list of transactions that have successfully been made during the course of the game. You cannot see which pair made the trade nor how much they earned.';
 			break;
 		case 'help_playerCount':
 			head = 'Plaayer Counter';
@@ -126,7 +126,7 @@ function helpText(id)
 			break;
 		case 'help_settingsTimeout':
 			head = "Time per trade";
-			p = "This is the amount of time a trade will be active after a player makes it. During this time, the player can not make a new trade offer."
+			p = "This is the amount of time a trade will be active after a player makes it. During this time, the player cannot make a new trade offer."
 			break;
 		case 'help_settingsEmail':
 			head = "Email Game Data";
