@@ -1,11 +1,11 @@
 # Set up your accounts
 ## GitHub
-Navigate to [` https://github.com/join `] and follow the on screen prompts to create your account
+Navigate to <https://github.com/join> and follow the on screen prompts to create your account
 
 **Don't forget to write down your details so you can log back in later**
 
 ## Heroku
-Navigate to [` https://signup.heroku.com/ `] and follow the on screen prompts to create your account
+Navigate to <https://signup.heroku.com/> and follow the on screen prompts to create your account
 
 **Don't forget to write down your details so you can log back in later**
 
@@ -28,7 +28,7 @@ Push your local code onto your GitHub account
 	Pit-Market-Game$ git push
 
 ## Option 1: User Interface
-Naviate to the source code url [ `https://github.com/DevanSEdwards/Pit-Market-Game` ] on GitHub
+Naviate to the source code url <https://github.com/DevanSEdwards/Pit-Market-Game`> on GitHub
 
 `Clone` The code into your own GitHub environment
 
