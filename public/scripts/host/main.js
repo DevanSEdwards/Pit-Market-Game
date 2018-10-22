@@ -36,6 +36,10 @@ function handleMessage(event) {
             refresh();
             loadpage(`round`);
             break;
+        case `announce trade`:
+            state.trades.push(msg.price);
+            drawTransactionList();
+            break;
         case `end round`:
             loadpage(`roundSettings`);
             state.inRound = false;

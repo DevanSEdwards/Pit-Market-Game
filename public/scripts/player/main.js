@@ -39,7 +39,7 @@ function handleMessage(event) {
             state.roundTimer = msg.length
             state.rounds.push(new Round(
                 msg.length,
-                msg.offerTimeLimit,
+                msg['offer time limit'],
                 msg.tax,
                 msg.ceiling,
                 msg.floor,

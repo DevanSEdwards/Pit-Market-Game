@@ -25,19 +25,32 @@ function about()
 function rules()
 {
 	// Get Context
-	div = div = getContext("help_text");
+	div = getContext("help_text");
 
 	// Crete html
-	var html = "<h1>Rules of the Pit Marget Games</h1>"
+	var html = `
+<h1>Rules</h1>
+<p>At the start of each <b>round</b>, you will be given a <b>card</b> with a value. \
+You will also be either a <b>Buyer</b> or a <b>Seller</b>, which will be shown on \
+your device. If you are a Seller, your goal is to sell your ‘goods’ \
+for a price no less than your card’s value. If you are a Buyer, your \
+goal is to buy ‘goods’ for a price no more than your card’s value. The \
+difference between your card’s value and the price you buy/sell for is \
+your <b>profit</b>.</p>
+<p>To make a <b>deal</b> with another player, you must either <b>post</b> an <b>offer</b> \
+or <b>accept</b> one. Posting an offer can be done by entering a legal offer \
+into your device and pressing ‘Submit’. You will also see offers from \
+other players appearing on your device. If you wish to accept one of \
+these offers, simply press the offer.</p>`
 	
-	html += "<p>Every player will be assigned a card at random. This card will tell you whether you are buying or selling, and what your card is worth.</p>"
-	html += "<p><b>Buyers</b> are unable to buy a card for more than their card's value<br/>";
-	html += "<b>Sellers</b> are unable to sell a card for less than their card's value</p>";
+	// html += "<p>Every player will be assigned a card at random. This card will tell you whether you are buying or selling, and what your card is worth.</p>"
+	// html += "<p><b>Buyers</b> are unable to buy a card for more than their card's value<br/>";
+	// html += "<b>Sellers</b> are unable to sell a card for less than their card's value</p>";
 
-	html += "<p>Every round, you may make offers that other player's can see and accept. You will also be able to see offers made by other players which you can accept.</p>"
-	html += "<p>The goal is to make as much profit as possible, which is calculated as the difference between your card and the value at which you traded. The good deals will go quickly! It's up to you to determine what the best deals are.</p>"
+	// html += "<p>Every round, you may make offers that other player's can see and accept. You will also be able to see offers made by other players which you can accept.</p>"
+	// html += "<p>The goal is to make as much profit as possible, which is calculated as the difference between your card and the value at which you traded. The good deals will go quickly! It's up to you to determine what the best deals are.</p>"
 
-	html += "<p>These are all the rules for the base game, but the host can introduce more advanced rules later. Check out the special rules using the button below."
+	// html += "<p>These are all the rules for the base game, but the host can introduce more advanced rules later. Check out the special rules using the button below."
 	// Set the html
 	div.innerHTML = html;
 }

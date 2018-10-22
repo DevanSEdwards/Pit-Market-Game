@@ -43,12 +43,21 @@ function acceptOffer(offerId) {
 }
 
 function submitOffer() {
-	offerprice = parseInt(document.getElementById(`offerInput`).value);
-	// Submit offer to web server
-	send({
-		type: `offer`,
-		price: offerprice
-	});
+	if (state.tradePrice === null) {
+		let input = document.getElementById(`btnPostOffer`);
+		offerprice = parseInt(input.value);
+		// Submit offer to web server
+		send({
+			type: `offer`,
+			price: parseInt(document.getElementById(`offerInput`).value)
+		});
+		input.disabled = true;
+		input.style.backgroundColor = 'rgb(210, 210, 210)';
+		window.setTimeout(() => {
+			input.disabled = false;
+			input.style.backgroundColor = 'turquoise';
+		}, state.offerTimeLimit * 1000);
+	}
 }
 
 function setRound(round) {
