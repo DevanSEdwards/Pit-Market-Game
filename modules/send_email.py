@@ -51,3 +51,10 @@ def send(gameID,email):
     except Exception as e:
         print(e)
     attachment.close()
+    remove_csv(gameID)
+
+def remove_csv(gameID):
+        """To be called when the game is started to remove previous game data CSV"""
+        filename = 'gameData_'+gameID+'.csv'
+        if os.path.isfile(filename):
+            os.remove(filename)
