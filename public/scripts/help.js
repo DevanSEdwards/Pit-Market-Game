@@ -64,6 +64,10 @@ function helpText(id)
 			head='Lower card limit';
 			p="";
 			break;
+		case 'help_setupDeckGraph':
+			head='Decks visualization';
+			p="This represents the two decks and the values they will take. The orange 'staircase' represents the buyer deck, and the blue the seller deck. Each 'step' represents a value that those cards may take. The decks meet at the mean value."
+			break;
 		case 'help_setupShape':
 			head = 'Shape of the graph';
 			p="The ratio of seller cards above the mean, and of buyer cards below the mean. The higher the value, the more trades will take place.";
