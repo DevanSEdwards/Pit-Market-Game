@@ -64,9 +64,12 @@ function draw(sellDeck, buyDeck) {
 }
 
 function drawGraph(sellDeck, buyDeck, x, y) {
-    gYAxisBounds = Math.max(Math.max(sellDeck), Math.max(buyDeck)) + 5;
+    gYAxisBounds = Math.max(Math.max(...sellDeck), Math.max(...buyDeck)) + 5;
     gXAxisBounds = state.rounds.map(r => r.trades.length + 1).reduce((a, b) => a + b, 0) +
         Math.max(sellDeck.length, buyDeck.length) + 1;
+
+    console.log(gYAxisBounds);
+    console.log(gXAxisBounds);
 
     gXAxisIncrementLen = gWidth / gXAxisBounds;
     gYAxisIncrementLen = gHeight / gYAxisBounds;
@@ -78,20 +81,20 @@ function drawGraph(sellDeck, buyDeck, x, y) {
 
     function drawGraphPoint(x, y) {
         // only draw points if they are within the visible bounds of the graph
-        if (x <= gXAxisBounds && x >= 0 && y <= gYAxisBounds && y >= 0) {
+        // if (x <= gXAxisBounds && x >= 0 && y <= gYAxisBounds && y >= 0) {
             var _x = graphBtmLeftX + gTradesOffset + x * gXAxisIncrementLen;
             var _y = graphBtmLeftY - y * gYAxisIncrementLen;
             ctx.beginPath();
             ctx.arc(_x, _y, gPointSize, 0, 2 * Math.PI, false);
             ctx.fillStyle = gPointColor;
             ctx.fill();
-        }
+        // }
     }
 
     function drawPoints(points) {
         // draw connections between points
         for (i = 1; i < points.length; i++) {
-            __x = graphBtmLeftX + gTradesOffset + (i - 1 + 1) * gXAxisIncrementLen;
+            __x = graphBtmLeftX + gTradesOffset + i * gXAxisIncrementLen;
             __y = graphBtmLeftY - points[i - 1].price * gYAxisIncrementLen;
 
             x_ = graphBtmLeftX + gTradesOffset + (i + 1) * gXAxisIncrementLen;
@@ -219,7 +222,7 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     ctx.setLineDash([0, 0]);
 
     let points = state.rounds
-        .map(r => r.trades.map((t, i) => ({ price: t, p: i })))
+        .map((r, i) => r.trades.map((t) => ({ price: t, p: i })))
         .reduce((a, b) => a.concat(b), [])
         .sort((a, b) => a.p - b.p);
     console.log(points);
