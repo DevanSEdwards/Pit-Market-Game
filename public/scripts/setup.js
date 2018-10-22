@@ -72,7 +72,7 @@ function setState(newState) {
 // - Run --------------------------------------------------------------
 
 // Open a websocket
-state.websocket = new WebSocket(`ws://${window.location.host}/ws`);
+state.websocket = new WebSocket(`wss://${window.location.host}/ws`);
 // Once the websocket is open send an id message
 state.websocket.onopen = sendCookieData;
 // Expect a state message back
