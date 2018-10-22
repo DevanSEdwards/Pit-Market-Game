@@ -48,6 +48,10 @@ function helpText(id)
 	var p = '';
 	/* Lilo and Switch help the user */
 	switch(id) {
+		case 'help_warning':
+			head = "Why?";
+			p = "You might not want your students to know the settings you use to make the game.<br /> We advise you keep the next screen hidden while you set everything up."
+			break;
 		case 'help_setupMean':
 			head='Mean Distribution of Cards';
 			p=""
@@ -111,6 +115,14 @@ function helpText(id)
 		case 'help_settingsFloor':
 			head = 'Price floor and ceiling settings';
 			p = 'Set a price cap or floor for all trades in the next round. This setting will <em>not</em> be reset between rounds.';
+			break;
+		case 'help_settingsQR':
+			head = "QR Code";
+			p = "Get your students to scan this with their phone barcode reader. Students with Snapchat can use that!";
+			break;
+		case 'help_settingsCode':
+			head = "Game code";
+			p = "This is the game code! Get your students to go to the URL and type in this game code. Upper and lower case do not matter.";
 			break;
 		case 'help_settingsTimeout':
 			head = "Time per trade";

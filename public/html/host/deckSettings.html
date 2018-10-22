@@ -1,109 +1,22 @@
 <h1>Deck Settings</h1>
 <div>
-<<<<<<< HEAD
-    <div style="position: relative;">
-        <label>Mean</label>
-        <input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)">
-        <div class="helpBubble" onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" unselectable="on">?</div>
-        <br>
-    </div>
-    <div style="position: relative;">
-        <label>Domain</label>
-        <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
-        <div class="helpBubble" onmouseover="drawHelp('help_setupDomain');" onmouseout="hideHelp();" unselectable="on">?</div>
-        <br>
-    </div>
-    <div style="position: relative;">
-        <label>Lower Limit</label>
-        <input class="txt-field" id="lowerLimitInput" type="number" value="2" onchange="redrawDeck(false)" onfocus="highlightOverlap()">
-        <div class="helpBubble" onmouseover="drawHelp('help_setupLowerLimit');" onmouseout="hideHelp();" unselectable="on">?</div>
-        <br>
-    </div>
-    <div style="position: relative;">
-        <label>Shape</label>
-        <input class="txt-field" id="overlapInput" type="number" value="0" step="0.1" onchange="redrawDeck(true)" onfocus="highlightOverlap()">
-        <div class="helpBubble" onmouseover="drawHelp('help_setupShape');" onmouseout="hideHelp();" unselectable="on">?</div>
-        <br>
-    </div>
-    <!--- Graph --->
-    <svg viewBox="0 0 500 500" id="deckChart" style="
-        width: 300px;
-        overflow: visible;
-        padding: 30px">
-        <style>
-            .chartLine {
-                fill: none;
-                stroke-width: 5;
-                stroke-linejoin: round;
-                stroke-linecap: round;
-            }
-            text {
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 20px;
-                font-weight: bold;
-                alignment-baseline: central;
-            }
-            #meanChartLine {
-                stroke: black; 
-                stroke-dasharray: 15px;
-            }
-            .highlightLine {
-                fill: none;
-                stroke: rgba(255, 0, 0, 0.5);
-                stroke-width: 5;
-                stroke-linejoin: round;
-                stroke-linecap: round;
-                stroke-dasharray: 20px;
-            }
-        </style>
-        <text id="sellStartLabel"></text>
-        <text id="sellEndLabel"></text>
-        <text id="buyStartLabel"></text>
-        <text id="buyEndLabel"></text>
-        <text id="meanLabel"></text>
-        <polyline
-            id="sellChartLine"
-            class="chartLine"
-            stroke="#0074d9"
-            points="" >
-        </polyline>
-        <polyline
-            id="buyChartLine"
-            class="chartLine"
-            fill="none"
-            stroke="#d97400"
-            points="" />
-        <line id="meanChartLine" class="chartLine" x1="0" y1="250" x2="500" y2="250"/>
-        <line id="highlightOverlapLine" class="highlightLine" x1="300" y1="100" x2="300" y2="400"/>
-    </svg>
-    <br>
-    <!--- End of Graph --->
-    <input class="btn" id="btnStartRound" type="button" value="Reset" onclick="resetDeck()">
-    <input class="btn" id="btnStartRound" type="button" value="Begin Game" onclick="submitDeck()">
-=======
     <div class="settings-container">
-        <div class="just-right">
-            <label>Mean</label>
-        </div>
-        <div class="just-left">
-            <input class="txt-field" id="meanInput" type="number" value="6"
-                onchange="redrawDeck(null)">
-        </div><div></div>
-        <div class="just-right">
-            <label>Range</label>
-        </div>
-        <div class="just-left">
-            <input class="txt-field" id="domainInput" type="number" value="7"
-                onchange="redrawDeck(null)">
-        </div><div></div>
-        <div class="just-right">
-            <label>Shape</label>
-        </div>
+        <!-- Mean -->
+            <div onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" class="just-right"><label>Mean</label></div>
+            <div onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" class="just-left"><input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)"></div><div></div>
+        <!-- Range -->
+            <div    class="just-right"><label>Range</label></div>
+            <div class="just-left">
+                <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
+            </div><div></div>
+        <!-- Shape -->
+        <div class="just-right"><label>Shape</label></div>
         <div class="just-left">
             <input class="txt-field" id="overlapInput" type="number" value="0"
                 step="0.1"
                 onchange="redrawDeck(true)" onfocus="highlightOverlap()">
         </div><div></div>
+        <!-- Draw -->
         <div class="just-right hide">
             <label>Lower Limit</label>
         </div>
@@ -114,6 +27,7 @@
                 onfocus="highlightOverlap()">
         </div><div class="hide"></div>
     </div>
+    <!--- Graph --->
     <div class="deck-display">
         <svg viewBox="0 0 500 500" id="deckChart" style="width: 250px;
             overflow: visible;
@@ -169,10 +83,10 @@
                     y1="100" x2="300" y2="400" />
         </svg>
         <br>
+    <!--- End of Graph --->
         <input class="btn" id="btnStartRound" type="button"
             value="Reset" onclick="resetDeck()">
         <input class="btn" id="btnStartRound" type="button"
             value="Begin Game" onclick="submitDeck()">
     </div>
->>>>>>> 03239730d33b7d41a1858770ec80d843a6a5108a
 </div>

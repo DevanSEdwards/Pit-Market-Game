@@ -1,60 +1,11 @@
 <p id="gameUrl">Game Code:</p>
-<h1 id="gameIdDisplay">000000</h1>
-<div id="qrcode"></div>
-<br>
-<<<<<<< HEAD
-<div style="position: relative;">
-<label>Round Length</label>
-<div class="helpBubble" onmouseover="drawHelp('help_settingsTime');" onmouseout="hideHelp();" unselectable="on">?</div>
-<select class="txt-field" id="roundLength" type="number">
-    <option value="60">1:00</option>
-    <option value="90">1:30</option>
-    <option value="120" selected>2:00</option>
-    <option value="150">2:30</option>
-    <option value="180">3:00</option>
-</select>
-<br>
-</div>
-<div style="position: relative;">
-<br>
-<label>Offer Timeout</label>
-<div class="helpBubble" onmouseover="drawHelp('help_settingsTimeout');" onmouseout="hideHelp();" unselectable="on">?</div>
-<select class="txt-field" id="tradeLength" type="number">
-    <option value="5">5 Seconds</option>
-    <option value="10" selected>10 Seconds</option>
-    <option value="15">15 Seconds</option>
-    <option value="20">20 Seconds</option>
-    <option value="25">25 Seconds</option>
-    <option value="30">30 Seconds</option>
-</select>
-<br>
-</div>
-<br>
-<div style="position: relative;">
-    <label>Tax</label>
-    <div class="helpBubble" onmouseover="drawHelp('help_settingsTax');" onmouseout="hideHelp();" unselectable="on">?</div>
-    <input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
-<br>
-</div>
-<br>
-<div>
-    <label>Floor</label>
-    <input id="chkFloor" type="checkbox" onchange="priceLimitChk(false)">
-    <input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
-    <div class="helpBubble" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();" unselectable="on">?</div>
-</div>
-<br>
-<div>
-    <label for="chkCeil">Ceiling</label>
-    <input id="chkCeil" type="checkbox" name="chkCeil" onchange="priceLimitChk(true)">
-    <input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
-    <div class="helpBubble" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();" unselectable="on">?</div>
-=======
-<div class="round-settings-container">
-    <div class="just-right">
+<h1 onmouseover="drawHelp('help_settingsCode');" onmouseout="hideHelp();" id="gameIdDisplay">000000</h1>
+<div onmouseover="drawHelp('help_settingsQR');" onmouseout="hideHelp();" id="qrcode"></div>
+<br><div class="round-settings-container">
+    <div class="just-right"  onmouseover="drawHelp('help_settingsTime');" onmouseout="hideHelp();" >
         <label>Round Length</label>
     </div>
-    <div class="just-left">
+    <div class="just-left" onmouseover="drawHelp('help_settingsTime');" onmouseout="hideHelp();" >
         <select class="txt-field" id="roundLength" type="number">
             <option value="60">1:00</option>
             <option value="90">1:30</option>
@@ -63,10 +14,10 @@
             <option value="180">3:00</option>
         </select>
     </div>
-    <div class="just-right">
+    <div class="just-right"  onmouseover="drawHelp('help_settingsTimeout');" onmouseout="hideHelp();" >
         <label>Offer Timeout</label>
     </div>
-    <div class="just-left">
+    <div class="just-left" onmouseover="drawHelp('help_settingsTimeout');" onmouseout="hideHelp();" >
         <select class="txt-field" id="tradeLength" type="number">
             <option value="5">5</option>
             <option value="10" selected>10</option>
@@ -76,43 +27,31 @@
             <option value="30">30</option>
         </select>
     </div>
-    <div class="just-right">
+    <div class="just-right" onmouseover="drawHelp('help_settingsTax');" onmouseout="hideHelp();" >
         <label>Tax</label>
     </div>
-    <div class="just-left">
+    <div class="just-left" onmouseover="drawHelp('help_settingsTax');" onmouseout="hideHelp();" >
         <input class="txt-field" id="taxInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
     </div>
-    <div class="just-right">
+    <div class="just-right" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();">
         <div>
             <label>Floor</label>
             <input id="chkFloor" type="checkbox" onchange="priceLimitChk(false)">
         </div>
     </div>
-    <div class="just-left">
+    <div class="just-left" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();">
         <input class="txt-field" id="floorInput" type="number" min="-10" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
     </div>
-    <div class="just-right">
+    <div class="just-right" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();">
         <div>
             <label for="chkCeil">Ceiling</label>
             <input id="chkCeil" type="checkbox" name="chkCeil" onchange="priceLimitChk(true)">
         </div>
     </div>
-    <div class="just-left">
+    <div class="just-left" onmouseover="drawHelp('help_settingsFloor');" onmouseout="hideHelp();">
         <input class="txt-field" id="ceilInput" type="number" min="0" max="10" value="0" oninput="inputFilter(this)" onfocusout="resetEmptyValue(this)">
     </div>
->>>>>>> 03239730d33b7d41a1858770ec80d843a6a5108a
 </div>
 <br>
 <input class="btn" id="btnStartRound" type="button" value="Start Round" onclick="submitRoundSettings()">
 <input class="btn" id="btnEndGame" type="button" value="End Game" onclick="submitEndGame()">
-<<<<<<< HEAD
-<br><br><br><br>
-<br><br><br><br>
-<div style="position: relative;">
-    <input class="txt-field" id="emailAddress" type="text" value="example@example.com">
-    <br>
-    <input class="btn" id="btnSendEmail" type="button" value="Email Game Data" onclick="submitSendEmail()"><br>
-    <div class="helpBubble" onmouseover="drawHelp('help_settingsEmail');" onmouseout="hideHelp();" unselectable="on">?</div>
-</div>
-=======
->>>>>>> 03239730d33b7d41a1858770ec80d843a6a5108a
