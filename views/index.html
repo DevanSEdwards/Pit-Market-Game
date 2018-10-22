@@ -11,13 +11,9 @@
     {% autoescape None %}
     <h1 id="home-title">Pit Market Game</h1>
     <div style="position: relative;">
-      <form>
+      <form onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" >
         <input class="txt-field" id="room" name="game" type="text" placeholder="Game Code">
-<<<<<<< HEAD
-        <input class="btn" type="submit" text="Join Game">
-=======
         <input class="btn" type="submit" value="Join">
->>>>>>> 03239730d33b7d41a1858770ec80d843a6a5108a
       </form>
       <div class="helpBubble" onmouseover="drawHelp('help_joinGame');" onmouseout="hideHelp();" unselectable="on">?</div>
     </div>
@@ -30,19 +26,7 @@
     </div>
     <div class="helpText hidden" id="help_displayText"></div>
   </body>
-  <script>
-    /*
- * HOW TO USE THIS FILE
- *
- * Insert
- <div class="helpBubble" onmouseover="drawHelp(help_id);" onmouseout="hideHelp();" unselectable="on">?</div>
- * into a relative division of on the page
- * change the help_id to the appropriate id
- *
- ** LIST OF IDs
- * 
- */ 
-
+  <!--script>
 
 
 /* Script for drawing help text division */
@@ -82,5 +66,5 @@ function helpText(id)
   /* END OF SWITCH */
   return [head, p];
 }
-  </script>
+  </script-->
 </html>
