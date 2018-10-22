@@ -40,10 +40,13 @@ function acceptOffer(offerId) {
 		type: `accept`,
 		offerId: offerId
 	});
+	alert("Offer Accepted!");
 }
 
 function submitOffer() {
-	if (state.tradePrice === null) {
+	if (state.tradePrice === null)
+	{ if (confirm("Please confirm trade!"))
+		{
 		let input = document.getElementById(`btnPostOffer`);
 		offerprice = parseInt(input.value);
 		// Submit offer to web server
@@ -57,7 +60,7 @@ function submitOffer() {
 			input.disabled = false;
 			input.style.backgroundColor = 'turquoise';
 		}, state.offerTimeLimit * 1000);
-	}
+	} else {} }
 }
 
 function setRound(round) {
