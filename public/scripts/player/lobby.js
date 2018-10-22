@@ -31,17 +31,10 @@ function rules()
 	var html = `
 <h1>Rules</h1>
 <p>At the start of each <b>round</b>, you will be given a <b>card</b> with a value. \
-<<<<<<< HEAD
-You will also be either a <b>buyer</b> or a <b>seller</b>, which will be shown on \
-your device. If you are a <b>seller</b>, your goal is to sell your ‘goods’ \
-for a price no less than your card’s value. If you are a <b>buyer, your \
-goal is to buy ‘goods’ for a price no more than your card’s value. The \
-=======
 You will also be either a <b>Buyer</b> or a <b>Seller</b>, which will be shown on \
 your device.</p> <p>If you are a <b>Seller</b>, your goal is to sell your ‘goods’ \
 for a price no less than your card’s value. </p> <p>If you are a <b>Buyer</b>, your \
 goal is to buy ‘goods’ for a price no more than your card’s value. </p> <p>The \
->>>>>>> test-merge
 difference between your card’s value and the price you buy/sell for is \
 your <b>profit</b>.</p>
 <p>To make a <b>deal</b> with another player, you must either <b>post</b> an <b>offer</b> \
