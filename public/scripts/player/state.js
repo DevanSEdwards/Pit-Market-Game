@@ -14,7 +14,11 @@ class State {
     }
 
     get currentRound() { return this.rounds.length - 1; }
-    get profit() { return this.rounds.map(r => r.tradePrice).reduce((a, b) => a + b, 0) }
+    get profit() { 
+        return this.rounds
+        .map(r => r.isSeller ? r.tradePrice - r.card - r.tax : r.card - r.tradePrice)
+        .reduce((a, b) => a + b, 0)
+    }
 }
 
 

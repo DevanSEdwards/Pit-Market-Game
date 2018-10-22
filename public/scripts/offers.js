@@ -54,8 +54,10 @@ function submitOffer() {
 		input.disabled = true;
 		input.style.backgroundColor = 'rgb(210, 210, 210)';
 		window.setTimeout(() => {
-			input.disabled = false;
-			input.style.backgroundColor = 'turquoise';
+			if (state.tradePrice === null) {
+				input.disabled = false;
+				input.style.backgroundColor = 'turquoise';
+			}
 		}, state.offerTimeLimit * 1000);
 	}
 }

@@ -1,27 +1,27 @@
 function calculateScore()
 {
-	var rounds = state.rounds;
-	var profit = 0;
-	var cardValue = state.card;
-	var tax = state.tax;
+	// var rounds = state.rounds;
+	// var profit = 0;
+	// var cardValue = state.card;
+	// var tax = state.tax;
 
-	for(var i = 0; i < rounds.length; i++)
-	{
-		var price = rounds[i].tradePrice;
+	// for(var i = 0; i < rounds.length; i++)
+	// {
+	// 	var price = rounds[i].tradePrice;
 
-		if(price == null) { continue; }
-		else { 
-			if(state.isSeller == true){
-				tempProfit = price - cardValue - tax;
-				profit += tempProfit;
-			} else { 
-				tempProfit = cardValue - price;
-				profit += tempProfit;
-			}
+	// 	if(price == null) { continue; }
+	// 	else { 
+	// 		if(state.isSeller == true){
+	// 			tempProfit = price - cardValue - tax;
+	// 			profit += tempProfit;
+	// 		} else { 
+	// 			tempProfit = cardValue - price;
+	// 			profit += tempProfit;
+	// 		}
 			
-		}
-	}
-	return profit
+	// 	}
+	// }
+	return state.profit;
 }
 
 function displayScore() { 

@@ -31,9 +31,9 @@ function rules()
 	var html = `
 <h1>Rules</h1>
 <p>At the start of each <b>round</b>, you will be given a <b>card</b> with a value. \
-You will also be either a <b>Buyer</b> or a <b>Seller</b>, which will be shown on \
-your device. If you are a Seller, your goal is to sell your ‘goods’ \
-for a price no less than your card’s value. If you are a Buyer, your \
+You will also be either a <b>buyer</b> or a <b>seller</b>, which will be shown on \
+your device. If you are a <b>seller</b>, your goal is to sell your ‘goods’ \
+for a price no less than your card’s value. If you are a <b>buyer, your \
 goal is to buy ‘goods’ for a price no more than your card’s value. The \
 difference between your card’s value and the price you buy/sell for is \
 your <b>profit</b>.</p>
