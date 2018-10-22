@@ -40,7 +40,6 @@ function acceptOffer(offerId) {
 		type: `accept`,
 		offerId: offerId
 	});
-	alert("Offer Accepted!");
 }
 
 function submitOffer() {
