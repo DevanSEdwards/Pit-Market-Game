@@ -196,7 +196,7 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     // draw labels
     ctx.fillStyle = gTextColor;
     ctx.font = gFont;
-    ctx.fillText("Quantity", x + gOffsetX + 40, y + gPanelHeight - gOffsetY + 20);
+    ctx.fillText("Cards", x + gOffsetX + 40, y + gPanelHeight - gOffsetY + 20);
     ctx.fillText(gTitle, x + gPanelWidth / 2, y + 20);
     ctx.fillText(gYAxisLabel, x + gOffsetX - 50, y + gPanelHeight / 2);
     ctx.fillText(gXAxisLabel, x + gPanelWidth / 2, graphBtmLeftY + 20);
@@ -218,9 +218,11 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     ctx.stroke();
     ctx.setLineDash([0, 0]);
 
-    console.log(state.rounds.map(r => r.trades.map((t, i) => ({ price: t, p: i }))));
-    // draw points
-    drawPoints(state.rounds.map(r => r.trades.map((t, i) => ({ price: t, p: i }))));
+    drawPoints(state.rounds
+        .map(r => r.trades
+            .map((t, i) => ({ price: t, p: i }))
+            .reduce((a, b) => a.concat(b), [])
+        ).sort((a, b) => a.p - b.p));
     drawSD(sellDeck, buyDeck);
 }
 
