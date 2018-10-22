@@ -37,6 +37,8 @@ The Heroku dashboard has a deploy tab which can automatically connect your githu
 
 Authenticate your GitHub account with Heroku
 
+![GitHub account authentication](https://s3.amazonaws.com/heroku-devcenter-files/article-images/2349-imported-1443570588-2349-imported-1443555058-421-original.jpg)
+
 **You can only have one GitHub account with your Heroku account**
 
 # Set up automatic deployment
@@ -46,6 +48,10 @@ When enabled, Heroku will automatically build and deploy any changes to the code
 Navigate to deployment settings and tick `Automatic deployment from GitHub are enabled`
 Any push to the `master` branch on GitHub will be deployed to the server
 
+![Automatic Deploy](https://s3.amazonaws.com/heroku-devcenter-files/article-images/2349-imported-1443570589-2349-imported-1443555058-423-original.jpg)
+
 # Disconnecting
 
 To disconnect your GitHub from Heroku, navigate to the dashboard and press the `disconnect` button associated with your GitHub account. Automatic syncing will no longer occur.
+
+![Disconnecting](https://s3.amazonaws.com/heroku-devcenter-files/article-images/2349-imported-1443570591-2349-imported-1443555059-434-original.jpg)
