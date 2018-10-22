@@ -172,7 +172,9 @@ h2
 
 .offers-label
 {
-    color: rgb(192, 192, 192);
+    color: black;
+    font-size: larger;
+    font-weight: bolder;
 }
 
 .info-label
