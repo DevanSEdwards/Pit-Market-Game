@@ -218,11 +218,13 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     ctx.stroke();
     ctx.setLineDash([0, 0]);
 
-    drawPoints(state.rounds
+    let points = state.rounds
         .map(r => r.trades
             .map((t, i) => ({ price: t, p: i }))
             .reduce((a, b) => a.concat(b), [])
-        ).sort((a, b) => a.p - b.p));
+        ).sort((a, b) => a.p - b.p);
+    console.log(points);
+    drawPoints(points);
     drawSD(sellDeck, buyDeck);
 }
 
