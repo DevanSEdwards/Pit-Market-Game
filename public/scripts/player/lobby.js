@@ -32,9 +32,9 @@ function rules()
 <h1>Rules</h1>
 <p>At the start of each <b>round</b>, you will be given a <b>card</b> with a value. \
 You will also be either a <b>Buyer</b> or a <b>Seller</b>, which will be shown on \
-your device. If you are a Seller, your goal is to sell your ‘goods’ \
-for a price no less than your card’s value. If you are a Buyer, your \
-goal is to buy ‘goods’ for a price no more than your card’s value. The \
+your device.</p> <p>If you are a <b>Seller</b>, your goal is to sell your ‘goods’ \
+for a price no less than your card’s value. </p> <p>If you are a <b>Buyer</b>, your \
+goal is to buy ‘goods’ for a price no more than your card’s value. </p> <p>The \
 difference between your card’s value and the price you buy/sell for is \
 your <b>profit</b>.</p>
 <p>To make a <b>deal</b> with another player, you must either <b>post</b> an <b>offer</b> \
@@ -78,7 +78,7 @@ function special()
 	// Tax
 	html += "<h2>Tax</h2>";
 	html += "<p><b>Tax</b> will be a flat cost that the <emp>seller</emp> must pay when they successfully sell a card."
-	html += " For example;</p><p style='text-indent :1em;'>" + "If a card of value $10 is sold for $15 and there is currently a $2 tax in place, the seller will have $5 of before-tax profit, then after paying the $2 tax will have a net gain of $3 for the round</p>";
+	html += " For example;</p><p style='text-indent :1em;'><p>" + "If a card of value $10 is sold for $15 and there is currently a $2 tax in place, the seller will have $5 of before-tax profit, then after paying the $2 tax will have a net gain of $3 for the round</p>";
 	html += "<p>Sale Value - Card Value - Tax = Profit<br />"
 	html += "$15 - $10 - $2 = $3<p>"
 	html += "<p>Tax is a real-world phenomenon that governments impose on the sale of goods and services in everyday life and this rule will demonstrate how tax may affect the free market."

@@ -1,12 +1,27 @@
 .left-container{ left: 0; width: 30%; overflow: none; }
 .right-container { right: 0; width: 55%; border-left: 10px ridge #367588;}
 
+@media only screen and (max-width: 320px) {
+    #help_text {
+        display: inline-block;
+        overflow: auto;
+        text-align: center;
+        margin: 20px;
+        max-width: 300px;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: justify;
+        text-justify: inter-character;
+    }
+}
+
 #help_text
 {
+    display: inline-block;
     overflow: auto;
-    text-align: left;
-    float: left;
-    width: 100%;
+    text-align: center;
+    margin: 20px;
+    max-width: 500px;
     padding: 10px;
     box-sizing: border-box;
     text-align: justify;
