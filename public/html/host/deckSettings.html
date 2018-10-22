@@ -5,13 +5,13 @@
             <div onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" class="just-right"><label>Mean</label></div>
             <div onmouseover="drawHelp('help_setupMean');" onmouseout="hideHelp();" class="just-left"><input class="txt-field" id="meanInput" type="number" value="6" onchange="redrawDeck(null)"></div><div></div>
         <!-- Range -->
-            <div    class="just-right"><label>Range</label></div>
-            <div class="just-left">
+            <div onmouseover="drawHelp('help_setupDomain');" onmouseout="hideHelp();" class="just-right"><label>Range</label></div>
+            <div onmouseover="drawHelp('help_setupDomain');" onmouseout="hideHelp();"class="just-left">
                 <input class="txt-field" id="domainInput" type="number" value="7" onchange="redrawDeck(null)">
             </div><div></div>
         <!-- Shape -->
-        <div class="just-right"><label>Shape</label></div>
-        <div class="just-left">
+        <div onmouseover="drawHelp('help_setupShape');" onmouseout="hideHelp();"class="just-right"><label>Shape</label></div>
+        <div onmouseover="drawHelp('help_setupShape');" onmouseout="hideHelp();" class="just-left">
             <input class="txt-field" id="overlapInput" type="number" value="0"
                 step="0.1"
                 onchange="redrawDeck(true)" onfocus="highlightOverlap()">
@@ -29,7 +29,7 @@
     </div>
     <!--- Graph --->
     <div class="deck-display">
-        <svg viewBox="0 0 500 500" id="deckChart" style="width: 250px;
+        <svg onmouseover="drawHelp('help_setupDeckGraph');" onmouseout="hideHelp();" viewBox="0 0 500 500" id="deckChart" style="width: 250px;
             overflow: visible;
             padding: 30px">
             <style>

@@ -156,7 +156,6 @@ class Game():
                 player.ws.close()
         self.ws.close()
         self.ws.game_handler.delete_game(self.game_id)
-        self.remove_csv()
 
     def hc_card_settings(self, domain, mean, lowerLimit):
         """
@@ -373,8 +372,4 @@ class Game():
             writer.writerow(headers)
             writer.writerows(self.game_data)
 
-    def remove_csv(self):
-        """To be called when the game is started to remove previous game data CSV"""
-        filename = 'gameData_'+self.game_id+'.csv'
-        if os.path.isfile(filename):
-            os.remove(filename)
+    
