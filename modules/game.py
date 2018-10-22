@@ -229,7 +229,7 @@ class Game():
 
         # Add offer to the dictionary
         self.offers[offer_id] = Offer(
-            offer_id, True, price, time, player_id, self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id))
+            offer_id, player.is_seller, price, time, player_id, self.io.call_later(self.rounds[self.round_number].offer_time_limit, self.delete_offer, offer_id))
         # Announce the offer to all clients
         self.message_all(
             {
@@ -265,6 +265,8 @@ class Game():
         if player.has_traded:
             raise TradeError("Already traded this round")
         if player.is_seller == offer.is_seller:
+            print(player.is_seller)
+            print(offer.is_seller)
             raise TradeError("Buyer/Seller mismatch")
         # Price range check
         if player.is_seller and (player.card + tax) > price:
