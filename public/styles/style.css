@@ -322,6 +322,17 @@ h2
     opacity: 1;
 }
 
+@media screen and (max-width: 600px)
+{
+    .helpText
+    {
+        width: 90%;
+        height: auto;
+        margin-left: 2.5%;
+        left: 0;
+    }
+}
+
 .hidden{display: none; opacity: 0; }
 
 #qrcode {

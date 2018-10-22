@@ -57,16 +57,20 @@ function helpText(id)
 			p=""
 			break;
 		case 'help_setupDomain':
-			head = 'Domain of the deck';
-			p="";
+			head = 'Range of each deck';
+			p="The number of unique card values in each deck";
 			break;
 		case 'help_setupLowerLimit':
 			head='Lower card limit';
 			p="";
 			break;
+		case 'help_setupDeckGraph':
+			head='Decks visualization';
+			p="This represents the two decks and the values they will take. The orange 'staircase' represents the buyer deck, and the blue the seller deck. Each 'step' represents a value that those cards may take. The decks meet at the mean value."
+			break;
 		case 'help_setupShape':
 			head = 'Shape of the graph';
-			p="";
+			p="The ratio of seller cards above the mean, and of buyer cards below the mean. The higher the value, the more trades will take place.";
 			break;
 		case 'help_cardBuyer':
 			head = 'Your player card';
