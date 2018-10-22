@@ -6,4 +6,8 @@ function setTrading(canTrade) {
 function setCard(value, isSeller) {
     document.getElementById(`cardValue`).innerText = '$' + String(value);
     document.getElementById(`cardIsSeller`).innerText = isSeller === null ? `Spectating` : isSeller ? `Selling` : `Buying`;
+
+    let input = document.getElementById(`btnPostOffer`);
+	input.disabled = false;
+	input.style.backgroundColor = 'turquoise';
 }

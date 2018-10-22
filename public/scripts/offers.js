@@ -45,7 +45,7 @@ function acceptOffer(offerId) {
 
 function submitOffer() {
 	if (state.tradePrice === null)
-	{ if (confirm("Please confirm trade!"))
+	{ if (confirm("Confirm offer?"))
 		{
 		let input = document.getElementById(`btnPostOffer`);
 		offerprice = parseInt(input.value);

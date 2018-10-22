@@ -63,6 +63,7 @@ function handleMessage(event) {
 };
 
 function refresh() {
+    displayScore();
     setRound(state.currentRound + 1);
     setTimer_s(state.roundTimer);
     setTrading(state.tradePrice == null && state.isSeller != null);
