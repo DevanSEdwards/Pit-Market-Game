@@ -64,7 +64,7 @@ function draw(sellDeck, buyDeck) {
 }
 
 function drawGraph(sellDeck, buyDeck, x, y) {
-    gYAxisBounds = Math.max(sellDeck + buyDeck);
+    gYAxisBounds = Math.max(Math.max(sellDeck), Math.max(buyDeck)) + 5;
     gXAxisBounds = state.rounds.map(r => r.trades.length + 1).reduce((a, b) => a + b, 0) +
         Math.max(sellDeck.length, buyDeck.length) + 1;
 
@@ -218,6 +218,7 @@ function drawGraph(sellDeck, buyDeck, x, y) {
     ctx.stroke();
     ctx.setLineDash([0, 0]);
 
+    console.log(state.rounds.map(r => r.trades.map((t, i) => ({ price: t, p: i }))));
     // draw points
     drawPoints(state.rounds.map(r => r.trades.map((t, i) => ({ price: t, p: i }))));
     drawSD(sellDeck, buyDeck);

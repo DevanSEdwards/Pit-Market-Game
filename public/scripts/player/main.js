@@ -55,8 +55,9 @@ function handleMessage(event) {
             clearOfferList();   
             break;
         case `end game`:
-            draw(msg.sellDeck, msg.buyDeck);
-            loadpage(`endGame`);
+            window.location.assign(`/`);
+            // draw(msg.sellDeck, msg.buyDeck);
+            // loadpage(`endGame`);
             break;
     }
 };
